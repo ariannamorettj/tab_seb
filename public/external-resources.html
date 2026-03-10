@@ -1,0 +1,556 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TAB-SEB — External Resources</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --border: #e2e8f0;
+      --text: #0f172a;
+      --muted: #475569;
+      --blue: #2563eb;
+      --green: #15803d;
+      --purple: #7c3aed;
+      --orange: #ea580c;
+      --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(248, 250, 252, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner,
+    .container {
+      width: min(1180px, calc(100% - 2rem));
+      margin: 0 auto;
+    }
+
+    .nav-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+      gap: 1rem;
+    }
+
+    .brand {
+      font-weight: 800;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--muted);
+      font-weight: 600;
+      padding: 0.5rem 0.85rem;
+      border-radius: 999px;
+      border: 1px solid transparent;
+    }
+
+    .nav-links a:hover,
+    .nav-links a:focus-visible {
+      border-color: var(--border);
+      background: var(--surface);
+      color: var(--text);
+      outline: none;
+    }
+
+    header {
+      padding: 3rem 0 2rem;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      line-height: 1.1;
+      margin: 0 0 0.75rem;
+      letter-spacing: -0.03em;
+    }
+
+    .lead {
+      max-width: 78ch;
+      font-size: 1.06rem;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    .toc {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 0.85rem;
+      margin: 0 0 2rem;
+    }
+
+    .toc a {
+      text-decoration: none;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1rem;
+      color: var(--text);
+      font-weight: 700;
+      box-shadow: var(--shadow);
+    }
+
+    .section {
+      margin: 2.5rem 0 3rem;
+    }
+
+    .section h2 {
+      margin: 0 0 1rem;
+      font-size: clamp(1.45rem, 3vw, 2rem);
+      letter-spacing: -0.02em;
+    }
+
+    .section-intro {
+      color: var(--muted);
+      margin: 0 0 1.25rem;
+      font-size: 1rem;
+    }
+
+    .cards {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 6px solid var(--blue);
+      border-radius: 18px;
+      padding: 1.25rem;
+      box-shadow: var(--shadow);
+    }
+
+    .card.purple { border-left-color: var(--purple); }
+    .card.green { border-left-color: var(--green); }
+    .card.orange { border-left-color: var(--orange); }
+
+    .card h3 {
+      margin: 0 0 0.65rem;
+      font-size: 1.25rem;
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+    }
+
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 0 0 0.9rem;
+    }
+
+    .links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.45rem 0.75rem;
+      border-radius: 999px;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-weight: 600;
+      background: #f8fafc;
+    }
+
+    .links a:hover,
+    .links a:focus-visible {
+      background: #eff6ff;
+      border-color: #bfdbfe;
+      outline: none;
+    }
+
+    dl.meta {
+      display: grid;
+      grid-template-columns: minmax(130px, 180px) 1fr;
+      gap: 0.45rem 1rem;
+      margin: 0 0 0.9rem;
+      font-size: 0.98rem;
+    }
+
+    .meta dt {
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .meta dd {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .desc {
+      margin: 0;
+      color: var(--text);
+    }
+
+    footer {
+      padding: 2rem 0 3rem;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 760px) {
+      .nav-inner {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      dl.meta {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-inner">
+      <a class="brand" href="./">TAB-SEB</a>
+      <div class="nav-links">
+        <a href="./">Workflow</a>
+        <a href="#data-preparation">Data Preparation</a>
+        <a href="#rdf-materialisation">RDF Materialisation</a>
+        <a href="#publication">Publication</a>
+        <a href="#quality">Quality Control</a>
+        <a href="#blueprint">Blueprint</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="container">
+    <h1>External Resources</h1>
+    <p class="lead">Schematic register of the doctoral project outputs, grouped according to the same macro-structure used in the chapter: data preparation, CSV-to-RDF materialisation, data publication and dissemination, quality control and assessment, and the workflow blueprint.</p>
+  </header>
+
+  <main class="container">
+    <div class="toc">
+      <a href="#data-preparation">1. Data Preparation</a>
+      <a href="#rdf-materialisation">2. CSV-to-RDF Materialisation</a>
+      <a href="#publication">3. Data Publication and Dissemination</a>
+      <a href="#quality">4. Quality Control and Assessment</a>
+      <a href="#blueprint">5. Workflow Blueprint</a>
+    </div>
+
+    <section id="data-preparation" class="section">
+      <h2>1. Data Preparation: Retrieval, Collection, Harmonisation, Metadata Crosswalking</h2>
+      <p class="section-intro">Templates, schema-alignment materials, and retrieval/harmonisation software that support the preparation of structured tabular inputs before RDF materialisation.</p>
+      <div class="cards">
+        <article class="card">
+          <h3>CHANGES Data Collection Templates and Samples</h3>
+          <div class="links">
+            <a href="https://doi.org/10.5281/zenodo.14277219" target="_blank" rel="noopener noreferrer">Zenodo resource</a>
+            <a href="https://doi.org/10.48550/arXiv.2505.13276" target="_blank" rel="noopener noreferrer">Primary documentation</a>
+            <a href="https://doi.org/10.3724/2096-7004.di.2024.0061" target="_blank" rel="noopener noreferrer">Secondary documentation</a>
+          </div>
+          <dl class="meta">
+            <dt>Title</dt><dd>Modelli Spreadsheet CHANGES - Acquisizione e Oggetti</dd>
+            <dt>Authors</dt><dd>Arianna Moretti; Sebastian Barzaghi</dd>
+            <dt>Type</dt><dd>Tabular templates and sample datasets</dd>
+            <dt>Formats</dt><dd>CSV and ODS</dd>
+            <dt>Scope</dt><dd>Object metadata and digitisation-process paradata</dd>
+          </dl>
+          <p class="desc">Standardised spreadsheets for collecting exhibition-object metadata and phase-oriented digitisation paradata in CHANGES-related workflows. The deposit combines operational templates and instructional samples so the tabular layer can be reused before RDF generation.</p>
+        </article>
+
+        <article class="card">
+          <h3>Digital Damaged Ceramics CHANGES Data Collection Extended Templates</h3>
+          <div class="links">
+            <a href="https://bombedceramics.github.io/digital_damaged_ceramics/documentation.html" target="_blank" rel="noopener noreferrer">Documentation and downloads</a>
+            <a href="https://doi.org/10.2312/dh.20253375" target="_blank" rel="noopener noreferrer">Documentation article</a>
+          </div>
+          <dl class="meta">
+            <dt>Title</dt><dd>Digital Damaged Ceramics – Data Collection Table Templates + CHANGES Field Names Mapping (JSON)</dd>
+            <dt>Authors</dt><dd>Arianna Moretti; Madeleine Daste</dd>
+            <dt>Type</dt><dd>Extended templates and schema-mapping resources</dd>
+            <dt>Formats</dt><dd>CSV and JSON</dd>
+            <dt>Scope</dt><dd>Object metadata, process paradata, header-level harmonisation</dd>
+          </dl>
+          <p class="desc">Project-specific templates translated into an English field vocabulary and paired with JSON mappings from the original CHANGES headers. The package functions as a lightweight schema-translation layer for consistent ingestion and downstream conversion.</p>
+        </article>
+
+        <article class="card">
+          <h3>OpenCitations Data Sources Converter</h3>
+          <div class="links">
+            <a href="https://pypi.org/project/oc-ds-converter/" target="_blank" rel="noopener noreferrer">PyPI package</a>
+            <a href="https://github.com/opencitations/oc_ds_converter" target="_blank" rel="noopener noreferrer">Source repository</a>
+            <a href="https://doi.org/10.1007/s11192-024-05160-7" target="_blank" rel="noopener noreferrer">Primary documentation</a>
+            <a href="https://doi.org/10.5334/johd.178" target="_blank" rel="noopener noreferrer">Secondary documentation</a>
+          </div>
+          <dl class="meta">
+            <dt>Authors</dt><dd>Arianna Moretti; Arcangelo Massari; Elia Rizzetto; Marta Soricetti</dd>
+            <dt>Type</dt><dd>Python software and package</dd>
+            <dt>Purpose</dt><dd>Crosswalk and preprocessing of heterogeneous scholarly sources into OCDM-aligned tabular outputs</dd>
+            <dt>Supported sources</dt><dd>Crossref, DataCite, PubMed, OpenAIRE, JaLC, mEDRA</dd>
+            <dt>License / runtime</dt><dd>ISC; Python &gt;=3.9,&lt;3.14</dd>
+          </dl>
+          <p class="desc">Reusable ingestion software that converts multiple bibliographic and citation sources into structured CSV inputs for OpenCitations META and INDEX. Its modular design isolates source-specific logic while reusing shared validation, storage, and normalisation components.</p>
+        </article>
+
+        <article class="card">
+          <h3>Early Modern BnF Data Collector and Harmoniser</h3>
+          <div class="links">
+            <a href="https://github.com/ariannamorettj/Early_Modern_BnF_Harmonisation" target="_blank" rel="noopener noreferrer">Repository</a>
+            <a href="https://doi.org/10.17504/protocols.io.kqdg31n5zl25/v1" target="_blank" rel="noopener noreferrer">Primary documentation</a>
+          </div>
+          <dl class="meta">
+            <dt>Full title</dt><dd>Early Modern BnF Data Collector and Harmoniser (Actors and Editions Processing, Analysis, and RDF Graph Generation)</dd>
+            <dt>Authors</dt><dd>Arianna Moretti; Iiro Tiihonen; Jonas Fischer</dd>
+            <dt>Type</dt><dd>Acquisition, harmonisation, analysis, and RDF-generation scripts</dd>
+            <dt>Source</dt><dd>Bibliothèque nationale de France SPARQL retrieval workflow</dd>
+            <dt>License / runtime</dt><dd>MIT; Poetry project, Python ^3.11</dd>
+          </dl>
+          <p class="desc">Repository for producing a BnF-derived Early Modern bibliographic dataset and actor layer with explicit harmonisation diagnostics. It combines staged SPARQL retrieval, unification, duplicate analysis, and final RDF graph generation.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="rdf-materialisation" class="section">
+      <h2>2. CSV-to-RDF Materialisation</h2>
+      <p class="section-intro">Software, mappings, configuration artefacts, and semi-automatic tooling used to turn curated tabular data into RDF under an explicit target model.</p>
+      <div class="cards">
+        <article class="card purple">
+          <h3>Morph-KGChad</h3>
+          <div class="links">
+            <a href="https://github.com/dharc-org/morph-kgc-changes-metadata" target="_blank" rel="noopener noreferrer">Repository</a>
+            <a href="https://github.com/dharc-org/morph-kgc-changes-metadata/releases/tag/1.0.1" target="_blank" rel="noopener noreferrer">Stable release</a>
+            <a href="https://w3id.org/dharc/ontology/chad-ap/2.0.3" target="_blank" rel="noopener noreferrer">CHAD-AP dependency</a>
+            <a href="https://doi.org/10.48550/arXiv.2505.13276" target="_blank" rel="noopener noreferrer">Primary documentation</a>
+            <a href="https://doi.org/10.3724/2096-7004.di.2024.0061" target="_blank" rel="noopener noreferrer">Secondary documentation</a>
+          </div>
+          <dl class="meta">
+            <dt>Full title</dt><dd>Morph-KGChad (Morph-KGC CHANGES Metadata)</dd>
+            <dt>Authors</dt><dd>Arianna Moretti; Sebastian Barzaghi</dd>
+            <dt>Type</dt><dd>Open-source CSV-to-RDF materialisation pipeline</dd>
+            <dt>Target model</dt><dd>CHAD-AP</dd>
+            <dt>Core artefacts</dt><dd>YARRRML mappings, INI configuration, UDFs, orchestrator, monitoring, quality checks</dd>
+          </dl>
+          <p class="desc">Extension of Morph-KGC for reproducible RDF materialisation of CHANGES-aligned tabular datasets. It packages the executable conversion environment needed to generate CHAD-AP-compliant Turtle graphs from object metadata and process paradata.</p>
+        </article>
+
+        <article class="card purple">
+          <h3>Morph-KGChad: INI configuration and YARRRML mapping files</h3>
+          <div class="links">
+            <a href="https://doi.org/10.5281/zenodo.18817813" target="_blank" rel="noopener noreferrer">All versions</a>
+            <a href="https://doi.org/10.5281/zenodo.18817814" target="_blank" rel="noopener noreferrer">Latest version</a>
+            <a href="https://doi.org/10.48550/arXiv.2505.13276" target="_blank" rel="noopener noreferrer">Primary documentation</a>
+            <a href="https://doi.org/10.3724/2096-7004.di.2024.0061" target="_blank" rel="noopener noreferrer">Secondary documentation</a>
+          </div>
+          <dl class="meta">
+            <dt>Author</dt><dd>Arianna Moretti</dd>
+            <dt>Type</dt><dd>Executable configuration release</dd>
+            <dt>Contents</dt><dd>1 INI file and 2 YARRRML mapping files</dd>
+            <dt>Scope</dt><dd>Digitisation process data and museum object data</dd>
+          </dl>
+          <p class="desc">Versioned deposit of the configuration layer used to operationalise Morph-KGChad. It preserves the exact mapping and runtime artefacts required to reproduce the materialisation workflow transparently.</p>
+        </article>
+
+        <article class="card purple">
+          <h3>Morph-KGChad Digital Damaged Ceramics Extension</h3>
+          <div class="links">
+            <a href="https://github.com/bombedceramics/morph-kgc-changes-metadata" target="_blank" rel="noopener noreferrer">Repository</a>
+            <a href="https://doi.org/10.2312/dh.20253375" target="_blank" rel="noopener noreferrer">Documentation article</a>
+          </div>
+          <dl class="meta">
+            <dt>Author</dt><dd>Arianna Moretti</dd>
+            <dt>Type</dt><dd>Forked conversion stack for a project-specific extension</dd>
+            <dt>Adaptations</dt><dd>English headers, structural drift tolerance, extended controlled terms, material modelling</dd>
+            <dt>Output extension</dt><dd>Material representation through crm:P45_consists_of</dd>
+          </dl>
+          <p class="desc">Forked version of the CHANGES conversion pipeline adapted to the Digital Damaged Ceramics data model and documentation choices. It supports translated templates, broader controlled-term coverage, and a pragmatic material-description extension in RDF.</p>
+        </article>
+
+        <article class="card purple">
+          <h3>CHAD-ASK: facilitating domain knowledge formalisation in view of LOD conversion</h3>
+          <div class="links">
+            <a href="https://doi.org/10.5281/zenodo.18548588" target="_blank" rel="noopener noreferrer">Questionnaire (all versions)</a>
+            <a href="https://doi.org/10.5281/zenodo.18548589" target="_blank" rel="noopener noreferrer">Questionnaire (latest version)</a>
+            <a href="https://github.com/dharc-org/morph-kgc-changes-metadata/tree/main/src/ask-kg" target="_blank" rel="noopener noreferrer">Software</a>
+          </div>
+          <dl class="meta">
+            <dt>Authors</dt><dd>Arianna Moretti; Sebastian Barzaghi</dd>
+            <dt>Type</dt><dd>Survey-to-mapping generation approach and software</dd>
+            <dt>Outputs</dt><dd>YARRRML mapping rules and Morph-KGC INI configuration</dd>
+            <dt>Environment</dt><dd>Morph-KGChad / Morph-KGC</dd>
+            <dt>Documented in</dt><dd>IRCDL 2026 proceedings paper</dd>
+          </dl>
+          <p class="desc">Semi-automatic method that converts structured questionnaire answers into executable materialisation artefacts. It reframes mapping authoring as guided conceptual elicitation so non-RML users can still contribute directly to the conversion setup.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="publication" class="section">
+      <h2>3. Data Publication and Dissemination</h2>
+      <p class="section-intro">Released datasets, knowledge-graph dumps, dissemination websites, and service endpoints that expose the results as reusable public outputs.</p>
+      <div class="cards">
+        <article class="card green">
+          <h3>Aldrovandi Digital Twin CSV datasets</h3>
+          <div class="links">
+            <a href="https://doi.org/10.5281/zenodo.18184209" target="_blank" rel="noopener noreferrer">All versions</a>
+            <a href="https://doi.org/10.5281/zenodo.18184210" target="_blank" rel="noopener noreferrer">Latest version</a>
+            <a href="https://doi.org/10.48550/arXiv.2505.13276" target="_blank" rel="noopener noreferrer">Primary documentation</a>
+            <a href="https://doi.org/10.3724/2096-7004.di.2024.0061" target="_blank" rel="noopener noreferrer">Secondary documentation</a>
+            <a href="https://w3id.org/dharc/ontology/chad-ap/2.0.3" target="_blank" rel="noopener noreferrer">Related model</a>
+            <a href="https://github.com/dharc-org/morph-kgc-changes-metadata" target="_blank" rel="noopener noreferrer">Related software</a>
+          </div>
+          <dl class="meta">
+            <dt>Title</dt><dd>CSV Datasets on Exhibited Objects and Digitisation Process from “The Other Renaissance - Ulisse Aldrovandi and the Wonders of the World” Temporary Exhibition Digital Twin</dd>
+            <dt>Contact persons</dt><dd>Sebastian Barzaghi; Giulia Renda; Arianna Moretti</dd>
+            <dt>Type</dt><dd>Versioned tabular dataset release</dd>
+            <dt>Layers</dt><dd>CHO metadata and digitisation-process paradata</dd>
+          </dl>
+          <p class="desc">Two CSV datasets that function as the tabular input layer for CHAD-KG in the Aldrovandi digital twin workflow. They capture both object-centred description and process-centred provenance in a form designed for direct Morph-KGChad processing.</p>
+        </article>
+
+        <article class="card green">
+          <h3>CHAD-KG: TTL Serialised RDF Dataset of Exhibited Objects and Digitisation Process</h3>
+          <div class="links">
+            <a href="https://doi.org/10.5281/zenodo.15102845" target="_blank" rel="noopener noreferrer">All versions</a>
+            <a href="https://doi.org/10.5281/zenodo.15102846" target="_blank" rel="noopener noreferrer">Latest version</a>
+            <a href="https://doi.org/10.48550/arXiv.2505.13276" target="_blank" rel="noopener noreferrer">Primary documentation</a>
+            <a href="https://doi.org/10.3724/2096-7004.di.2024.0061" target="_blank" rel="noopener noreferrer">Secondary documentation</a>
+            <a href="https://w3id.org/dharc/ontology/chad-ap/2.0.3" target="_blank" rel="noopener noreferrer">Underlying model</a>
+            <a href="https://github.com/dharc-org/morph-kgc-changes-metadata" target="_blank" rel="noopener noreferrer">Generation software</a>
+          </div>
+          <dl class="meta">
+            <dt>Authors</dt><dd>Sebastian Barzaghi; Arianna Moretti</dd>
+            <dt>Type</dt><dd>RDF knowledge graph dump</dd>
+            <dt>Format</dt><dd>Turtle</dd>
+            <dt>Access model</dt><dd>Zenodo release, SPARQL endpoint, static HTML layer</dd>
+          </dl>
+          <p class="desc">RDF dump generated from the Aldrovandi tabular datasets through Morph-KGChad and expressed in CHAD-AP. It integrates object description and digitisation-process paradata into a FAIR-oriented, versioned semantic publication.</p>
+        </article>
+
+        <article class="card green">
+          <h3>OpenCitations Index (INDEX) — Citation Dataset + Provenance Dataset</h3>
+          <div class="links">
+            <a href="https://doi.org/10.6084/m9.figshare.24356626" target="_blank" rel="noopener noreferrer">Citation CSV</a>
+            <a href="https://doi.org/10.6084/m9.figshare.24369136" target="_blank" rel="noopener noreferrer">Citation N-Triples</a>
+            <a href="https://doi.org/10.6084/m9.figshare.24416749" target="_blank" rel="noopener noreferrer">Citation Scholix</a>
+            <a href="https://doi.org/10.6084/m9.figshare.24417733" target="_blank" rel="noopener noreferrer">Provenance CSV</a>
+            <a href="https://doi.org/10.6084/m9.figshare.24417736" target="_blank" rel="noopener noreferrer">Provenance N-Triples</a>
+            <a href="https://opencitations.net" target="_blank" rel="noopener noreferrer">Service entry point</a>
+            <a href="https://w3id.org/oc/index/sparql" target="_blank" rel="noopener noreferrer">SPARQL endpoint</a>
+            <a href="https://w3id.org/oc/index/api/v2" target="_blank" rel="noopener noreferrer">REST API v2</a>
+            <a href="https://github.com/opencitations/lucinda" target="_blank" rel="noopener noreferrer">LUCINDA repository</a>
+            <a href="https://doi.org/10.1007/s11192-024-05160-7" target="_blank" rel="noopener noreferrer">Primary documentation</a>
+          </div>
+          <dl class="meta">
+            <dt>Author / maintainer</dt><dd>OpenCitations</dd>
+            <dt>Type</dt><dd>Large-scale open citation and provenance dataset</dd>
+            <dt>Licence</dt><dd>CC0</dd>
+            <dt>Distributions</dt><dd>CSV, N-Triples, Scholix, website services</dd>
+            <dt>Additional 2026 dumps</dt><dd>RDF dump 31306081; RDF dump 31353691; data-source N-Triples 24427051</dd>
+          </dl>
+          <p class="desc">Open citation database distributing citation links and associated provenance as public dumps and query services. The chapter records both the article-based snapshot and the later updates documented on the official download pages.</p>
+        </article>
+
+        <article class="card green">
+          <h3>Digital Damaged Ceramics - RDF and CSV Dataset</h3>
+          <div class="links">
+            <a href="https://doi.org/10.5281/zenodo.15854368" target="_blank" rel="noopener noreferrer">All versions</a>
+            <a href="https://doi.org/10.5281/zenodo.15854369" target="_blank" rel="noopener noreferrer">Latest version</a>
+            <a href="https://doi.org/10.2312/dh.20253375" target="_blank" rel="noopener noreferrer">Documentation article</a>
+          </div>
+          <dl class="meta">
+            <dt>Authors</dt><dd>Madeleine Daste; Arianna Moretti</dd>
+            <dt>Type</dt><dd>Curated research dataset</dd>
+            <dt>Formats</dt><dd>CSV and Turtle</dd>
+            <dt>Versioning</dt><dd>Preserved with provenance tracking</dd>
+          </dl>
+          <p class="desc">Versioned release of the Digital Damaged Ceramics dataset in both tabular and RDF serialisations. It serves simultaneously as a reusable dissemination output and as a reference instance aligned with the project’s extended CHANGES-derived templates.</p>
+        </article>
+
+        <article class="card green">
+          <h3>Digital Damaged Ceramics website toolchain and reproducibility package</h3>
+          <div class="links">
+            <a href="https://doi.org/10.5281/zenodo.15855787" target="_blank" rel="noopener noreferrer">All versions</a>
+            <a href="https://doi.org/10.5281/zenodo.15855788" target="_blank" rel="noopener noreferrer">Latest version</a>
+            <a href="https://bombedceramics.github.io/digital_damaged_ceramics/" target="_blank" rel="noopener noreferrer">Website</a>
+            <a href="https://github.com/bombedceramics/digital_damaged_ceramics" target="_blank" rel="noopener noreferrer">Code repository</a>
+            <a href="https://doi.org/10.2312/dh.20253375" target="_blank" rel="noopener noreferrer">Documentation article</a>
+          </div>
+          <dl class="meta">
+            <dt>Title</dt><dd>Digital Damaged Ceramics - website files, data analysis files, and website generation software (1.0)</dd>
+            <dt>Authors</dt><dd>Arianna Moretti; Madeleine Daste</dd>
+            <dt>Type</dt><dd>Website codebase and reproducibility package</dd>
+            <dt>Key pages</dt><dd>index.html, sevres.html, mic.html, sparql.html, 3d.html, dataset.html, documentation.html</dd>
+            <dt>License</dt><dd>MIT for code; CC BY for dataset distributions on the website</dd>
+          </dl>
+          <p class="desc">Package containing the website codebase, data-analysis assets, and semi-automated site-generation materials used for project dissemination. It doubles as a reusable template for similar catalogue-based museum projects.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="quality" class="section">
+      <h2>4. Quality Control and Assessment</h2>
+      <p class="section-intro">Explicitly documented assessment output used as a reusable pattern for evaluating the FAIRness of cultural-heritage digitisation workflows.</p>
+      <div class="cards">
+        <article class="card orange">
+          <h3>Aldrovandi Digital Twin FAIRness assessment matrix</h3>
+          <div class="links">
+            <a href="https://doi.org/10.3724/2096-7004.di.2024.0061" target="_blank" rel="noopener noreferrer">Table resource / documentation</a>
+          </div>
+          <dl class="meta">
+            <dt>Full title</dt><dd>Aldrovandi Digital Twin - FAIRness assessment matrix (3-level model for heritage collections; adapted application)</dd>
+            <dt>Authors</dt><dd>Sebastian Barzaghi; Alice Bordignon; Bianca Gualandi; Ivan Heibi; Arcangelo Massari; Arianna Moretti; Silvio Peroni; Giulia Renda</dd>
+            <dt>Type</dt><dd>Assessment matrix</dd>
+            <dt>Location</dt><dd>Table 2 in the Data Intelligence article</dd>
+            <dt>Function</dt><dd>Reusable evaluation pattern across objects, object-level metadata, and metadata records</dd>
+          </dl>
+          <p class="desc">Compact evidence table adapting an existing heritage-oriented FAIR rubric to the Aldrovandi Digital Twin case. It is included as a reusable quality-control pattern for auditable, cross-case comparison of implementation choices.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="blueprint" class="section">
+      <h2>5. Workflow Blueprint</h2>
+      <p class="section-intro">Persistent methodological resource that coordinates the executable outputs and defines the transferable operating model validated through the case studies.</p>
+      <div class="cards">
+        <article class="card orange">
+          <h3>TABular Semantic Enhancement Blueprint (TAB-SEB)</h3>
+          <div class="links">
+            <a href="https://doi.org/10.17504/protocols.io.eq2ly5qrrvx9/v1" target="_blank" rel="noopener noreferrer">Official release</a>
+            <a href="https://www.protocols.io/private/FB400EA3134211F1BB740A58A9FEAC02" target="_blank" rel="noopener noreferrer">Reviewer-only link</a>
+          </div>
+          <dl class="meta">
+            <dt>Author</dt><dd>Arianna Moretti</dd>
+            <dt>Type</dt><dd>Versioned workflow blueprint on Protocols.io</dd>
+            <dt>Licence</dt><dd>CC0</dd>
+            <dt>Partially documented in</dt><dd>Moretti, Arianna. “Defining A Workflow For Semantic Enhancement Of Cultural Heritage Metadata.” IRCDL 2026 proceedings.</dd>
+            <dt>Note</dt><dd>Remove the reviewer-only link if this page will remain public.</dd>
+          </dl>
+          <p class="desc">Citable, technology-agnostic but execution-oriented blueprint that coordinates tabular preparation, RDF materialisation, dissemination, and re-iterative quality control. It is the stable methodological research object to which the case-study implementations are linked as executable instantiations.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="container">
+    Page prepared as a compact documentation layer for the external resources connected to TAB-SEB.
+  </footer>
+</body>
+</html>

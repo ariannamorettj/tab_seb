@@ -138,9 +138,37 @@ const workflowData = [
 
 export default function App() {
   const [activePhase, setActivePhase] = useState(0);
+  const baseUrl = import.meta.env.BASE_URL;
 
   return (
     <div className="min-h-screen bg-slate-50 px-4 py-6 sm:px-6 sm:py-8 lg:px-8 lg:py-10 text-slate-900">
+      <nav className="sticky top-0 z-50 mb-8 border-b border-slate-200 bg-slate-50/95 backdrop-blur">
+        <div className="max-w-7xl mx-auto px-4 py-3 sm:px-6 lg:px-8 flex flex-wrap items-center justify-between gap-3">
+          <a
+            href={`${baseUrl}`}
+            className="text-lg font-bold text-slate-800 no-underline"
+          >
+            TAB-SEB
+          </a>
+
+          <div className="flex flex-wrap gap-2">
+            <a
+              href={`${baseUrl}`}
+              className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 no-underline hover:bg-slate-100"
+            >
+              Workflow
+            </a>
+
+            <a
+              href={`${baseUrl}external-resources.html`}
+              className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 no-underline hover:bg-slate-100"
+            >
+              External Resources
+            </a>
+          </div>
+        </div>
+      </nav>
+
       <header className="max-w-7xl mx-auto mb-8 sm:mb-10 lg:mb-12 text-center">
         <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-800 mb-3 leading-tight">
           TABular Semantic Enhancement Blueprint (TAB-SEB)
@@ -162,7 +190,7 @@ export default function App() {
                 key={phase.id}
                 type="button"
                 onClick={() => setActivePhase(index)}
-                className={`w-full text-left cursor-pointer transition-all duration-300 border-l-4 p-4 sm:p-5 rounded-r-xl shadow-sm hover:translate-x-1 ${
+                className={`w-full text-left transition-all duration-300 border-l-4 p-4 sm:p-5 rounded-r-xl shadow-sm hover:translate-x-1 ${
                   activePhase === index
                     ? `${phase.color.replace('bg-', 'border-')} bg-white shadow-md`
                     : 'border-transparent bg-slate-100 opacity-95 hover:opacity-100'
