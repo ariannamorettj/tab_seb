@@ -1,0 +1,468 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TAB-SEB — Future Development</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --border: #e2e8f0;
+      --text: #0f172a;
+      --muted: #475569;
+      --blue: #2563eb;
+      --green: #15803d;
+      --purple: #7c3aed;
+      --orange: #ea580c;
+      --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(248, 250, 252, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner,
+    .container {
+      width: min(1180px, calc(100% - 2rem));
+      margin: 0 auto;
+    }
+
+    .nav-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+      gap: 1rem;
+    }
+
+    .brand {
+      font-weight: 800;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--muted);
+      font-weight: 600;
+      padding: 0.5rem 0.85rem;
+      border-radius: 999px;
+      border: 1px solid transparent;
+    }
+
+    .nav-links a:hover,
+    .nav-links a:focus-visible {
+      border-color: var(--border);
+      background: var(--surface);
+      color: var(--text);
+      outline: none;
+    }
+
+    header {
+      padding: 3rem 0 2rem;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      line-height: 1.1;
+      margin: 0 0 0.75rem;
+      letter-spacing: -0.03em;
+    }
+
+    .lead {
+      max-width: 78ch;
+      font-size: 1.06rem;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    .toc {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 0.85rem;
+      margin: 0 0 2rem;
+    }
+
+    .toc a {
+      text-decoration: none;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1rem;
+      color: var(--text);
+      font-weight: 700;
+      box-shadow: var(--shadow);
+    }
+
+    .section {
+      margin: 2.5rem 0 3rem;
+    }
+
+    .section h2 {
+      margin: 0 0 1rem;
+      font-size: clamp(1.45rem, 3vw, 2rem);
+      letter-spacing: -0.02em;
+    }
+
+    .section-intro {
+      color: var(--muted);
+      margin: 0 0 1.25rem;
+      font-size: 1rem;
+    }
+
+    .cards {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 6px solid var(--blue);
+      border-radius: 18px;
+      padding: 1.5rem 1.5rem 1.25rem;
+      box-shadow: var(--shadow);
+    }
+
+    .card.purple { border-left-color: var(--purple); }
+    .card.green  { border-left-color: var(--green); }
+    .card.orange { border-left-color: var(--orange); }
+
+    .card.purple.proposal { background: #f5f3ff; border-color: #ddd6fe; }
+    .card.blue.proposal   { background: #eff6ff; border-color: #bfdbfe; }
+
+    .card h3 {
+      margin: 0 0 0.75rem;
+      font-size: 1.25rem;
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+    }
+
+    .card p {
+      margin: 0 0 0.9rem;
+      color: var(--text);
+      font-size: 1rem;
+      line-height: 1.75;
+    }
+
+    .card p:last-child {
+      margin-bottom: 0;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 0 0 1rem;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 0.3rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      border: 1px solid var(--border);
+      background: #f8fafc;
+      color: var(--muted);
+      letter-spacing: 0.01em;
+    }
+
+    .tag.purple {
+      background: #f5f3ff;
+      border-color: #ddd6fe;
+      color: #6d28d9;
+    }
+
+    .tag.blue {
+      background: #eff6ff;
+      border-color: #bfdbfe;
+      color: #1d4ed8;
+    }
+
+    .tag.orange {
+      background: #fff7ed;
+      border-color: #fed7aa;
+      color: #c2410c;
+    }
+
+    .vocab-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      margin: 0.75rem 0 1rem;
+    }
+
+    .vocab-list code {
+      font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", ui-monospace, monospace;
+      font-size: 0.85rem;
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 0.2rem 0.5rem;
+      color: #4f46e5;
+    }
+
+    .interdependency {
+      margin: 3rem 0;
+      background: var(--surface);
+      border: 2px dashed #d97706;
+      border-radius: 18px;
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+    }
+
+    .interdependency h3 {
+      margin: 0 0 0.75rem;
+      font-size: 1.15rem;
+      letter-spacing: -0.01em;
+      color: #92400e;
+    }
+
+    .interdependency p {
+      margin: 0 0 0.9rem;
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--text);
+    }
+
+    .interdependency p:last-child {
+      margin-bottom: 0;
+    }
+
+    mark.kw {
+      border-radius: 3px;
+      padding: 0 2px;
+      font-weight: 600;
+    }
+
+    .card.purple mark.kw     { background: #ede9fe; color: #5b21b6; }
+    .card.blue mark.kw       { background: #dbeafe; color: #1e40af; }
+    .interdependency mark.kw { background: #ffedd5; color: #9a3412; }
+
+    .card.purple .vocab-list code {
+      background: #ede9fe;
+      border-color: #ddd6fe;
+      color: #6d28d9;
+    }
+
+    footer {
+      padding: 2rem 0 3rem;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 760px) {
+      .nav-inner {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+
+    /* ── Documentation dropdown ── */
+    .nav-doc { position: relative; }
+
+    .nav-doc-trigger {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      background: var(--surface);
+      border: 1px solid transparent;
+      border-radius: 999px;
+      padding: 0.5rem 0.85rem;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: inherit;
+      font-family: inherit;
+      color: var(--muted);
+      line-height: 1;
+    }
+
+    .nav-doc-trigger:hover,
+    .nav-doc:focus-within .nav-doc-trigger { border-color: var(--border); color: var(--text); }
+
+    .nav-doc-trigger .arrow {
+      font-size: 0.62rem;
+      opacity: 0.55;
+      transition: transform 0.18s;
+      display: inline-block;
+    }
+
+    .nav-doc:hover .nav-doc-trigger .arrow,
+    .nav-doc:focus-within .nav-doc-trigger .arrow { transform: rotate(180deg); }
+
+    .nav-doc-menu {
+      display: none;
+      position: absolute;
+      top: calc(100% + 6px);
+      right: 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
+      padding: 0.35rem;
+      min-width: 210px;
+      z-index: 200;
+      flex-direction: column;
+      gap: 0.1rem;
+    }
+
+    .nav-doc:hover .nav-doc-menu,
+    .nav-doc:focus-within .nav-doc-menu { display: flex; }
+
+    .nav-doc-menu a {
+      display: block;
+      text-decoration: none;
+      padding: 0.5rem 0.85rem;
+      border-radius: 10px;
+      color: var(--muted);
+      font-weight: 600;
+      font-size: 0.9rem;
+      white-space: nowrap;
+    }
+
+    .nav-doc-menu a:hover { background: var(--bg); color: var(--text); }
+    .nav-doc-menu a.current { color: var(--text); font-weight: 700; background: var(--bg); }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-inner">
+      <a class="brand" href="./">TAB-SEB</a>
+      <div class="nav-links">
+        <a href="./">Workflow</a>
+        <a href="external-resources.html">External Resources</a>
+        <div class="nav-doc">
+          <button class="nav-doc-trigger">Documentation <span class="arrow">▾</span></button>
+          <div class="nav-doc-menu">
+            <a href="external-resources.html">External Resources</a>
+            <a href="future-development.html" class="current">Future Development</a>
+            <a href="related-work.html">Related Work</a>
+            <a href="implementations.html">Use Cases &amp; Implementations</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <header class="container">
+    <h1>Future Development</h1>
+    <p class="lead">Two interdependent formalisations that address the principal limitations identified in TAB-SEB's FAIR evaluation and would elevate it from a prose-documented research protocol to a fully machine-actionable research object.</p>
+  </header>
+
+  <main class="container">
+    <div class="toc">
+      <a href="#cwl">1. Formalisation via CWL</a>
+      <a href="#provo">2. Formalisation of Artefact Relations via PROV-O</a>
+    </div>
+
+    <section id="cwl" class="section">
+      <h2>1. Formalisation via Common Workflow Language (CWL)</h2>
+      <p class="section-intro">Encoding TAB-SEB as an executable CWL specification to enable machine validation, workflow-engine orchestration, and registration as a computational research object.</p>
+      <div class="cards">
+        <article class="card purple">
+          <h3>Current Limitation: Prose-Based Specification on Protocols.io</h3>
+          <div class="tag-row">
+            <span class="tag purple">TAB-SEB</span>
+            <span class="tag">Protocols.io</span>
+            <span class="tag">Human-readable</span>
+          </div>
+          <p>TAB-SEB is currently specified as a <mark class="kw">prose-based, human-readable blueprint</mark> documented on Protocols.io. This format serves as an accessible methodological reference — enabling practitioners to follow, adapt, and cite the workflow — but it presents substantive limitations from the perspective of <mark class="kw">machine actionability</mark>. In its present form, the blueprint <mark class="kw">cannot be directly validated against formal workflow quality criteria, executed by a workflow engine, or registered as a computational research object</mark> in workflow-oriented repositories such as WorkflowHub. The <mark class="kw">absence of a machine-readable encoding</mark> means that the logical structure of TAB-SEB — its sequencing of phases, conditional dependencies, and tool invocations — exists only implicitly in natural language, <mark class="kw">precluding automated reproducibility verification</mark>.</p>
+          <p>This limitation is reflected in TAB-SEB's current <mark class="kw">FAIR evaluation score (62/79, 78.5%)</mark>, which identifies the lack of machine-actionable encoding as one of the principal gaps preventing a higher assessment against the applied rubric.</p>
+        </article>
+
+        <article class="card purple proposal">
+          <h3>Proposed Development: CWL Encoding</h3>
+          <div class="tag-row">
+            <span class="tag purple">CWL</span>
+            <span class="tag">WorkflowHub</span>
+            <span class="tag">Executable</span>
+            <span class="tag">FAIR</span>
+          </div>
+          <p>The proposed development is to encode TAB-SEB as a <mark class="kw">Common Workflow Language (CWL) specification</mark>. CWL is an open standard for describing computational workflows in a <mark class="kw">portable, executor-agnostic format</mark>; its adoption would render TAB-SEB <mark class="kw">executable by compliant workflow engines</mark>, <mark class="kw">registrable on WorkflowHub</mark> as a citable software object, and <mark class="kw">independently evaluable against established workflow quality criteria</mark> beyond the FAIR rubric currently applied. Core CWL constructs applicable to TAB-SEB's encoding include:</p>
+          <div class="vocab-list">
+            <code>cwl:Workflow</code>
+            <code>cwl:CommandLineTool</code>
+            <code>cwl:WorkflowStep</code>
+            <code>cwl:inputs</code>
+            <code>cwl:outputs</code>
+            <code>cwl:requirements</code>
+          </div>
+          <p>A key architectural advantage of CWL is its <mark class="kw">explicit separation of workflow logic from execution environment</mark>. This separation would allow the different concrete implementations of TAB-SEB — Morph-KGChad and CHAD-ASK — to be represented as <mark class="kw">interchangeable, independently validated tool wrappers</mark> embedded within the same abstract pipeline definition. Each tool wrapper would declare its inputs, outputs, and requirements in a machine-readable form, enabling automated consistency checks between the blueprint's specification and its instantiations. The CWL specification would thus serve both as a formal definition of TAB-SEB and as a harness for <mark class="kw">cross-implementation comparability</mark>.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="provo" class="section">
+      <h2>2. Formalisation of Artefact Relations via PROV-O</h2>
+      <p class="section-intro">Typing the relationships between TAB-SEB, its implementations, and its produced artefacts using W3C PROV-O vocabularies to enable machine traversal of the full derivation chain.</p>
+      <div class="cards">
+        <article class="card blue">
+          <h3>Current Limitation: Prose-Described Derivation Chain</h3>
+          <div class="tag-row">
+            <span class="tag blue">CHAD-KG</span>
+            <span class="tag blue">Morph-KGChad</span>
+            <span class="tag blue">CHAD-ASK</span>
+            <span class="tag">Provenance</span>
+          </div>
+          <p>The relationships between TAB-SEB (the abstract blueprint), its concrete implementations (Morph-KGChad, CHAD-ASK), and the produced artefacts (CHAD-KG, CSV datasets) are currently <mark class="kw">described only in natural language prose</mark>, dispersed across documentation articles, repository READMEs, and the blueprint itself. This limits the <mark class="kw">traversability of the blueprint → implementation → artefact derivation chain</mark> and prevents systematic cross-implementation comparability at the level of formal metadata. In the absence of <mark class="kw">typed provenance relations</mark>, an automated agent cannot determine which artefact was generated by which process, which implementation instantiates which blueprint phase, or which input datasets were consumed to produce a given output.</p>
+          <p>This gap is directly relevant to TAB-SEB's FAIR evaluation: the absence of formally typed provenance is among the factors that constrain the score to <mark class="kw">62/79 (78.5%)</mark>, as <mark class="kw">typed derivation relationships are a prerequisite for several higher-level FAIR indicators</mark> concerning reusability and machine-readable provenance.</p>
+        </article>
+
+        <article class="card blue proposal">
+          <h3>Proposed Development: PROV-O Vocabulary Adoption</h3>
+          <div class="tag-row">
+            <span class="tag blue">PROV-O</span>
+            <span class="tag blue">W3C</span>
+            <span class="tag">Machine-traversable</span>
+            <span class="tag">Research object</span>
+          </div>
+          <p>The proposed development is to formalise these relations using <mark class="kw">PROV-O, the W3C ontology for provenance information</mark>. Specific properties identified as applicable to the TAB-SEB derivation chain include:</p>
+          <div class="vocab-list">
+            <code>prov:wasDerivedFrom</code>
+            <code>prov:wasGeneratedBy</code>
+            <code>prov:used</code>
+            <code>prov:wasAssociatedWith</code>
+            <code>prov:wasInformedBy</code>
+          </div>
+          <p>Adopting these vocabularies would enable <mark class="kw">machine-readable traversal of the full derivation chain</mark> — from the abstract blueprint specification, through its executable implementations, to the concrete artefacts those implementations produce. It would further support <mark class="kw">structured cross-implementation comparability</mark>: for any two implementations of TAB-SEB, a PROV-O graph would allow automated identification of which phases they share, which artefacts they consume or derive, and where their derivation paths diverge.</p>
+          <p>A complete PROV-O annotation would also make TAB-SEB and its instantiations registrable as <mark class="kw">interlinked, citable research objects</mark>, making the <mark class="kw">epistemic dependencies</mark> between the blueprint's methodological claims and the empirical artefacts that instantiate them explicit and <mark class="kw">machine-verifiable</mark>.</p>
+        </article>
+      </div>
+    </section>
+
+    <div class="interdependency">
+      <h3>Interdependence of the Two Proposed Developments</h3>
+      <p>The two formalisations described above are <mark class="kw">interdependent</mark> and should be pursued in conjunction. <mark class="kw">CWL encodes the procedural logic of the workflow</mark> — the sequence, conditional dependencies, and tool invocations that constitute the blueprint's phases — while <mark class="kw">PROV-O types the relationships</mark> between the workflow's components and the artefacts they produce or consume. Their respective scopes are <mark class="kw">complementary rather than overlapping</mark>: CWL operates at the level of <mark class="kw">execution structure</mark>; PROV-O operates at the level of <mark class="kw">derivation semantics</mark>.</p>
+      <p>CWL without PROV-O would yield an executable specification without formally typed provenance relations, leaving the artefact derivation chain <mark class="kw">machine-opaque</mark>. PROV-O without CWL would yield typed links without executable grounding, leaving the workflow logic inaccessible to automated verification. Together, they represent the primary route towards elevating TAB-SEB from a prose-documented research protocol to a <mark class="kw">fully machine-actionable, independently evaluable, and citable research object</mark>.</p>
+    </div>
+  </main>
+
+  <footer class="container">
+    Future development directions for the TABular Semantic Enhancement Blueprint (TAB-SEB), identified in the context of the doctoral thesis.
+  </footer>
+</body>
+</html>

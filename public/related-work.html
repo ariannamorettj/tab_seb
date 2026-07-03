@@ -1,0 +1,703 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TAB-SEB — Related Work</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --border: #e2e8f0;
+      --text: #0f172a;
+      --muted: #475569;
+      --blue: #2563eb;
+      --green: #15803d;
+      --purple: #7c3aed;
+      --orange: #ea580c;
+      --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* ── Navbar ── */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(248, 250, 252, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner, .container {
+      width: min(1180px, calc(100% - 2rem));
+      margin: 0 auto;
+    }
+
+    .nav-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+      gap: 1rem;
+    }
+
+    .brand {
+      font-weight: 800;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-links { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--muted);
+      font-weight: 600;
+      padding: 0.5rem 0.85rem;
+      border-radius: 999px;
+      border: 1px solid transparent;
+    }
+
+    .nav-links a:hover, .nav-links a:focus-visible {
+      border-color: var(--border);
+      background: var(--surface);
+      color: var(--text);
+      outline: none;
+    }
+
+    /* ── Layout ── */
+    header { padding: 3rem 0 2rem; }
+
+    h1 {
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      line-height: 1.1;
+      margin: 0 0 0.75rem;
+      letter-spacing: -0.03em;
+    }
+
+    .lead {
+      max-width: 78ch;
+      font-size: 1.06rem;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    .toc {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 0.85rem;
+      margin: 0 0 2rem;
+    }
+
+    .toc a {
+      text-decoration: none;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1rem;
+      color: var(--text);
+      font-weight: 700;
+      box-shadow: var(--shadow);
+    }
+
+    .section { margin: 2.5rem 0 3rem; }
+
+    .section h2 {
+      margin: 0 0 1rem;
+      font-size: clamp(1.45rem, 3vw, 2rem);
+      letter-spacing: -0.02em;
+    }
+
+    .section-intro {
+      color: var(--muted);
+      margin: 0 0 1.25rem;
+      font-size: 1rem;
+    }
+
+    /* ── Work description cards ── */
+    .cards { display: grid; gap: 1rem; }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 6px solid var(--blue);
+      border-radius: 18px;
+      padding: 1.5rem 1.5rem 1.25rem;
+      box-shadow: var(--shadow);
+    }
+
+    .card.green { border-left-color: var(--green); }
+
+    .card h3 {
+      margin: 0 0 0.65rem;
+      font-size: 1.2rem;
+      line-height: 1.3;
+      letter-spacing: -0.02em;
+    }
+
+    .card p {
+      margin: 0 0 0.9rem;
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--text);
+    }
+
+    .card p:last-child { margin-bottom: 0; }
+
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 0 0 0.9rem;
+    }
+
+    .links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.45rem 0.75rem;
+      border-radius: 999px;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-weight: 600;
+      background: #f8fafc;
+      font-size: 0.9rem;
+    }
+
+    .links a:hover, .links a:focus-visible {
+      background: #eff6ff;
+      border-color: #bfdbfe;
+      outline: none;
+    }
+
+    dl.meta {
+      display: grid;
+      grid-template-columns: minmax(120px, 160px) 1fr;
+      gap: 0.4rem 1rem;
+      margin: 0 0 0.9rem;
+      font-size: 0.95rem;
+    }
+
+    .meta dt { font-weight: 800; color: var(--text); }
+    .meta dd { margin: 0; color: var(--muted); }
+
+    /* ── Pre-examiner note ── */
+    .examiner-note {
+      margin: 0 0 2rem;
+      background: #fefce8;
+      border: 1px solid #fde68a;
+      border-left: 5px solid #d97706;
+      border-radius: 14px;
+      padding: 1rem 1.25rem;
+      font-size: 0.95rem;
+      color: #78350f;
+      line-height: 1.65;
+    }
+
+    /* ── Comparison table ── */
+    .scroll-wrapper {
+      overflow-x: auto;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      margin: 0 0 1.5rem;
+    }
+
+    /* Scroll hint shown only when table overflows */
+    .scroll-hint {
+      display: none;
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin: -0.75rem 0 1rem;
+      text-align: right;
+    }
+
+    @media (max-width: 1100px) { .scroll-hint { display: block; } }
+
+    .comparison-table {
+      border-collapse: collapse;
+      width: 100%;
+      min-width: 860px;
+      background: var(--surface);
+      font-size: 0.88rem;
+      line-height: 1.55;
+    }
+
+    /* ── Column headers ── */
+    .comparison-table thead th {
+      padding: 0.9rem 1rem 0.75rem;
+      text-align: left;
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      border-bottom: 2px solid var(--border);
+      background: var(--surface);
+      white-space: nowrap;
+    }
+
+    .comparison-table thead th:nth-child(1) { color: var(--muted); }
+    .comparison-table thead th:nth-child(2) {
+      color: #5b21b6;
+      border-top: 4px solid var(--purple);
+    }
+    .comparison-table thead th:nth-child(3) {
+      color: #1d4ed8;
+      border-top: 4px solid var(--blue);
+    }
+    .comparison-table thead th:nth-child(4) {
+      color: #15803d;
+      border-top: 4px solid var(--green);
+    }
+
+    /* ── Sticky first column ── */
+    .comparison-table thead th:first-child,
+    .comparison-table tbody tr:not(.group-header) td:first-child {
+      position: sticky;
+      left: 0;
+      z-index: 2;
+      background: #f8fafc;
+      border-right: 1px solid var(--border);
+      min-width: 190px;
+      max-width: 210px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .comparison-table thead th:first-child {
+      z-index: 3;
+      color: var(--muted);
+    }
+
+    /* ── Body cells ── */
+    .comparison-table tbody td {
+      padding: 0.8rem 1rem;
+      vertical-align: top;
+      border-bottom: 1px solid var(--border);
+      color: var(--muted);
+    }
+
+    .comparison-table tbody tr:last-child td { border-bottom: none; }
+
+    /* ── Group header rows ── */
+    .group-header td {
+      background: #f1f5f9;
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      padding: 0.45rem 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* ── Convergence rows: tinted background on data cells ── */
+    .convergence td:nth-child(2) { background: #faf5ff; }
+    .convergence td:nth-child(3) { background: #eff6ff; }
+    .convergence td:nth-child(4) { background: #f0fdf4; }
+
+    /* ── Badges ── */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.18rem 0.55rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-bottom: 0.35rem;
+      white-space: nowrap;
+    }
+
+    .badge.yes     { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+    .badge.planned { background: #fef9c3; color: #854d0e; border: 1px solid #fde68a; }
+    .badge.no      { background: #f1f5f9; color: #64748b; border: 1px solid #e2e8f0; }
+    .badge.partial { background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; }
+    .badge.na      { background: #f8fafc; color: #94a3b8; border: 1px solid #e2e8f0; }
+
+    .cell-text {
+      display: block;
+      margin-top: 0.3rem;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      color: var(--text);
+    }
+
+    /* ── Interpretive note ── */
+    .interpretive-note {
+      margin: 0 0 3rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+    }
+
+    .interpretive-note h3 {
+      margin: 0 0 0.75rem;
+      font-size: 1.1rem;
+      letter-spacing: -0.01em;
+      color: var(--text);
+    }
+
+    .interpretive-note p {
+      margin: 0 0 0.9rem;
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--text);
+    }
+
+    .interpretive-note p:last-child { margin-bottom: 0; }
+
+    footer {
+      padding: 2rem 0 3rem;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 760px) {
+      .nav-inner { align-items: flex-start; flex-direction: column; }
+      dl.meta { grid-template-columns: 1fr; }
+    }
+
+    /* ── Documentation dropdown ── */
+    .nav-doc { position: relative; }
+
+    .nav-doc-trigger {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      background: var(--surface);
+      border: 1px solid transparent;
+      border-radius: 999px;
+      padding: 0.5rem 0.85rem;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: inherit;
+      font-family: inherit;
+      color: var(--muted);
+      line-height: 1;
+    }
+
+    .nav-doc-trigger:hover,
+    .nav-doc:focus-within .nav-doc-trigger { border-color: var(--border); color: var(--text); }
+
+    .nav-doc-trigger .arrow {
+      font-size: 0.62rem;
+      opacity: 0.55;
+      transition: transform 0.18s;
+      display: inline-block;
+    }
+
+    .nav-doc:hover .nav-doc-trigger .arrow,
+    .nav-doc:focus-within .nav-doc-trigger .arrow { transform: rotate(180deg); }
+
+    .nav-doc-menu {
+      display: none;
+      position: absolute;
+      top: calc(100% + 6px);
+      right: 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
+      padding: 0.35rem;
+      min-width: 210px;
+      z-index: 200;
+      flex-direction: column;
+      gap: 0.1rem;
+    }
+
+    .nav-doc:hover .nav-doc-menu,
+    .nav-doc:focus-within .nav-doc-menu { display: flex; }
+
+    .nav-doc-menu a {
+      display: block;
+      text-decoration: none;
+      padding: 0.5rem 0.85rem;
+      border-radius: 10px;
+      color: var(--muted);
+      font-weight: 600;
+      font-size: 0.9rem;
+      white-space: nowrap;
+    }
+
+    .nav-doc-menu a:hover { background: var(--bg); color: var(--text); }
+    .nav-doc-menu a.current { color: var(--text); font-weight: 700; background: var(--bg); }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-inner">
+      <a class="brand" href="./">TAB-SEB</a>
+      <div class="nav-links">
+        <a href="./">Workflow</a>
+        <div class="nav-doc">
+          <button class="nav-doc-trigger">Documentation <span class="arrow">▾</span></button>
+          <div class="nav-doc-menu">
+            <a href="external-resources.html">External Resources</a>
+            <a href="future-development.html">Future Development</a>
+            <a href="related-work.html" class="current">Related Work</a>
+            <a href="implementations.html">Use Cases &amp; Implementations</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <header class="container">
+    <h1>Related Work</h1>
+    <p class="lead">Structured comparative analysis of TAB-SEB in relation to approaches sharing the same core objective of systematic, reproducible conversion of heterogeneous source data into RDF knowledge graphs.</p>
+  </header>
+
+  <main class="container">
+    <div class="toc">
+      <a href="#works">Related Approaches</a>
+      <a href="#comparison">Comparative Analysis</a>
+      <a href="#positioning">Positioning</a>
+    </div>
+
+    <div class="examiner-note">
+      <strong>Note on scope.</strong> The comparison with Guasch, Lodi &amp; Van Dooren (2022) and the WHOW Toolkit was recommended during the pre-examination review process as evidence of methodological convergence across independent research lines and across domains. The analysis below responds directly to that recommendation, situating TAB-SEB within a broader landscape of declarative, RML-based knowledge graph construction workflows.
+    </div>
+
+    <!-- ── Related Approaches ── -->
+    <section id="works" class="section">
+      <h2>Related Approaches</h2>
+      <p class="section-intro">Two external approaches are selected for comparison: a peer-reviewed conference contribution proposing a declarative pipeline for public procurement data, and its subsequent toolkit evolution applied to environmental open data.</p>
+      <div class="cards">
+
+        <article class="card">
+          <h3>Semantic Knowledge Graphs for Distributed Data Spaces: The Public Procurement Pilot Experience</h3>
+          <div class="links">
+            <a href="https://doi.org/10.1007/978-3-031-19433-7_43" target="_blank" rel="noopener noreferrer">DOI (ISWC 2022)</a>
+          </div>
+          <dl class="meta">
+            <dt>Authors</dt><dd>Guasch, T.; Lodi, G.; Van Dooren, S.</dd>
+            <dt>Venue</dt><dd>ISWC 2022 — International Semantic Web Conference</dd>
+            <dt>Domain</dt><dd>Public procurement data (EU open data)</dd>
+            <dt>Core contribution</dt><dd>Declarative RML-based pipeline for converting heterogeneous procurement records into RDF knowledge graphs within the International Data Spaces (IDS) framework</dd>
+          </dl>
+          <p>This paper describes a pilot application of a systematic CSV-to-RDF conversion pipeline within the context of EU public procurement open data. The workflow is formalised as an OWL ontology, uses RML for declarative mapping, and operates within the IDS architectural model. The approach targets machine-actionability and interoperability from the outset, with the workflow specification serving both as documentation and as an executable artefact.</p>
+        </article>
+
+        <article class="card green">
+          <h3>WHOW Toolkit — Water and Health Open data Workflow</h3>
+          <div class="links">
+            <a href="https://github.com/whow-project/architecture" target="_blank" rel="noopener noreferrer">GitHub repository</a>
+            <a href="https://zenodo.org/records/17823548" target="_blank" rel="noopener noreferrer">Zenodo release</a>
+          </div>
+          <dl class="meta">
+            <dt>Domain</dt><dd>Environmental open data (water quality, health)</dd>
+            <dt>Relation to above</dt><dd>Direct evolution of the Guasch et al. pipeline, extended and operationalised</dd>
+            <dt>Key additions</dt><dd>Apache Airflow orchestration, SHACL validation, Docker Compose containerisation</dd>
+            <dt>Input scope</dt><dd>Heterogeneous formats: XML, JSON, relational databases, CSV</dd>
+          </dl>
+          <p>The WHOW Toolkit represents the operationalised and extended evolution of the Guasch et al. approach, applied to the WHOW project's environmental open data objectives. It retains the RML declarative mapping paradigm and OWL workflow formalisation while introducing fully automated orchestration via Apache Airflow, structural validation via SHACL shapes, and a reproducible execution environment via Docker Compose. This combination makes WHOW one of the most complete publicly available implementations of a declarative RDF construction workflow.</p>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ── Comparison Table ── -->
+    <section id="comparison" class="section">
+      <h2>Comparative Analysis</h2>
+      <p class="section-intro">The table below structures the comparison across nine dimensions, grouped into convergences and differences. The table is horizontally scrollable to accommodate the addition of further approaches in future revisions.</p>
+
+      <p class="scroll-hint">← scroll horizontally to view all columns →</p>
+
+      <div class="scroll-wrapper">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Dimension</th>
+              <th>TAB-SEB</th>
+              <th>Guasch, Lodi &amp; Van Dooren (ISWC 2022)</th>
+              <th>WHOW Toolkit</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <!-- ── Convergences ── -->
+            <tr class="group-header">
+              <td colspan="4">Convergences</td>
+            </tr>
+
+            <tr class="convergence">
+              <td>Primary goal</td>
+              <td>
+                <span class="cell-text">Systematic, reproducible conversion of tabular cultural heritage metadata into RDF knowledge graphs, with explicit FAIR assessment</span>
+              </td>
+              <td>
+                <span class="cell-text">Systematic conversion of heterogeneous procurement records into RDF KGs within the IDS data-space framework</span>
+              </td>
+              <td>
+                <span class="cell-text">Systematic, reproducible conversion of environmental open data (water, health) into RDF KGs with automated orchestration</span>
+              </td>
+            </tr>
+
+            <tr class="convergence">
+              <td>Mapping paradigm</td>
+              <td>
+                <span class="badge yes">✓ Present</span>
+                <span class="cell-text">Declarative RML via YARRRML; executed by Morph-KGC</span>
+              </td>
+              <td>
+                <span class="badge yes">✓ Present</span>
+                <span class="cell-text">Declarative RML mappings</span>
+              </td>
+              <td>
+                <span class="badge yes">✓ Present</span>
+                <span class="cell-text">Declarative RML mappings</span>
+              </td>
+            </tr>
+
+            <tr class="convergence">
+              <td>SHACL validation</td>
+              <td>
+                <span class="badge planned">◎ Planned</span>
+                <span class="cell-text">Identified as a future development; not yet integrated into the current specification</span>
+              </td>
+              <td>
+                <span class="badge na">— Not documented</span>
+              </td>
+              <td>
+                <span class="badge yes">✓ Present</span>
+                <span class="cell-text">SHACL shapes used for structural validation of output graphs</span>
+              </td>
+            </tr>
+
+            <tr class="convergence">
+              <td>FAIR orientation</td>
+              <td>
+                <span class="badge yes">✓ Present</span>
+                <span class="cell-text">Explicit FAIR assessment applied (62/79, 78.5%); FAIR compliance is a primary evaluation criterion</span>
+              </td>
+              <td>
+                <span class="badge partial">~ Implicit</span>
+                <span class="cell-text">FAIR-oriented metadata quality; not evaluated against an explicit rubric</span>
+              </td>
+              <td>
+                <span class="badge partial">~ Implicit</span>
+                <span class="cell-text">FAIR-oriented; open data publication model</span>
+              </td>
+            </tr>
+
+            <!-- ── Differences ── -->
+            <tr class="group-header">
+              <td colspan="4">Differences</td>
+            </tr>
+
+            <tr>
+              <td>Workflow formalisation</td>
+              <td>
+                <span class="badge no">Prose-based</span>
+                <span class="cell-text">Human-readable blueprint on Protocols.io; CWL encoding identified as a primary future development</span>
+              </td>
+              <td>
+                <span class="badge yes">OWL ontology</span>
+                <span class="cell-text">Workflow specified as a formal OWL ontology; machine-readable and registrable</span>
+              </td>
+              <td>
+                <span class="badge yes">OWL ontology</span>
+                <span class="cell-text">OWL formalisation retained and extended from Guasch et al.</span>
+              </td>
+            </tr>
+
+            <tr>
+              <td>Orchestration model</td>
+              <td>
+                <span class="badge partial">Human-in-the-loop</span>
+                <span class="cell-text">Deliberate design choice: curatorial oversight at each phase, reflecting GLAM production constraints</span>
+              </td>
+              <td>
+                <span class="badge partial">Semi-automated</span>
+                <span class="cell-text">Partially automated pipeline; degree of human intervention not fully specified</span>
+              </td>
+              <td>
+                <span class="badge yes">Fully automated</span>
+                <span class="cell-text">Apache Airflow DAG-based orchestration; end-to-end automated execution</span>
+              </td>
+            </tr>
+
+            <tr>
+              <td>Input scope</td>
+              <td>
+                <span class="badge partial">Tabular / CSV only</span>
+                <span class="cell-text">Deliberately constrained to tabular/CSV inputs; a principled boundary of the blueprint's current scope</span>
+              </td>
+              <td>
+                <span class="badge yes">Heterogeneous</span>
+                <span class="cell-text">XML, JSON, relational databases, CSV</span>
+              </td>
+              <td>
+                <span class="badge yes">Heterogeneous</span>
+                <span class="cell-text">XML, JSON, relational databases, CSV</span>
+              </td>
+            </tr>
+
+            <tr>
+              <td>Containerisation</td>
+              <td>
+                <span class="badge no">Not yet</span>
+                <span class="cell-text">Identified as a current limitation; no containerised execution environment provided</span>
+              </td>
+              <td>
+                <span class="badge na">— Not documented</span>
+              </td>
+              <td>
+                <span class="badge yes">Docker Compose</span>
+                <span class="cell-text">Full-stack Docker Compose configuration for reproducible deployment</span>
+              </td>
+            </tr>
+
+            <tr>
+              <td>Domain</td>
+              <td>
+                <span class="cell-text">Cultural heritage / GLAM (museum objects, digitisation paradata, bibliographic metadata)</span>
+              </td>
+              <td>
+                <span class="cell-text">Public procurement (EU open data, IDS data spaces)</span>
+              </td>
+              <td>
+                <span class="cell-text">Environmental open data (water quality, health monitoring)</span>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── Positioning ── -->
+    <section id="positioning" class="section">
+      <h2>Positioning</h2>
+      <div class="interpretive-note">
+        <h3>Methodological Convergence</h3>
+        <p>The comparative analysis reveals substantial methodological convergence between TAB-SEB and the WHOW/Guasch et al. line of work, most notably in the shared commitment to declarative RML-based mapping as the core mechanism for CSV-to-RDF conversion and in the shared orientation towards FAIR data quality. This convergence is significant precisely because it emerges independently across research groups and across domains — public procurement, environmental data, and cultural heritage — suggesting that the declarative mapping paradigm is consolidating as a cross-domain standard for reproducible knowledge graph construction.</p>
+        <h3>Principled Divergences</h3>
+        <p>The primary divergences between TAB-SEB and the WHOW line of work fall into two distinct categories. The first comprises aspects that TAB-SEB explicitly acknowledges as current limitations and which directly inform its future development agenda: the absence of a machine-readable workflow formalisation (addressable via CWL encoding) and the absence of a containerised execution environment. The second category comprises deliberate design choices that reflect the specific constraints and epistemological requirements of GLAM production contexts: the human-in-the-loop supervision model is not a limitation to be overcome but a principled response to the curatorial judgements necessarily embedded in cultural heritage data processing; the restriction to tabular/CSV input is similarly a scope boundary rather than a technical constraint.</p>
+        <h3>Implications for Future Development</h3>
+        <p>The WHOW Toolkit's combination of OWL workflow formalisation, Apache Airflow orchestration, and SHACL validation constitutes a reference implementation against which TAB-SEB's future development trajectory can be measured. The adoption of CWL encoding (identified in the <a href="future-development.html">Future Development</a> section) would partially close the gap in workflow formalisation, while the addition of SHACL validation would align TAB-SEB's quality control apparatus with both WHOW and established semantic web best practice. Full automation via a pipeline orchestrator remains outside TAB-SEB's design scope for as long as the blueprint targets GLAM contexts requiring human curatorial oversight.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="container">
+    Comparative analysis prepared in the context of the doctoral thesis on TABular Semantic Enhancement Blueprint (TAB-SEB).
+  </footer>
+</body>
+</html>

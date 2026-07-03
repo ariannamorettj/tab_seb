@@ -224,6 +224,256 @@
         grid-template-columns: 1fr;
       }
     }
+
+    /* ── TOC color stripes ── */
+    .toc a { border-top: 4px solid transparent; padding-top: calc(1rem - 4px); }
+    .toc a.c-blue   { border-top-color: var(--blue);   }
+    .toc a.c-purple { border-top-color: var(--purple); }
+    .toc a.c-green  { border-top-color: var(--green);  }
+    .toc a.c-orange { border-top-color: var(--orange); }
+    .toc a.c-teal   { border-top-color: #0d9488;       }
+
+    /* ── Publications ── */
+    .card.pub { border-left-color: #0d9488; }
+
+    .pub-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .pub-label {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 2.25rem;
+      height: 2.25rem;
+      border-radius: 50%;
+      background: #0d9488;
+      color: #fff;
+      font-weight: 800;
+      font-size: 1rem;
+      flex-shrink: 0;
+      font-style: italic;
+      letter-spacing: -0.02em;
+    }
+
+    .pub-title {
+      margin: 0 0 0.35rem;
+      font-size: 1.05rem;
+      line-height: 1.3;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .pub-cite {
+      margin: 0;
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    details.contributions {
+      margin-top: 0.85rem;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    details.contributions > summary {
+      padding: 0.55rem 1rem;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      background: #f8fafc;
+      color: var(--muted);
+      list-style: none;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    details.contributions > summary::-webkit-details-marker { display: none; }
+
+    details.contributions > summary::before {
+      content: '▸';
+      font-size: 0.7rem;
+      transition: transform 0.15s;
+      display: inline-block;
+    }
+
+    details.contributions[open] > summary::before { transform: rotate(90deg); }
+
+    .contributions-body {
+      padding: 0.85rem 1rem;
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+    }
+
+    .contributions-body p { margin: 0; }
+
+    .pub-group-title {
+      font-size: 0.98rem;
+      font-weight: 800;
+      color: var(--text);
+      margin: 2rem 0 0.85rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--border);
+      letter-spacing: -0.01em;
+    }
+
+    .pub-sub-title {
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin: 1.5rem 0 0.65rem;
+    }
+
+    .pub-list { display: grid; gap: 0.6rem; }
+
+    .pub-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 0.9rem 1.1rem;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+    }
+
+    .pub-item cite {
+      display: block;
+      font-style: normal;
+      font-size: 0.87rem;
+      line-height: 1.65;
+      color: var(--text);
+      margin-bottom: 0.55rem;
+    }
+
+    .pub-buttons { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.28rem 0.65rem;
+      border-radius: 999px;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-weight: 600;
+      font-size: 0.77rem;
+      background: #f8fafc;
+    }
+
+    .btn:hover, .btn:focus-visible {
+      background: #eff6ff;
+      border-color: #bfdbfe;
+      outline: none;
+    }
+
+    /* ── Terminological Vademecum ── */
+    .toc a.c-indigo { border-top-color: #4f46e5; }
+    .card.indigo { border-left-color: #4f46e5; }
+
+    .vade-body {
+      font-size: 0.95rem;
+      line-height: 1.8;
+      color: var(--text);
+    }
+
+    .vade-body p { margin: 0 0 0.8rem; }
+    .vade-body p:last-child { margin-bottom: 0; }
+
+    .vade-body ul {
+      margin: 0.5rem 0 0.8rem 1.25rem;
+      padding: 0;
+    }
+
+    .vade-body li { margin-bottom: 0.45rem; line-height: 1.7; }
+
+    .vade-body code {
+      font-family: "JetBrains Mono", "Fira Code", ui-monospace, monospace;
+      font-size: 0.83em;
+      background: #eef2ff;
+      border: 1px solid #c7d2fe;
+      border-radius: 4px;
+      padding: 0.1em 0.35em;
+      color: #4338ca;
+    }
+
+    /* ── Documentation dropdown ── */
+    .nav-doc { position: relative; }
+
+    .nav-doc-trigger {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      background: var(--surface);
+      border: 1px solid transparent;
+      border-radius: 999px;
+      padding: 0.5rem 0.85rem;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: inherit;
+      font-family: inherit;
+      color: var(--muted);
+      line-height: 1;
+    }
+
+    .nav-doc-trigger:hover,
+    .nav-doc:focus-within .nav-doc-trigger {
+      border-color: var(--border);
+      color: var(--text);
+    }
+
+    .nav-doc-trigger .arrow {
+      font-size: 0.62rem;
+      opacity: 0.55;
+      transition: transform 0.18s;
+      display: inline-block;
+    }
+
+    .nav-doc:hover .nav-doc-trigger .arrow,
+    .nav-doc:focus-within .nav-doc-trigger .arrow { transform: rotate(180deg); }
+
+    .nav-doc-menu {
+      display: none;
+      position: absolute;
+      top: calc(100% + 6px);
+      right: 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
+      padding: 0.35rem;
+      min-width: 210px;
+      z-index: 200;
+      flex-direction: column;
+      gap: 0.1rem;
+    }
+
+    .nav-doc:hover .nav-doc-menu,
+    .nav-doc:focus-within .nav-doc-menu { display: flex; }
+
+    .nav-doc-menu a {
+      display: block;
+      text-decoration: none;
+      padding: 0.5rem 0.85rem;
+      border-radius: 10px;
+      color: var(--muted);
+      font-weight: 600;
+      font-size: 0.9rem;
+      white-space: nowrap;
+    }
+
+    .nav-doc-menu a:hover { background: var(--bg); color: var(--text); }
+    .nav-doc-menu a.current { color: var(--text); font-weight: 700; background: var(--bg); }
   </style>
 </head>
 <body>
@@ -237,6 +487,17 @@
         <a href="#publication">Publication</a>
         <a href="#quality">Quality Control</a>
         <a href="#blueprint">Blueprint</a>
+        <a href="#publications">Publications</a>
+        <a href="#vademecum">Vademecum</a>
+        <div class="nav-doc">
+          <button class="nav-doc-trigger">Documentation <span class="arrow">▾</span></button>
+          <div class="nav-doc-menu">
+            <a href="external-resources.html" class="current">External Resources</a>
+            <a href="future-development.html">Future Development</a>
+            <a href="related-work.html">Related Work</a>
+            <a href="implementations.html">Use Cases &amp; Implementations</a>
+          </div>
+        </div>
       </div>
     </div>
   </nav>
@@ -248,11 +509,13 @@
 
   <main class="container">
     <div class="toc">
-      <a href="#data-preparation">1. Data Preparation</a>
-      <a href="#rdf-materialisation">2. CSV-to-RDF Materialisation</a>
-      <a href="#publication">3. Data Publication and Dissemination</a>
-      <a href="#quality">4. Quality Control and Assessment</a>
-      <a href="#blueprint">5. Workflow Blueprint</a>
+      <a href="#data-preparation" class="c-blue">1. Data Preparation</a>
+      <a href="#rdf-materialisation" class="c-purple">2. CSV-to-RDF Materialisation</a>
+      <a href="#publication" class="c-green">3. Data Publication and Dissemination</a>
+      <a href="#quality" class="c-orange">4. Quality Control and Assessment</a>
+      <a href="#blueprint" class="c-orange">5. Workflow Blueprint</a>
+      <a href="#publications" class="c-teal">6. Publications</a>
+      <a href="#vademecum" class="c-indigo">7. Terminological Vademecum</a>
     </div>
 
     <section id="data-preparation" class="section">
@@ -545,6 +808,285 @@
           </dl>
           <p class="desc">Citable, technology-agnostic but execution-oriented blueprint that coordinates tabular preparation, RDF materialisation, dissemination, and re-iterative quality control. It is the stable methodological research object to which the case-study implementations are linked as executable instantiations.</p>
         </article>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════ -->
+    <section id="publications" class="section">
+      <h2>6. Publications</h2>
+      <p class="section-intro">Complete register of peer-reviewed publications produced during the doctoral research: the four contributions on which the dissertation is directly based (Part II), and the additional outputs whose content substantially informs the thesis.</p>
+
+      <h3 class="pub-group-title">Publications Included in the Thesis (Part II)</h3>
+      <div class="cards">
+
+        <article class="card pub">
+          <div class="pub-header">
+            <span class="pub-label">I</span>
+            <div>
+              <h4 class="pub-title">A Proposal for a FAIR Management of 3D Data in Cultural Heritage: The Aldrovandi Digital Twin Case</h4>
+              <p class="pub-cite">Barzaghi, S., Bordignon, A., Gualandi, B., Heibi, I., Massari, A., Moretti, A., Peroni, S., &amp; Renda, G. (2024). <em>Data Intelligence</em>.</p>
+            </div>
+          </div>
+          <div class="links">
+            <a href="https://doi.org/10.3724/2096-7004.di.2024.0061" target="_blank" rel="noopener noreferrer">DOI 10.3724/2096-7004.di.2024.0061</a>
+          </div>
+          <details class="contributions">
+            <summary>Author Contributions</summary>
+            <div class="contributions-body">
+              <p>Moretti contributed primarily to metadata management tasks (data collection and formalisation, semantic modelling, software for materialisation and RDF conversion, validation, publication and dissemination with attention to reproducibility documentation). All co-authors participated in writing; coordination and FAIR-specific leadership were primarily managed by Gualandi, while 3D domain aspects were primarily managed by Bordignon.</p>
+            </div>
+          </details>
+        </article>
+
+        <article class="card pub">
+          <div class="pub-header">
+            <span class="pub-label">II</span>
+            <div>
+              <h4 class="pub-title">CHAD-KG: A Knowledge Graph for Representing Cultural Heritage Objects and Digitisation Paradata</h4>
+              <p class="pub-cite">Barzaghi, S., Heibi, I., Moretti, A., &amp; Peroni, S. (2026). <em>International Journal on Semantic Web and Information Systems</em>, 22(1), 1–46.</p>
+            </div>
+          </div>
+          <div class="links">
+            <a href="https://doi.org/10.4018/IJSWIS.403910" target="_blank" rel="noopener noreferrer">DOI 10.4018/IJSWIS.403910</a>
+          </div>
+          <details class="contributions">
+            <summary>Author Contributions</summary>
+            <div class="contributions-body">
+              <p>Sebastian Barzaghi and Arianna Moretti contributed equally to the underlying project. Barzaghi led the modelling of the CHAD-AP application profile; Moretti planned, developed, and tested the software enabling RDF materialisation (Morph-KGC extension), contributed substantially to tabular data collection and formalisation, to the definition and publication of reproducible templates, and to the maintenance of the research outputs. Further, Moretti played a primary role (on a par with Barzaghi) in drafting and editing the manuscript.</p>
+            </div>
+          </details>
+        </article>
+
+        <article class="card pub">
+          <div class="pub-header">
+            <span class="pub-label">III</span>
+            <div>
+              <h4 class="pub-title">Formalising Cultural Heritage Metadata with a Multidisciplinary Approach: Enriching the CHANGES Workflow for Enhancing a Museum Collection about Ceramics through a FAIR Digitisation Process</h4>
+              <p class="pub-cite">Moretti, A., &amp; Daste, M. (2025). <em>The Eurographics Association</em>.</p>
+            </div>
+          </div>
+          <div class="links">
+            <a href="https://doi.org/10.2312/dh.20253375" target="_blank" rel="noopener noreferrer">DOI 10.2312/dh.20253375</a>
+          </div>
+          <details class="contributions">
+            <summary>Author Contributions</summary>
+            <div class="contributions-body">
+              <p>Daste acted as domain expert (data production and collection; part of 3D digitisation). Moretti handled the technical implementation (extending RDF materialisation software, SPARQL endpoint, predefined queries, website, publication of outputs on GitHub and Zenodo, and contributions to the 3D digital exhibition setup). Metadata formalisation and manuscript writing were shared equally.</p>
+            </div>
+          </details>
+        </article>
+
+        <article class="card pub">
+          <div class="pub-header">
+            <span class="pub-label">IV</span>
+            <div>
+              <h4 class="pub-title">The OpenCitations Index: Description of a database providing open citation data</h4>
+              <p class="pub-cite">Heibi, I., Moretti, A., Peroni, S., &amp; Soricetti, M. (2024). <em>Scientometrics</em>.</p>
+            </div>
+          </div>
+          <div class="links">
+            <a href="https://doi.org/10.1007/s11192-024-05160-7" target="_blank" rel="noopener noreferrer">DOI 10.1007/s11192-024-05160-7</a>
+          </div>
+          <details class="contributions">
+            <summary>Author Contributions</summary>
+            <div class="contributions-body">
+              <p>Moretti contributed on an equal basis with the co-authors to conceptualisation, data curation, formal analysis, methodology, software, validation, visualisation, and writing (original draft and review/editing). She contributed substantively to the (re)design and standardisation of ingestion workflows across sources, including management of the OC-DS-Converter software and source integrations.</p>
+            </div>
+          </details>
+        </article>
+
+      </div>
+
+      <h3 class="pub-group-title">Additional PhD Publications and Research Outputs</h3>
+      <p style="color: var(--muted); font-size: 0.9rem; margin: 0 0 1.25rem; line-height: 1.65;">The publications below describe the main outcomes of the doctoral research. Their content contributes substantially to this thesis; concepts presented in these works were adapted and partially incorporated into the manuscript.</p>
+
+      <p class="pub-sub-title">Journal and Book Publications</p>
+      <div class="pub-list">
+
+        <div class="pub-item">
+          <cite>Barzaghi, S., Bordignon, A., Collina, F., et al. (2025). A Reproducible Workflow for the Creation of Digital Twins in the Cultural Heritage Domain. <em>Transformations: A DARIAH Journal</em> (ahead of print).</cite>
+          <div class="pub-buttons">
+            <a class="btn" href="https://doi.org/10.46298/transformations.14773" target="_blank" rel="noopener noreferrer">DOI</a>
+          </div>
+        </div>
+
+        <div class="pub-item">
+          <cite>Balzani, R., Barzaghi, S., Bitelli, G., et al. (2024). Saving temporary exhibitions in virtual environments: The Digital Renaissance of Ulisse Aldrovandi – Acquisition and digitisation of cultural heritage objects. <em>Digital Applications in Archaeology and Cultural Heritage</em>, 32, e00309.</cite>
+          <div class="pub-buttons">
+            <a class="btn" href="https://doi.org/10.1016/j.daach.2023.e00309" target="_blank" rel="noopener noreferrer">DOI</a>
+          </div>
+        </div>
+
+        <div class="pub-item">
+          <cite>Moretti, A., Soricetti, M., Heibi, I., Massari, A., Peroni, S., &amp; Rizzetto, E. (2024). The Integration of the Japan Link Center's Bibliographic Data into OpenCitations. <em>Journal of Open Humanities Data</em>, 10.</cite>
+          <div class="pub-buttons">
+            <a class="btn" href="https://doi.org/10.5334/johd.178" target="_blank" rel="noopener noreferrer">DOI</a>
+          </div>
+        </div>
+
+        <div class="pub-item">
+          <cite>Malínek, V., Umerle, T., Gray, E., et al. (2024). Open Bibliographical Data Workflows and the Multilinguality Challenge. <em>Journal of Open Humanities Data</em>, 10.</cite>
+          <div class="pub-buttons">
+            <a class="btn" href="https://doi.org/10.5334/johd.190" target="_blank" rel="noopener noreferrer">DOI</a>
+          </div>
+        </div>
+
+      </div>
+
+      <p class="pub-sub-title">Conference Publications</p>
+      <div class="pub-list">
+
+        <div class="pub-item">
+          <cite>Moretti, A. (2026). Defining A Workflow For Semantic Enhancement Of Cultural Heritage Metadata. <em>Proceedings of IRCDL 2026</em> (CEUR-WS).</cite>
+          <div class="pub-buttons">
+            <span class="btn" style="color: var(--muted); cursor: default;">In press</span>
+          </div>
+        </div>
+
+        <div class="pub-item">
+          <cite>Moretti, A., Tiihonen, I. L. I., &amp; Fischer, J. P. (2026). Introducing a data harmonisation workflow exploiting the BNF SPARQL service to produce and disseminate a research-oriented bibliographic dataset concerning the Early Modern period. <em>Proceedings of IRCDL 2026</em> (CEUR-WS).</cite>
+          <div class="pub-buttons">
+            <span class="btn" style="color: var(--muted); cursor: default;">In press</span>
+          </div>
+        </div>
+
+        <div class="pub-item">
+          <cite>Barzaghi, S., Moretti, A., Heibi, I., &amp; Peroni, S. (2026). CHAD ASK: Experimenting with a semi-automatic approach based on online surveys to formalise unstructured knowledge in Linked Data. <em>Proceedings of IRCDL 2026</em> (CEUR-WS).</cite>
+          <div class="pub-buttons">
+            <span class="btn" style="color: var(--muted); cursor: default;">In press</span>
+          </div>
+        </div>
+
+        <div class="pub-item">
+          <cite>Barzaghi, S., Colitti, S., Moretti, A., &amp; Renda, G. (2025). From Metadata to Storytelling: A Framework for 3D Cultural Heritage Visualization on RDF Data. <em>Proceedings of AIUCD 2025</em>.</cite>
+          <div class="pub-buttons">
+            <a class="btn" href="https://doi.org/10.6092/unibo/amsacta/8380" target="_blank" rel="noopener noreferrer">DOI</a>
+          </div>
+        </div>
+
+        <div class="pub-item">
+          <cite>Barzaghi, S., Heibi, I., Moretti, A., &amp; Peroni, S. (2025). Developing Application Profiles for Enhancing Data and Workflows in Cultural Heritage Digitisation Processes. <em>The Semantic Web – ISWC 2024</em> (pp. 197–217).</cite>
+          <div class="pub-buttons">
+            <a class="btn" href="https://doi.org/10.1007/978-3-031-77847-6_11" target="_blank" rel="noopener noreferrer">DOI</a>
+          </div>
+        </div>
+
+        <div class="pub-item">
+          <cite>Moretti, A., Heibi, I., &amp; Peroni, S. (2024). A Workflow for GLAM Metadata Crosswalk. <em>Proceedings of AIUCD 2024</em>.</cite>
+          <div class="pub-buttons">
+            <a class="btn" href="https://doi.org/10.6092/unibo/amsacta/7927" target="_blank" rel="noopener noreferrer">DOI</a>
+          </div>
+        </div>
+
+        <div class="pub-item">
+          <cite>Barzaghi, S., Collina, F., Fabbri, F., et al. (2023). Digitisation of Temporary Exhibitions: The Aldrovandi Case. <em>The Eurographics Association</em>.</cite>
+          <div class="pub-buttons">
+            <a class="btn" href="https://doi.org/10.2312/gch.20231176" target="_blank" rel="noopener noreferrer">DOI</a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+    <section id="vademecum" class="section">
+      <h2>7. Terminological Vademecum</h2>
+      <p class="section-intro">A terminological reference to facilitate the reading of the thesis. Given the interdisciplinary nature of the research — at the crossroads between cultural heritage studies, information sciences, and Semantic Web technologies — certain terms are used with specific meanings that do not always correspond to their common usage within the individual disciplines concerned. Definitions are clustered by conceptual coherence and are not intended to be exhaustive or universally valid, but serve as practical clarifications to disambiguate concepts frequently mentioned in this work.</p>
+
+      <div class="cards">
+
+        <article class="card indigo">
+          <h3>Semantic Web Technologies</h3>
+          <div class="vade-body">
+            <p>The <strong>Semantic Web</strong> was originally conceived by Tim Berners-Lee as an extension of the Web, where all the information would be read, interpreted and processed autonomously by the machines, enabling computers and human operators to better cooperate (Berners-Lee et al. 2001). The paradigm is coordinated by the <strong>World Wide Web Consortium (W3C)</strong>, the international standards body responsible for the protocols and languages supporting the Semantic Web. At its core, the <strong>Resource Description Framework (RDF)</strong> is a W3C standard representing information as <strong>triples</strong> — composed of a subject, a predicate, and an object — thus enabling the interconnection among datasets from independent sources (Berners-Lee et al. 2001; Cyganiak et al. 2014). RDF data can be serialised in multiple syntactic formats (i.e., <strong>serialisations</strong>, such as Turtle, N-Triples, JSON-LD), which provide different representations of the same underlying graph model.</p>
+            <p>On top of the RDF data model, the W3C standard <strong>OWL (Web Ontology Language)</strong> supports the expression of complex logical constraints or class hierarchies, providing a richer vocabulary for defining ontologies, including classes, properties, cardinality restrictions, and logical inference rules. This allows for making domain knowledge not only representable but computationally reasoned over (W3C 2012). On the other hand, <strong>SKOS (Simple Knowledge Organization System)</strong> offers a model for encoding thesauri and classification systems, although with less expressiveness. These foundational standards are complemented by domain-specific ontology suites, including: <strong>SPAR</strong> (Semantic Publishing and Referencing), <strong>PROV-O</strong> (W3C Provenance Ontology), <strong>DCAT</strong> (Data Catalog Vocabulary), <strong>CIDOC-CRM</strong> (Conceptual Reference Model for cultural heritage), and <strong>CiTO</strong> (Citation Typing Ontology), each providing community-agreed vocabularies of classes and properties for specific domains.</p>
+          </div>
+        </article>
+
+        <article class="card indigo">
+          <h3>Ontology and Controlled Vocabulary</h3>
+          <div class="vade-body">
+            <p>An <strong>ontology</strong> is a shared, formal conceptualisation of a domain which defines classes, properties, and the logical relationships between them in a machine-interpretable way (Guarino et al. 2009; Gruber 1993). Thus, it provides the structural schema of a knowledge representation by expressing existing categories, how they relate to one another, and what constraints govern their relations. A <strong>controlled vocabulary</strong>, on the other hand, is a standardised list of preferred terms used to populate the values of descriptive fields. The Getty Art and Architecture Thesaurus (AAT), for instance, supplies normalised terms for object typologies, techniques, and materials; the Union List of Artist Names (ULAN) provides authority records for artists and makers. Ontology and controlled vocabulary operate at complementary layers of the same descriptive infrastructure: while the former defines the property (e.g., <code>crm:P2_has_type</code>), the latter supplies the authoritative term that fills it (e.g., AAT <em>earthenware</em> at <code>http://vocab.getty.edu/aat/300140803</code>).</p>
+            <p>Related but distinct from a controlled vocabulary, an <strong>authority resource</strong> is a reference system that provides globally unique identifiers for named entities (such as persons, organisations, places, and concepts), enabling unambiguous disambiguation across datasets. An example is the Virtual International Authority File (VIAF), which aggregates authority data for personal and corporate names across library systems worldwide. Wikidata (Vrandečić &amp; Krötzsch 2014) functions as a collaborative, multilingual knowledge base whose entity identifiers are widely reused as authority references in ontology-based descriptions.</p>
+          </div>
+        </article>
+
+        <article class="card indigo">
+          <h3>Linked (Open) Data</h3>
+          <div class="vade-body">
+            <p><strong>Linked Data</strong> refers to structured data published on the Web following programmatic approaches to make it interlinkable and queryable by machines. The four main principles governing Linked Data include:</p>
+            <ul>
+              <li>the use of <strong>URIs</strong> as globally unique identifiers for things;</li>
+              <li>the use of <strong>HTTP URIs</strong> so that those names can be looked up;</li>
+              <li>providing useful information when a URI is dereferenced;</li>
+              <li>including links to other URIs for enhancing data discovery (Bizer, Heath &amp; Berners-Lee 2009).</li>
+            </ul>
+            <p>Although RDF is the primary technology for implementing Linked Data, not every RDF dataset constitutes Linked Data. A graph that uses only blank nodes, without dereferenceable URIs or links to external datasets, does not fulfil the paradigm. Linked Data can be defined as <strong>Linked Open Data</strong> when the dataset is, in addition, freely accessible on the Web and released under an open licence (Bizer et al. 2009).</p>
+          </div>
+        </article>
+
+        <article class="card indigo">
+          <h3>Knowledge Graph and KG Materialisation</h3>
+          <div class="vade-body">
+            <p>A <strong>knowledge graph</strong> is a structured, graph-based representation of entities and their relationships, typically encoded in RDF (Hogan et al. 2022). <strong>KG materialisation</strong> is the process of generating RDF graphs from source data — in this thesis, primarily from tabular (CSV) inputs — by applying a set of transformation rules. The process can be carried out through <strong>declarative mapping languages</strong> (e.g., <strong>RML</strong>, <strong>YARRRML</strong>), in which the transformation rules are expressed as human-readable, auditable specifications independently of any execution engine, or through code-oriented approaches, where the transformation is hard-coded in a programming language (e.g., Python, PHP). Declarative approaches tend to be more transparent and easier to validate collaboratively, while code-oriented solutions may offer greater flexibility for complex edge cases.</p>
+            <p>Once materialised, an RDF graph is typically stored in a <strong>triplestore</strong>, a database system optimised for storing and retrieving RDF triples. Triplestores can be queried through a <strong>SPARQL endpoint</strong>, a web interface exposing the database's content and allowing users and applications to access the graph using the SPARQL Protocol and RDF Query Language (SPARQL). For contexts in which direct SPARQL interaction is not appropriate — for example, when the intended audience lacks technical expertise or if integration with external applications is required — a <strong>REST API</strong> (Representational State Transfer Application Programming Interface) can be layered on top of the triplestore, exposing the data through structured HTTP requests and enabling access via standard web protocols without requiring Semantic Web expertise.</p>
+          </div>
+        </article>
+
+        <article class="card indigo">
+          <h3>Metadata Schema, Application Profile, and Crosswalk</h3>
+          <div class="vade-body">
+            <p>A <strong>metadata schema</strong> is a structured set of elements used to describe resources within a given domain. An <strong>application profile</strong> is a metadata schema built by selecting, constraining, and — if necessary — extending elements from existing schemas, to meet the requirements of a specific application context (Nilsson et al. 2008). The term does not prescribe a single implementation strategy: constraints may be expressed through formal mechanisms, such as OWL restrictions, or <strong>SHACL (Shapes Constraint Language)</strong>, a W3C standard that defines machine-actionable validation rules (i.e., <strong>shapes</strong>) against which RDF graphs can be checked independently of the underlying ontology. In defining application profiles, the choice of encoding constraints as SHACL shapes is coherent with a design logic aimed at preserving permissiveness at the ontological level while enforcing application-specific rules at the validation layer. A <strong>metadata schema crosswalk</strong> is the systematic mapping of elements, semantics, and syntax from one schema to another, intended to enable interoperability between datasets described by different standards (Chan &amp; Zeng 2006).</p>
+          </div>
+        </article>
+
+        <article class="card indigo">
+          <h3>Metadata and Paradata</h3>
+          <div class="vade-body">
+            <p>In this thesis, the term <strong>metadata</strong> refers to descriptive information about an object — such as its dating, authorship, technique, materials, and dimensions. <strong>Paradata</strong>, on the other hand, denotes the metadata produced by and about the digitisation process itself: the actors involved, the dates of each acquisition and processing phase, the instruments and settings used, and the decisions taken during modelling, post-processing, and publication. The two categories have different provenance, different update cycles, and may require different licensing conditions.</p>
+          </div>
+        </article>
+
+        <article class="card indigo">
+          <h3>Metadata Provenance and Change Tracking</h3>
+          <div class="vade-body">
+            <p><strong>Metadata provenance</strong> refers to the documentation of the origin, history, and transformations of a metadata record — that is, not only where the described object comes from, but how, when, by whom, and based on what sources the metadata record was created or modified (Koster &amp; Woutersen-Windhouwer 2018). <strong>Change tracking</strong> is the systematic recording of updates to metadata records over time, enabling traceability and reproducibility.</p>
+          </div>
+        </article>
+
+        <article class="card indigo">
+          <h3>Workflow, Blueprint Workflow, and Executable Implementation</h3>
+          <div class="vade-body">
+            <p>A <strong>workflow</strong> is a structured sequence of activities that transforms inputs into outputs (Belhajjame et al. 2015). A <strong>blueprint workflow</strong> is a transferable, technology-agnostic, and environment-independent specification of such a sequence: it defines phases, decision points, and quality-control checkpoints at a level of abstraction that is independent of any specific toolchain. An <strong>executable implementation</strong> is a concrete instantiation of the blueprint (or of a part of it) in a specific technical environment. In this thesis, executable implementations also served as validation artefacts and evidence of feasibility, although they are not the primary methodological contribution.</p>
+          </div>
+        </article>
+
+        <article class="card indigo">
+          <h3>Actors</h3>
+          <div class="vade-body">
+            <p>The workflow described in this thesis foresees the involvement of different professional profiles, which may partially overlap and be embodied by the same individual:</p>
+            <ul>
+              <li><strong>domain experts</strong>, who contribute contextual and interpretative knowledge about the collection and its significance;</li>
+              <li><strong>metadata experts</strong>, who focus on descriptive accuracy, authority control, and crosswalk decisions;</li>
+              <li><strong>Semantic Web specialists</strong>, who handle RDF formalisation, ontology alignment, data validation and publication;</li>
+              <li><strong>digital humanists</strong>, who occupy an integrative role, mediating between domain and technical perspectives while maintaining methodological coherence across the pipeline.</li>
+            </ul>
+            <p>Semantic Web specialists typically also bring metadata expertise, whereas the converse does not necessarily apply: a professional can be a metadata expert without extensive knowledge of Semantic Web technologies, while being a Semantic Web specialist generally implies metadata competence. The digital humanist, by contrast, is a hybrid figure whose primary role is to facilitate interaction between technical and domain profiles. In some project configurations, the digital humanist may also be the only member of the team with a technical background, provided that they are able to manage autonomously the complexities associated with the use of the specific technologies involved.</p>
+          </div>
+        </article>
+
+        <article class="card indigo">
+          <h3>FAIR Principles and Open Science</h3>
+          <div class="vade-body">
+            <p>The <strong>FAIR principles</strong> — <strong>F</strong>indability, <strong>A</strong>ccessibility, <strong>I</strong>nteroperability, and <strong>R</strong>eusability — provide guidelines for data governance applicable across disciplines and data types (Wilkinson et al. 2016).</p>
+            <ul>
+              <li><strong>Findability</strong> implies that data and metadata are assigned globally unique and persistent identifiers and are registered in searchable resources;</li>
+              <li><strong>Accessibility</strong> implies that data can be retrieved via open, standardised protocols, and that metadata remains accessible even when the data itself is no longer available;</li>
+              <li><strong>Interoperability</strong> implies that data uses formal, shared knowledge-representation languages and references community-standard vocabularies;</li>
+              <li><strong>Reusability</strong> implies that data is richly described, released with a clear licence, and associated with detailed provenance, so that it can be understood and reused by others in future contexts.</li>
+            </ul>
+            <p><strong>Open Science</strong> is a scientific movement that seeks to make scholarly knowledge, data, methods, software, and evaluation practices as accessible, transparent, and reusable as possible throughout the research lifecycle (UNESCO 2021). FAIRness and openness are complementary but distinct concepts, and the one does not imply the other or vice versa. In this thesis, FAIR alignment was treated as a design requirement integrated into each phase of the workflow, assessed against the framework proposed by Wilkinson et al. (2025). Openness was sought throughout the research process by preferring open-source tools to implement the workflow's steps, releasing the developed software under open licences, and making freely accessible — whenever possible — academic material documenting the workflow.</p>
+          </div>
+        </article>
+
       </div>
     </section>
   </main>

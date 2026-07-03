@@ -159,12 +159,18 @@ export default function App() {
               Workflow
             </a>
 
-            <a
-              href={`${baseUrl}external-resources.html`}
-              className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 no-underline hover:bg-slate-100"
-            >
-              External Resources
-            </a>
+            <div className="relative group">
+              <button className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 flex items-center gap-1.5 cursor-pointer">
+                Documentation
+                <span className="text-[10px] opacity-50 group-hover:rotate-180 transition-transform duration-200 inline-block">▾</span>
+              </button>
+              <div className="hidden group-hover:flex absolute top-full right-0 mt-1.5 flex-col bg-white border border-slate-200 rounded-xl shadow-lg py-1.5 min-w-[200px] z-50 gap-0.5">
+                <a href={`${baseUrl}external-resources.html`} className="px-4 py-2 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 no-underline rounded-lg mx-1">External Resources</a>
+                <a href={`${baseUrl}future-development.html`} className="px-4 py-2 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 no-underline rounded-lg mx-1">Future Development</a>
+                <a href={`${baseUrl}related-work.html`} className="px-4 py-2 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 no-underline rounded-lg mx-1">Related Work</a>
+                <a href={`${baseUrl}implementations.html`} className="px-4 py-2 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 no-underline rounded-lg mx-1">Use Cases &amp; Implementations</a>
+              </div>
+            </div>
           </div>
         </div>
       </nav>

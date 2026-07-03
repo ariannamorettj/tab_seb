@@ -1,0 +1,1438 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TAB-SEB — Use Cases &amp; Implementations</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --border: #e2e8f0;
+      --text: #0f172a;
+      --muted: #475569;
+      --blue: #2563eb;
+      --green: #15803d;
+      --purple: #7c3aed;
+      --orange: #ea580c;
+      --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* ── Navbar ── */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(248, 250, 252, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner,
+    .container {
+      width: min(1180px, calc(100% - 2rem));
+      margin: 0 auto;
+    }
+
+    .nav-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+      gap: 1rem;
+    }
+
+    .brand {
+      font-weight: 800;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--muted);
+      font-weight: 600;
+      padding: 0.5rem 0.85rem;
+      border-radius: 999px;
+      border: 1px solid transparent;
+    }
+
+    .nav-links a:hover,
+    .nav-links a:focus-visible {
+      border-color: var(--border);
+      background: var(--surface);
+      color: var(--text);
+      outline: none;
+    }
+
+    /* ── Documentation dropdown ── */
+    .nav-doc { position: relative; }
+
+    .nav-doc-trigger {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      background: var(--surface);
+      border: 1px solid transparent;
+      border-radius: 999px;
+      padding: 0.5rem 0.85rem;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: inherit;
+      font-family: inherit;
+      color: var(--muted);
+      line-height: 1;
+    }
+
+    .nav-doc-trigger:hover,
+    .nav-doc:focus-within .nav-doc-trigger { border-color: var(--border); color: var(--text); }
+
+    .nav-doc-trigger .arrow {
+      font-size: 0.62rem;
+      opacity: 0.55;
+      transition: transform 0.18s;
+      display: inline-block;
+    }
+
+    .nav-doc:hover .nav-doc-trigger .arrow,
+    .nav-doc:focus-within .nav-doc-trigger .arrow { transform: rotate(180deg); }
+
+    .nav-doc-menu {
+      display: none;
+      position: absolute;
+      top: calc(100% + 6px);
+      right: 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
+      padding: 0.35rem;
+      min-width: 230px;
+      z-index: 200;
+      flex-direction: column;
+      gap: 0.1rem;
+    }
+
+    .nav-doc:hover .nav-doc-menu,
+    .nav-doc:focus-within .nav-doc-menu { display: flex; }
+
+    .nav-doc-menu a {
+      display: block;
+      text-decoration: none;
+      padding: 0.5rem 0.85rem;
+      border-radius: 10px;
+      color: var(--muted);
+      font-weight: 600;
+      font-size: 0.9rem;
+      white-space: nowrap;
+    }
+
+    .nav-doc-menu a:hover { background: var(--bg); color: var(--text); }
+    .nav-doc-menu a.current { color: var(--text); font-weight: 700; background: var(--bg); }
+
+    /* ── Layout ── */
+    header { padding: 3rem 0 2rem; }
+
+    h1 {
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      line-height: 1.1;
+      margin: 0 0 0.75rem;
+      letter-spacing: -0.03em;
+    }
+
+    .lead {
+      max-width: 78ch;
+      font-size: 1.06rem;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    .section {
+      margin: 2.5rem 0 3rem;
+    }
+
+    .section h2 {
+      margin: 0 0 1rem;
+      font-size: clamp(1.45rem, 3vw, 2rem);
+      letter-spacing: -0.02em;
+    }
+
+    .section-intro {
+      color: var(--muted);
+      margin: 0 0 1.5rem;
+      font-size: 1rem;
+    }
+
+    footer {
+      padding: 2rem 0 3rem;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 760px) {
+      .nav-inner { align-items: flex-start; flex-direction: column; }
+    }
+
+    /* ══════════════════════════════════════════
+       INTERACTIVE BLUEPRINT
+    ══════════════════════════════════════════ */
+
+    /* Case study tabs */
+    .cs-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .cs-tab {
+      padding: 0.45rem 1rem;
+      border-radius: 999px;
+      border: 2px solid var(--border);
+      background: var(--surface);
+      color: var(--muted);
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+
+    .cs-tab:hover { border-color: #94a3b8; color: var(--text); }
+    .cs-tab.active { border-color: var(--orange); background: #fff7ed; color: #9a3412; }
+
+    /* Actor legend + toggles */
+    .actor-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1.25rem;
+      padding: 0.75rem 1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+    }
+
+    .actor-bar-label {
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--muted);
+      margin-right: 0.25rem;
+    }
+
+    .actor-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.3rem 0.7rem;
+      border-radius: 999px;
+      border: 2px solid transparent;
+      background: #f1f5f9;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s;
+      opacity: 0.45;
+    }
+
+    .actor-toggle.active { opacity: 1; }
+
+    .actor-toggle[data-actor="DE"] { border-color: #d97706; background: #fffbeb; color: #92400e; }
+    .actor-toggle[data-actor="ME"] { border-color: #0d9488; background: #f0fdfa; color: #134e4a; }
+    .actor-toggle[data-actor="SW"] { border-color: #7c3aed; background: #f5f3ff; color: #4c1d95; }
+    .actor-toggle[data-actor="DH"] { border-color: #2563eb; background: #eff6ff; color: #1e3a8a; }
+
+    .actor-dot {
+      display: inline-block;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+    }
+
+    .actor-dot[data-actor="DE"] { background: #d97706; }
+    .actor-dot[data-actor="ME"] { background: #0d9488; }
+    .actor-dot[data-actor="SW"] { background: #7c3aed; }
+    .actor-dot[data-actor="DH"] { background: #2563eb; }
+
+    /* Blueprint grid */
+    .blueprint-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    @media (max-width: 900px) {
+      .blueprint-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 560px) {
+      .blueprint-grid { grid-template-columns: 1fr; }
+    }
+
+    .phase-col {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .phase-header {
+      padding: 0.85rem 1rem;
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      line-height: 1.3;
+    }
+
+    .phase-header[data-phase="1"] { background: var(--blue); }
+    .phase-header[data-phase="2"] { background: var(--purple); }
+    .phase-header[data-phase="3"] { background: var(--green); }
+    .phase-header[data-phase="4"] { background: var(--orange); }
+
+    .steps-list {
+      padding: 0.6rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .step-chip {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      padding: 0.55rem 0.7rem;
+      border-radius: 10px;
+      border: 1.5px solid transparent;
+      cursor: pointer;
+      transition: all 0.15s;
+      background: #f8fafc;
+      border-color: #e2e8f0;
+    }
+
+    .step-chip:hover { border-color: #94a3b8; background: #f1f5f9; }
+    .step-chip.selected { border-color: var(--orange) !important; box-shadow: 0 0 0 2px rgba(234,88,12,0.18); }
+
+    .step-chip.implemented[data-phase="1"] { background: #eff6ff; border-color: #bfdbfe; }
+    .step-chip.implemented[data-phase="2"] { background: #f5f3ff; border-color: #ddd6fe; }
+    .step-chip.implemented[data-phase="3"] { background: #f0fdf4; border-color: #bbf7d0; }
+    .step-chip.implemented[data-phase="4"] { background: #fff7ed; border-color: #fed7aa; }
+
+    .step-chip.dimmed {
+      opacity: 0.35;
+      background: #f8fafc;
+      border-color: #e2e8f0;
+    }
+
+    .step-id {
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.03em;
+      color: var(--muted);
+      white-space: nowrap;
+      padding-top: 1px;
+      flex-shrink: 0;
+    }
+
+    .step-chip.implemented[data-phase="1"] .step-id { color: #1d4ed8; }
+    .step-chip.implemented[data-phase="2"] .step-id { color: #6d28d9; }
+    .step-chip.implemented[data-phase="3"] .step-id { color: #166534; }
+    .step-chip.implemented[data-phase="4"] .step-id { color: #9a3412; }
+
+    .step-name {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.3;
+      flex: 1;
+    }
+
+    .step-chip.dimmed .step-name { color: var(--muted); }
+
+    .step-actors {
+      display: flex;
+      gap: 3px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: 2px;
+    }
+
+    /* Detail panel */
+    .detail-panel {
+      display: none;
+      background: var(--surface);
+      border: 2px solid var(--orange);
+      border-radius: 18px;
+      padding: 1.5rem;
+      box-shadow: 0 8px 24px rgba(234, 88, 12, 0.12);
+      margin-bottom: 1.5rem;
+    }
+
+    .detail-panel.visible { display: block; }
+
+    .detail-header {
+      display: flex;
+      align-items: baseline;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .detail-step-id {
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: var(--orange);
+    }
+
+    .detail-step-name {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.01em;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1rem;
+    }
+
+    .detail-block {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 0.9rem 1rem;
+    }
+
+    .detail-block-label {
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .detail-block p,
+    .detail-block ul {
+      margin: 0;
+      font-size: 0.9rem;
+      color: var(--text);
+      line-height: 1.65;
+    }
+
+    .detail-block ul { padding-left: 1.1rem; }
+    .detail-block li { margin-bottom: 0.25rem; }
+
+    .detail-actors-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.5rem;
+    }
+
+    .actor-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .actor-badge[data-actor="DE"] { background: #fffbeb; color: #92400e; border: 1px solid #fcd34d; }
+    .actor-badge[data-actor="ME"] { background: #f0fdfa; color: #134e4a; border: 1px solid #5eead4; }
+    .actor-badge[data-actor="SW"] { background: #f5f3ff; color: #4c1d95; border: 1px solid #c4b5fd; }
+    .actor-badge[data-actor="DH"] { background: #eff6ff; color: #1e3a8a; border: 1px solid #93c5fd; }
+
+    .detail-close {
+      float: right;
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.25rem 0.65rem;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--muted);
+      cursor: pointer;
+    }
+    .detail-close:hover { background: var(--bg); color: var(--text); }
+
+    /* Stats bar */
+    .stats-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+      padding: 0.85rem 1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      align-items: center;
+    }
+
+    .stat-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.3rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    .stat-pill.impl { background: #dcfce7; color: #166534; border: 1px solid #86efac; }
+    .stat-pill.skip { background: #f1f5f9; color: var(--muted); border: 1px solid var(--border); }
+
+    /* ══════════════════════════════════════════
+       RESEARCH OUTPUTS SECTION
+    ══════════════════════════════════════════ */
+    .cs-section {
+      margin-bottom: 3rem;
+    }
+
+    .cs-section-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .cs-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.25rem 0.7rem;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      background: var(--orange);
+      color: #fff;
+      white-space: nowrap;
+    }
+
+    .cs-section-title {
+      margin: 0;
+      font-size: 1.3rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+
+    .cards { display: grid; gap: 1rem; }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 6px solid var(--blue);
+      border-radius: 18px;
+      padding: 1.25rem;
+      box-shadow: var(--shadow);
+    }
+
+    .card.purple { border-left-color: var(--purple); }
+    .card.green  { border-left-color: var(--green); }
+    .card.orange { border-left-color: var(--orange); }
+    .card.teal   { border-left-color: #0d9488; }
+
+    .card h3 {
+      margin: 0 0 0.65rem;
+      font-size: 1.1rem;
+      line-height: 1.3;
+      letter-spacing: -0.01em;
+    }
+
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 0 0 0.9rem;
+    }
+
+    .links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.35rem 0.7rem;
+      border-radius: 999px;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-weight: 600;
+      font-size: 0.85rem;
+      background: #f8fafc;
+    }
+
+    .links a:hover,
+    .links a:focus-visible { background: #eff6ff; border-color: #bfdbfe; outline: none; }
+
+    dl.meta {
+      display: grid;
+      grid-template-columns: minmax(110px, 160px) 1fr;
+      gap: 0.4rem 0.85rem;
+      margin: 0 0 0.9rem;
+      font-size: 0.92rem;
+    }
+
+    .meta dt { font-weight: 800; color: var(--text); }
+    .meta dd { margin: 0; color: var(--muted); }
+
+    p.desc {
+      margin: 0;
+      color: var(--text);
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+
+    @media (max-width: 560px) {
+      dl.meta { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-inner">
+      <a class="brand" href="./">TAB-SEB</a>
+      <div class="nav-links">
+        <a href="./">Workflow</a>
+        <div class="nav-doc">
+          <button class="nav-doc-trigger">Documentation <span class="arrow">▾</span></button>
+          <div class="nav-doc-menu">
+            <a href="external-resources.html">External Resources</a>
+            <a href="future-development.html">Future Development</a>
+            <a href="related-work.html">Related Work</a>
+            <a href="implementations.html" class="current">Use Cases &amp; Implementations</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <header class="container">
+    <h1>Use Cases &amp; Implementations</h1>
+    <p class="lead">Interactive blueprint map showing which TAB-SEB steps were applied in each case study, which actors were responsible, and how each phase was concretely addressed.</p>
+  </header>
+
+  <main class="container">
+
+    <!-- ═══════════════════════ §1 BLUEPRINT ═══════════════════════ -->
+    <section class="section">
+      <h2>§1 — Blueprint Application Map</h2>
+      <p class="section-intro">Select a case study to see which steps were implemented (coloured) and which were not applied (dimmed). Click any step to read implementation details. Toggle actor roles to highlight responsibilities.</p>
+
+      <!-- Case study tabs -->
+      <div class="cs-tabs" role="tablist">
+        <button class="cs-tab active" data-cs="all" role="tab" aria-selected="true">Full Blueprint</button>
+        <button class="cs-tab" data-cs="aldrovandi" role="tab" aria-selected="false">Aldrovandi</button>
+        <button class="cs-tab" data-cs="capellini" role="tab" aria-selected="false">Capellini</button>
+        <button class="cs-tab" data-cs="ddc" role="tab" aria-selected="false">Digital Damaged Ceramics</button>
+        <button class="cs-tab" data-cs="bnf" role="tab" aria-selected="false">BnF Early Modern</button>
+        <button class="cs-tab" data-cs="oci" role="tab" aria-selected="false">OpenCitations Index</button>
+      </div>
+
+      <!-- Stats bar -->
+      <div class="stats-bar" id="stats-bar">
+        <span style="font-size:0.82rem;font-weight:800;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);">Steps:</span>
+        <span class="stat-pill impl" id="stat-impl">16 / 16 implemented</span>
+        <span class="stat-pill skip" id="stat-skip" style="display:none;"></span>
+      </div>
+
+      <!-- Actor toggles -->
+      <div class="actor-bar">
+        <span class="actor-bar-label">Actor filter:</span>
+        <button class="actor-toggle" data-actor="DE"><span class="actor-dot" data-actor="DE"></span>Domain Expert</button>
+        <button class="actor-toggle" data-actor="ME"><span class="actor-dot" data-actor="ME"></span>Metadata Expert</button>
+        <button class="actor-toggle" data-actor="SW"><span class="actor-dot" data-actor="SW"></span>Semantic Web Specialist</button>
+        <button class="actor-toggle" data-actor="DH"><span class="actor-dot" data-actor="DH"></span>Digital Humanist</button>
+      </div>
+
+      <!-- Blueprint grid -->
+      <div class="blueprint-grid" id="blueprint-grid"></div>
+
+      <!-- Detail panel -->
+      <div class="detail-panel" id="detail-panel">
+        <button class="detail-close" id="detail-close">✕ close</button>
+        <div class="detail-header">
+          <span class="detail-step-id" id="detail-step-id"></span>
+          <span class="detail-step-name" id="detail-step-name"></span>
+        </div>
+        <div class="detail-grid" id="detail-body"></div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════ §2 RESEARCH OUTPUTS ═══════════════════════ -->
+    <section class="section">
+      <h2>§2 — Research Outputs by Case Study</h2>
+      <p class="section-intro">All tangible outputs produced through each implementation, organised by case study. Corresponds to the thematic sections in External Resources, here re-anchored to their producing context.</p>
+
+      <!-- Aldrovandi -->
+      <div class="cs-section" id="outputs-aldrovandi">
+        <div class="cs-section-header">
+          <span class="cs-badge">Aldrovandi</span>
+          <h3 class="cs-section-title">Ulisse Aldrovandi Digital Twin</h3>
+        </div>
+        <div class="cards">
+          <article class="card">
+            <h3>CHANGES Data Collection Templates and Samples</h3>
+            <div class="links">
+              <a href="https://doi.org/10.5281/zenodo.14277219" target="_blank" rel="noopener noreferrer">Zenodo resource</a>
+              <a href="https://doi.org/10.48550/arXiv.2505.13276" target="_blank" rel="noopener noreferrer">Primary documentation</a>
+              <a href="https://doi.org/10.3724/2096-7004.di.2024.0061" target="_blank" rel="noopener noreferrer">Secondary documentation</a>
+            </div>
+            <dl class="meta">
+              <dt>Type</dt><dd>Tabular templates and sample datasets (CSV, ODS)</dd>
+              <dt>Authors</dt><dd>Arianna Moretti; Sebastian Barzaghi</dd>
+              <dt>Scope</dt><dd>Object metadata and digitisation-process paradata</dd>
+              <dt>Covers steps</dt><dd>1.1, 1.2, 1.5</dd>
+            </dl>
+            <p class="desc">Standardised spreadsheets for collecting exhibition-object metadata and phase-oriented digitisation paradata. The deposit combines operational templates and instructional samples so the tabular layer can be reused before RDF generation.</p>
+          </article>
+
+          <article class="card">
+            <h3>Aldrovandi Digital Twin CSV Datasets</h3>
+            <div class="links">
+              <a href="https://doi.org/10.5281/zenodo.18184209" target="_blank" rel="noopener noreferrer">All versions</a>
+              <a href="https://doi.org/10.5281/zenodo.18184210" target="_blank" rel="noopener noreferrer">Latest version</a>
+              <a href="https://doi.org/10.48550/arXiv.2505.13276" target="_blank" rel="noopener noreferrer">Primary documentation</a>
+              <a href="https://doi.org/10.3724/2096-7004.di.2024.0061" target="_blank" rel="noopener noreferrer">Secondary documentation</a>
+            </div>
+            <dl class="meta">
+              <dt>Title</dt><dd>CSV Datasets on Exhibited Objects and Digitisation Process from "The Other Renaissance" Exhibition Digital Twin</dd>
+              <dt>Type</dt><dd>Versioned tabular dataset release</dd>
+              <dt>Covers steps</dt><dd>1.5, 2.1</dd>
+            </dl>
+            <p class="desc">Two CSV datasets functioning as the tabular input layer for CHAD-KG. They capture both object-centred description and process-centred provenance in a form designed for direct Morph-KGChad processing.</p>
+          </article>
+
+          <article class="card purple">
+            <h3>Morph-KGChad</h3>
+            <div class="links">
+              <a href="https://github.com/dharc-org/morph-kgc-changes-metadata" target="_blank" rel="noopener noreferrer">Repository</a>
+              <a href="https://github.com/dharc-org/morph-kgc-changes-metadata/releases/tag/1.0.1" target="_blank" rel="noopener noreferrer">Stable release</a>
+              <a href="https://doi.org/10.48550/arXiv.2505.13276" target="_blank" rel="noopener noreferrer">Primary documentation</a>
+              <a href="https://doi.org/10.3724/2096-7004.di.2024.0061" target="_blank" rel="noopener noreferrer">Secondary documentation</a>
+            </div>
+            <dl class="meta">
+              <dt>Type</dt><dd>Open-source CSV-to-RDF materialisation pipeline</dd>
+              <dt>Authors</dt><dd>Arianna Moretti; Sebastian Barzaghi</dd>
+              <dt>Target model</dt><dd>CHAD-AP</dd>
+              <dt>Covers steps</dt><dd>1.6, 2.1, 2.2, 2.3</dd>
+            </dl>
+            <p class="desc">Extension of Morph-KGC for reproducible RDF materialisation of CHANGES-aligned tabular datasets. Packages YARRRML mappings, INI configuration, UDFs, orchestrator, monitoring, and quality checks.</p>
+          </article>
+
+          <article class="card purple">
+            <h3>Morph-KGChad: INI Configuration and YARRRML Mapping Files</h3>
+            <div class="links">
+              <a href="https://doi.org/10.5281/zenodo.18817813" target="_blank" rel="noopener noreferrer">All versions</a>
+              <a href="https://doi.org/10.5281/zenodo.18817814" target="_blank" rel="noopener noreferrer">Latest version</a>
+              <a href="https://doi.org/10.48550/arXiv.2505.13276" target="_blank" rel="noopener noreferrer">Primary documentation</a>
+            </div>
+            <dl class="meta">
+              <dt>Type</dt><dd>Executable configuration release</dd>
+              <dt>Author</dt><dd>Arianna Moretti</dd>
+              <dt>Contents</dt><dd>1 INI file and 2 YARRRML mapping files</dd>
+              <dt>Covers steps</dt><dd>1.6, 2.1</dd>
+            </dl>
+            <p class="desc">Versioned deposit of the configuration layer used to operationalise Morph-KGChad. Preserves the exact mapping and runtime artefacts required to reproduce the materialisation workflow transparently.</p>
+          </article>
+
+          <article class="card purple">
+            <h3>CHAD-ASK: Facilitating Domain Knowledge Formalisation in View of LOD Conversion</h3>
+            <div class="links">
+              <a href="https://doi.org/10.5281/zenodo.18548588" target="_blank" rel="noopener noreferrer">Questionnaire (all versions)</a>
+              <a href="https://doi.org/10.5281/zenodo.18548589" target="_blank" rel="noopener noreferrer">Questionnaire (latest)</a>
+              <a href="https://github.com/dharc-org/morph-kgc-changes-metadata/tree/main/src/ask-kg" target="_blank" rel="noopener noreferrer">Software</a>
+            </div>
+            <dl class="meta">
+              <dt>Type</dt><dd>Survey-to-mapping generation approach and software</dd>
+              <dt>Authors</dt><dd>Arianna Moretti; Sebastian Barzaghi</dd>
+              <dt>Outputs</dt><dd>YARRRML mapping rules and Morph-KGC INI configuration</dd>
+              <dt>Covers steps</dt><dd>1.4, 1.6, 2.1</dd>
+            </dl>
+            <p class="desc">Semi-automatic method converting structured questionnaire answers into executable materialisation artefacts. Reframes mapping authoring as guided conceptual elicitation so non-RML users can contribute directly to the conversion setup.</p>
+          </article>
+
+          <article class="card green">
+            <h3>CHAD-KG: TTL Serialised RDF Dataset of Exhibited Objects and Digitisation Process</h3>
+            <div class="links">
+              <a href="https://doi.org/10.5281/zenodo.15102845" target="_blank" rel="noopener noreferrer">All versions</a>
+              <a href="https://doi.org/10.5281/zenodo.15102846" target="_blank" rel="noopener noreferrer">Latest version</a>
+              <a href="https://doi.org/10.48550/arXiv.2505.13276" target="_blank" rel="noopener noreferrer">Primary documentation</a>
+              <a href="https://doi.org/10.3724/2096-7004.di.2024.0061" target="_blank" rel="noopener noreferrer">Secondary documentation</a>
+              <a href="https://w3id.org/dharc/ontology/chad-ap/2.0.3" target="_blank" rel="noopener noreferrer">Underlying model</a>
+              <a href="https://github.com/dharc-org/morph-kgc-changes-metadata" target="_blank" rel="noopener noreferrer">Generation software</a>
+            </div>
+            <dl class="meta">
+              <dt>Authors</dt><dd>Sebastian Barzaghi; Arianna Moretti</dd>
+              <dt>Type</dt><dd>RDF knowledge graph dump (Turtle)</dd>
+              <dt>Access model</dt><dd>Zenodo release, SPARQL endpoint, static HTML layer</dd>
+              <dt>Covers steps</dt><dd>3.1, 3.2, 3.3, 3.4</dd>
+            </dl>
+            <p class="desc">RDF dump generated through Morph-KGChad and expressed in CHAD-AP. Integrates object description and digitisation-process paradata into a FAIR-oriented, versioned semantic publication.</p>
+          </article>
+
+          <article class="card orange">
+            <h3>Aldrovandi Digital Twin FAIRness Assessment Matrix</h3>
+            <div class="links">
+              <a href="https://doi.org/10.3724/2096-7004.di.2024.0061" target="_blank" rel="noopener noreferrer">Table resource / documentation</a>
+            </div>
+            <dl class="meta">
+              <dt>Type</dt><dd>Assessment matrix (Table 2 in the Data Intelligence article)</dd>
+              <dt>Authors</dt><dd>Barzaghi et al.</dd>
+              <dt>Function</dt><dd>Reusable 3-level evaluation pattern for heritage collections</dd>
+              <dt>Covers steps</dt><dd>4.1, 4.2, 4.3</dd>
+            </dl>
+            <p class="desc">Compact evidence table adapting an existing heritage-oriented FAIR rubric. Included as a reusable quality-control pattern for auditable, cross-case comparison of implementation choices.</p>
+          </article>
+        </div>
+      </div>
+
+      <!-- Capellini -->
+      <div class="cs-section" id="outputs-capellini">
+        <div class="cs-section-header">
+          <span class="cs-badge">Capellini</span>
+          <h3 class="cs-section-title">Giovanni Capellini Palaeontological Records</h3>
+        </div>
+        <div class="cards">
+          <article class="card">
+            <h3>CHANGES Data Collection Templates (Capellini pilot)</h3>
+            <div class="links">
+              <a href="https://doi.org/10.5281/zenodo.14277219" target="_blank" rel="noopener noreferrer">Zenodo resource</a>
+            </div>
+            <dl class="meta">
+              <dt>Type</dt><dd>Tabular template reuse (subset of CHANGES templates)</dd>
+              <dt>Authors</dt><dd>Arianna Moretti; Sebastian Barzaghi</dd>
+              <dt>Covers steps</dt><dd>1.1, 1.2</dd>
+            </dl>
+            <p class="desc">Partial reuse of the CHANGES data collection templates for the Capellini palaeontological pilot. Only data identification and harmonisation steps were formally applied before research-requirement formalisation.</p>
+          </article>
+
+          <article class="card purple">
+            <h3>Morph-KGChad (Capellini pilot run)</h3>
+            <div class="links">
+              <a href="https://github.com/dharc-org/morph-kgc-changes-metadata" target="_blank" rel="noopener noreferrer">Repository</a>
+            </div>
+            <dl class="meta">
+              <dt>Type</dt><dd>CSV-to-RDF conversion (pilot)</dd>
+              <dt>Covers steps</dt><dd>2.1, 2.3</dd>
+            </dl>
+            <p class="desc">Morph-KGChad applied to the Capellini records in a focused pilot. RDF generation and qualitative testing were conducted; formal validation and Phase 3 dissemination steps were deferred.</p>
+          </article>
+        </div>
+      </div>
+
+      <!-- Digital Damaged Ceramics -->
+      <div class="cs-section" id="outputs-ddc">
+        <div class="cs-section-header">
+          <span class="cs-badge">DDC</span>
+          <h3 class="cs-section-title">Digital Damaged Ceramics</h3>
+        </div>
+        <div class="cards">
+          <article class="card">
+            <h3>Digital Damaged Ceramics CHANGES Data Collection Extended Templates</h3>
+            <div class="links">
+              <a href="https://bombedceramics.github.io/digital_damaged_ceramics/documentation.html" target="_blank" rel="noopener noreferrer">Documentation and downloads</a>
+              <a href="https://doi.org/10.2312/dh.20253375" target="_blank" rel="noopener noreferrer">Documentation article</a>
+            </div>
+            <dl class="meta">
+              <dt>Type</dt><dd>Extended templates and schema-mapping resources (CSV, JSON)</dd>
+              <dt>Authors</dt><dd>Arianna Moretti; Madeleine Daste</dd>
+              <dt>Scope</dt><dd>Object metadata, process paradata, header-level harmonisation</dd>
+              <dt>Covers steps</dt><dd>1.1, 1.2, 1.3, 1.5</dd>
+            </dl>
+            <p class="desc">Project-specific templates translated into an English field vocabulary and paired with JSON mappings from original CHANGES headers. Functions as a lightweight schema-translation layer for consistent ingestion and downstream conversion.</p>
+          </article>
+
+          <article class="card purple">
+            <h3>Morph-KGChad Digital Damaged Ceramics Extension</h3>
+            <div class="links">
+              <a href="https://github.com/bombedceramics/morph-kgc-changes-metadata" target="_blank" rel="noopener noreferrer">Repository</a>
+              <a href="https://doi.org/10.2312/dh.20253375" target="_blank" rel="noopener noreferrer">Documentation article</a>
+            </div>
+            <dl class="meta">
+              <dt>Author</dt><dd>Arianna Moretti</dd>
+              <dt>Type</dt><dd>Forked conversion stack for a project-specific extension</dd>
+              <dt>Adaptations</dt><dd>English headers, structural drift tolerance, extended controlled terms, material modelling</dd>
+              <dt>Covers steps</dt><dd>1.6, 2.1, 2.2</dd>
+            </dl>
+            <p class="desc">Forked version of the CHANGES conversion pipeline adapted to the DDC data model. Supports translated templates, broader controlled-term coverage, and a pragmatic material-description extension in RDF via <code>crm:P45_consists_of</code>.</p>
+          </article>
+
+          <article class="card green">
+            <h3>Digital Damaged Ceramics — RDF and CSV Dataset</h3>
+            <div class="links">
+              <a href="https://doi.org/10.5281/zenodo.15854368" target="_blank" rel="noopener noreferrer">All versions</a>
+              <a href="https://doi.org/10.5281/zenodo.15854369" target="_blank" rel="noopener noreferrer">Latest version</a>
+              <a href="https://doi.org/10.2312/dh.20253375" target="_blank" rel="noopener noreferrer">Documentation article</a>
+            </div>
+            <dl class="meta">
+              <dt>Authors</dt><dd>Madeleine Daste; Arianna Moretti</dd>
+              <dt>Type</dt><dd>Curated research dataset (CSV and Turtle)</dd>
+              <dt>Covers steps</dt><dd>3.1, 3.2, 3.3</dd>
+            </dl>
+            <p class="desc">Versioned release in both tabular and RDF serialisations. Serves simultaneously as a reusable dissemination output and as a reference instance aligned with the project's extended CHANGES-derived templates.</p>
+          </article>
+
+          <article class="card green">
+            <h3>Digital Damaged Ceramics Website Toolchain and Reproducibility Package</h3>
+            <div class="links">
+              <a href="https://bombedceramics.github.io/digital_damaged_ceramics/" target="_blank" rel="noopener noreferrer">Website</a>
+              <a href="https://github.com/bombedceramics/digital_damaged_ceramics" target="_blank" rel="noopener noreferrer">Code repository</a>
+              <a href="https://doi.org/10.5281/zenodo.15855787" target="_blank" rel="noopener noreferrer">All versions</a>
+              <a href="https://doi.org/10.5281/zenodo.15855788" target="_blank" rel="noopener noreferrer">Latest version</a>
+              <a href="https://doi.org/10.2312/dh.20253375" target="_blank" rel="noopener noreferrer">Documentation article</a>
+            </div>
+            <dl class="meta">
+              <dt>Authors</dt><dd>Arianna Moretti; Madeleine Daste</dd>
+              <dt>Type</dt><dd>Website codebase and reproducibility package</dd>
+              <dt>Covers steps</dt><dd>3.3, 4.1, 4.3</dd>
+            </dl>
+            <p class="desc">Package containing the website codebase, data-analysis assets, and semi-automated site-generation materials used for project dissemination. Doubles as a reusable template for similar catalogue-based museum projects.</p>
+          </article>
+        </div>
+      </div>
+
+      <!-- BnF Early Modern -->
+      <div class="cs-section" id="outputs-bnf">
+        <div class="cs-section-header">
+          <span class="cs-badge">BnF</span>
+          <h3 class="cs-section-title">BnF Early Modern Bibliographic Dataset</h3>
+        </div>
+        <div class="cards">
+          <article class="card">
+            <h3>Early Modern BnF Data Collector and Harmoniser</h3>
+            <div class="links">
+              <a href="https://github.com/ariannamorettj/Early_Modern_BnF_Harmonisation" target="_blank" rel="noopener noreferrer">Repository</a>
+              <a href="https://doi.org/10.17504/protocols.io.kqdg31n5zl25/v1" target="_blank" rel="noopener noreferrer">Primary documentation</a>
+            </div>
+            <dl class="meta">
+              <dt>Full title</dt><dd>Early Modern BnF Data Collector and Harmoniser (Actors and Editions Processing, Analysis, and RDF Graph Generation)</dd>
+              <dt>Authors</dt><dd>Arianna Moretti; Iiro Tiihonen; Jonas Fischer</dd>
+              <dt>Type</dt><dd>Acquisition, harmonisation, analysis, and RDF-generation scripts</dd>
+              <dt>Source</dt><dd>Bibliothèque nationale de France SPARQL retrieval workflow</dd>
+              <dt>Covers steps</dt><dd>1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 2.1, 2.2, 3.2, 3.3</dd>
+            </dl>
+            <p class="desc">Repository for producing a BnF-derived Early Modern bibliographic dataset and actor layer with explicit harmonisation diagnostics. Combines staged SPARQL retrieval, unification, duplicate analysis, and final RDF graph generation into a single reproducible package.</p>
+          </article>
+        </div>
+      </div>
+
+      <!-- OpenCitations Index -->
+      <div class="cs-section" id="outputs-oci">
+        <div class="cs-section-header">
+          <span class="cs-badge">OCI</span>
+          <h3 class="cs-section-title">OpenCitations Index</h3>
+        </div>
+        <div class="cards">
+          <article class="card">
+            <h3>OpenCitations Data Sources Converter</h3>
+            <div class="links">
+              <a href="https://pypi.org/project/oc-ds-converter/" target="_blank" rel="noopener noreferrer">PyPI package</a>
+              <a href="https://github.com/opencitations/oc_ds_converter" target="_blank" rel="noopener noreferrer">Source repository</a>
+              <a href="https://doi.org/10.1007/s11192-024-05160-7" target="_blank" rel="noopener noreferrer">Primary documentation</a>
+              <a href="https://doi.org/10.5334/johd.178" target="_blank" rel="noopener noreferrer">Secondary documentation</a>
+            </div>
+            <dl class="meta">
+              <dt>Authors</dt><dd>Arianna Moretti; Arcangelo Massari; Elia Rizzetto; Marta Soricetti</dd>
+              <dt>Type</dt><dd>Python software and package</dd>
+              <dt>Purpose</dt><dd>Crosswalk and preprocessing of heterogeneous scholarly sources into OCDM-aligned tabular outputs</dd>
+              <dt>Supported sources</dt><dd>Crossref, DataCite, PubMed, OpenAIRE, JaLC, mEDRA</dd>
+              <dt>Covers steps</dt><dd>1.1, 1.2, 1.3, 1.6, 2.1</dd>
+            </dl>
+            <p class="desc">Reusable ingestion software that converts multiple bibliographic and citation sources into structured CSV inputs for OpenCitations META and INDEX. Its modular design isolates source-specific logic while reusing shared validation, storage, and normalisation components.</p>
+          </article>
+
+          <article class="card green">
+            <h3>OpenCitations Index (INDEX) — Citation Dataset + Provenance Dataset</h3>
+            <div class="links">
+              <a href="https://doi.org/10.6084/m9.figshare.24356626" target="_blank" rel="noopener noreferrer">Citation CSV</a>
+              <a href="https://doi.org/10.6084/m9.figshare.24369136" target="_blank" rel="noopener noreferrer">Citation N-Triples</a>
+              <a href="https://doi.org/10.6084/m9.figshare.24416749" target="_blank" rel="noopener noreferrer">Citation Scholix</a>
+              <a href="https://doi.org/10.6084/m9.figshare.24417733" target="_blank" rel="noopener noreferrer">Provenance CSV</a>
+              <a href="https://doi.org/10.6084/m9.figshare.24417736" target="_blank" rel="noopener noreferrer">Provenance N-Triples</a>
+              <a href="https://opencitations.net" target="_blank" rel="noopener noreferrer">Service entry point</a>
+              <a href="https://w3id.org/oc/index/sparql" target="_blank" rel="noopener noreferrer">SPARQL endpoint</a>
+              <a href="https://w3id.org/oc/index/api/v2" target="_blank" rel="noopener noreferrer">REST API v2</a>
+              <a href="https://github.com/opencitations/lucinda" target="_blank" rel="noopener noreferrer">LUCINDA repository</a>
+              <a href="https://doi.org/10.1007/s11192-024-05160-7" target="_blank" rel="noopener noreferrer">Primary documentation</a>
+            </div>
+            <dl class="meta">
+              <dt>Maintainer</dt><dd>OpenCitations</dd>
+              <dt>Type</dt><dd>Large-scale open citation and provenance dataset</dd>
+              <dt>Licence</dt><dd>CC0</dd>
+              <dt>Distributions</dt><dd>CSV, N-Triples, Scholix, website services</dd>
+              <dt>Covers steps</dt><dd>1.5, 3.1, 3.2, 3.3, 3.4, 4.2</dd>
+            </dl>
+            <p class="desc">Open citation database distributing citation links and associated provenance as public dumps and query services. The chapter records both the article-based snapshot and the later updates documented on the official download pages.</p>
+          </article>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <footer class="container">
+    <p>TABular Semantic Enhancement Blueprint (TAB-SEB) — PhD research website. Part of the <a href="https://site.unibo.it/changes/en" target="_blank" rel="noopener noreferrer">CHANGES</a> project.</p>
+  </footer>
+
+  <script>
+  // ═══════════════════════════════════════════════════════════
+  //  DATA
+  // ═══════════════════════════════════════════════════════════
+  const PHASES = [
+    { id: 1, label: '1. Tabular Data Preparation', color: '#2563eb' },
+    { id: 2, label: '2. RDF Graph Materialisation', color: '#7c3aed' },
+    { id: 3, label: '3. RDF Data Dissemination', color: '#15803d' },
+    { id: 4, label: '4. Global Quality Control', color: '#ea580c' },
+  ];
+
+  const STEPS = [
+    { id: '1.1', name: 'Data Identification', phase: 1,
+      desc: 'Entry point: ex novo data collection or selection from existing datasets. Includes template design, semantic field declaration, and exploratory extraction.',
+      actors: ['DE','ME','DH'] },
+    { id: '1.2', name: 'Harmonisation & Cleaning', phase: 1,
+      desc: 'Ensure that structure and values satisfy conversion requirements. Covers date normalisation, deduplication, and ID syntax validation.',
+      actors: ['ME','DH'] },
+    { id: '1.3', name: 'Enrichment (PID)', phase: 1,
+      desc: 'Increase linkability through persistent identifiers. PID insertion and controlled vocabulary linking against authority records (VIAF, Wikidata).',
+      actors: ['ME','SW'] },
+    { id: '1.4', name: 'Research Requirements', phase: 1,
+      desc: 'Transform the dataset from inventory to research-oriented output. Formalise entities, relations, filters, and aggregations.',
+      actors: ['DE','DH'] },
+    { id: '1.5', name: 'Tabular Publication', phase: 1,
+      desc: 'Make the tabular layer citable and reusable before RDF materialisation. Deposit CSV datasets with DOI, versioning, and documentation.',
+      actors: ['DH','ME'] },
+    { id: '1.6', name: 'Mapping Specification', phase: 1,
+      desc: 'Design the semantic mapping specifications (e.g. YARRRML/RML) aligning table columns to the target RDF model. Produces the mapping artefacts consumed by Phase 2.',
+      actors: ['SW','DH'] },
+    { id: '2.1', name: 'RDF Generation', phase: 2,
+      desc: 'Execute the conversion through mappings (e.g. YARRRML). Covers table parsing, subject/object generation, and fragment merging.',
+      actors: ['SW','DH'] },
+    { id: '2.2', name: 'Validation', phase: 2,
+      desc: 'Verify semantic and structural consistency. Duplicate IRI checks, disjoint type conflict checks, and external link checks.',
+      actors: ['SW'] },
+    { id: '2.3', name: 'Testing', phase: 2,
+      desc: 'Qualitative and quantitative feedback cycles. Code-level checks and human inspection on samples produce a performance report.',
+      actors: ['SW','DE'] },
+    { id: '3.1', name: 'Release Publication', phase: 3,
+      desc: 'Stabilise the RDF dump on FAIR-oriented platforms. Produce a citable RDF archive with open licence and metadata.',
+      actors: ['DH','ME'] },
+    { id: '3.2', name: 'SPARQL Endpoint', phase: 3,
+      desc: 'Provide stable programmatic access to the graph. Load validated RDF into a triplestore (e.g. Virtuoso/GraphDB) with public endpoint and access documentation.',
+      actors: ['SW','DH'] },
+    { id: '3.3', name: 'Semantic Access Layer', phase: 3,
+      desc: 'Web portal for expert and non-expert users. Includes query templates, visualisations, and a data browser.',
+      actors: ['SW','DH'] },
+    { id: '3.4', name: 'Provenance Management', phase: 3,
+      desc: 'Track changes to support auditability. Produces a provenance graph and change logs.',
+      actors: ['SW','ME'] },
+    { id: '4.1', name: 'User Feedback', phase: 4,
+      desc: 'Collect issues concerning templates and usability. Generates harmonisation tasks and mapping revisions.',
+      actors: ['DE','DH'] },
+    { id: '4.2', name: 'Quali-Quantitative Evaluation', phase: 4,
+      desc: 'Analyse the whole process and its performance against validation reports, output statistics, and feedback to produce a comparative assessment.',
+      actors: ['DH','ME'] },
+    { id: '4.3', name: 'Reiteration Plan', phase: 4,
+      desc: 'Formalise update and rerun cycles. Identify phases to rerun and document deviations. Produces the iteration plan (lifecycle model).',
+      actors: ['DH','DE'] },
+  ];
+
+  const ACTORS = {
+    DE: { name: 'Domain Expert',            color: '#d97706' },
+    ME: { name: 'Metadata Expert',           color: '#0d9488' },
+    SW: { name: 'Semantic Web Specialist',   color: '#7c3aed' },
+    DH: { name: 'Digital Humanist',          color: '#2563eb' },
+  };
+
+  const CASE_STUDIES = {
+    all: {
+      name: 'Full Blueprint',
+      implements: STEPS.map(s => s.id),
+      details: {},
+    },
+    aldrovandi: {
+      name: 'Aldrovandi',
+      implements: ['1.1','1.2','1.3','1.4','1.5','1.6','2.1','2.2','2.3','3.1','3.2','3.3','3.4','4.1','4.2','4.3'],
+      details: {
+        '1.1': { how: 'Object metadata and digitisation paradata collected via CHANGES spreadsheet templates; semantic fields declared for both CHO description and process recording.',
+                 tools: 'CHANGES templates (ODS/CSV), CHAD-AP application profile', actors: ['DE','ME','DH'] },
+        '1.2': { how: 'Date normalisation, deduplication, and ID syntax validation applied to both the acquisition and object spreadsheets before conversion.',
+                 tools: 'OpenRefine, Python scripts, Morph-KGChad pre-processing', actors: ['ME','DH'] },
+        '1.3': { how: 'VIAF and Wikidata identifiers inserted for agents and works; controlled vocabulary terms linked to AAT.',
+                 tools: 'Reconciliation via OpenRefine, VIAF API, Wikidata SPARQL', actors: ['ME','SW'] },
+        '1.4': { how: 'Research questions formalised around the relation between digitisation events and exhibited objects; query desiderata defined before mapping design.',
+                 tools: 'Domain elicitation via CHAD-ASK questionnaire', actors: ['DE','DH'] },
+        '1.5': { how: 'Two CSV datasets (object metadata + paradata) deposited on Zenodo with DOI, version tracking, and README documentation.',
+                 tools: 'Zenodo, CHAD-AP documentation', actors: ['DH','ME'] },
+        '1.6': { how: 'YARRRML mapping files designed for object and paradata layers; INI configuration produced for Morph-KGC; CHAD-ASK used to semi-automatically derive rules.',
+                 tools: 'YARRRML, Morph-KGChad, CHAD-ASK', actors: ['SW','DH'] },
+        '2.1': { how: 'Morph-KGChad executed YARRRML-to-RDF conversion producing CHAD-AP-compliant Turtle. Separate mapping files for CHO description and process paradata merged.',
+                 tools: 'Morph-KGChad (Morph-KGC extension)', actors: ['SW','DH'] },
+        '2.2': { how: 'Duplicate IRI checks, disjoint type conflict checks, and external link validation performed via Morph-KGChad built-in quality module.',
+                 tools: 'Morph-KGChad quality checks, RDFLib', actors: ['SW'] },
+        '2.3': { how: 'Code-level unit tests on mapping rules; human inspection on a 10% sample of generated triples; iterative corrections applied.',
+                 tools: 'pytest, manual SPARQL queries on local endpoint', actors: ['SW','DE'] },
+        '3.1': { how: 'CHAD-KG Turtle dump deposited on Zenodo with open licence (CC0), DOI, and provenance metadata.',
+                 tools: 'Zenodo, CC0 licence', actors: ['DH','ME'] },
+        '3.2': { how: 'RDF graph loaded into a public-facing SPARQL endpoint; endpoint URL and query examples documented.',
+                 tools: 'Virtuoso / GraphDB', actors: ['SW','DH'] },
+        '3.3': { how: 'Static HTML layer and predefined SPARQL query templates published alongside the dataset; website linked from the CHAD-KG Zenodo deposit.',
+                 tools: 'Custom HTML/JS data browser, SPARQL templates', actors: ['SW','DH'] },
+        '3.4': { how: 'PROV-O-aligned provenance graph recording dataset versions, agent responsibilities, and derivation chains embedded in CHAD-KG.',
+                 tools: 'PROV-O, CHAD-AP provenance module', actors: ['SW','ME'] },
+        '4.1': { how: 'Feedback collected from domain partners and CHANGES project members on template usability and field coverage; issues tracked and triaged.',
+                 tools: 'GitHub Issues, structured feedback questionnaire', actors: ['DE','DH'] },
+        '4.2': { how: 'FAIRness assessment matrix applied using the 3-level heritage-collection rubric; quantitative coverage metrics computed from the generated graph.',
+                 tools: 'FAIR rubric (Table 2 in Data Intelligence article)', actors: ['DH','ME'] },
+        '4.3': { how: 'Iteration plan documented, identifying which data-collection and mapping steps require re-execution when new exhibition objects are added.',
+                 tools: 'Protocols.io (TAB-SEB blueprint), lifecycle documentation', actors: ['DH','DE'] },
+      }
+    },
+    capellini: {
+      name: 'Capellini',
+      implements: ['1.1','1.2','1.4','2.1','2.3','4.1'],
+      details: {
+        '1.1': { how: 'Subset of CHANGES templates adapted for palaeontological object records from the Capellini collection.',
+                 tools: 'CHANGES templates (adapted subset)', actors: ['DE','ME'] },
+        '1.2': { how: 'Field normalisation and deduplication applied to raw Capellini records; schema aligned with the CHANGES data model.',
+                 tools: 'Python scripts', actors: ['ME','DH'] },
+        '1.4': { how: 'Research questions formalised around taxon-level description and institutional provenance; query desiderata defined prior to RDF conversion.',
+                 tools: 'Domain elicitation sessions', actors: ['DE','DH'] },
+        '2.1': { how: 'Morph-KGChad used for a pilot RDF generation run against the harmonised Capellini tabular data.',
+                 tools: 'Morph-KGChad', actors: ['SW','DH'] },
+        '2.3': { how: 'Qualitative inspection of a sample of generated triples; structural anomalies noted for a future full validation pass.',
+                 tools: 'Manual SPARQL queries', actors: ['SW','DE'] },
+        '4.1': { how: 'Feedback from palaeontology domain experts on template coverage and field granularity collected to inform next iteration.',
+                 tools: 'Structured feedback sessions', actors: ['DE','DH'] },
+      }
+    },
+    ddc: {
+      name: 'Digital Damaged Ceramics',
+      implements: ['1.1','1.2','1.3','1.4','1.5','1.6','2.1','2.2','3.1','3.2','3.3','4.1','4.3'],
+      details: {
+        '1.1': { how: 'Extended CHANGES templates translated into English and adapted for ceramics damaged by bombing; material and damage-state fields added.',
+                 tools: 'CHANGES extended templates (DDC fork, CSV)', actors: ['DE','ME','DH'] },
+        '1.2': { how: 'Header-level harmonisation using JSON field-name mappings; structural drift from the base template documented and tolerated.',
+                 tools: 'Python scripts, CHANGES field-names mapping (JSON)', actors: ['ME','DH'] },
+        '1.3': { how: 'PID insertion for museum objects using institutional identifiers and controlled vocabulary links for material and technique terms.',
+                 tools: 'Getty AAT lookups, VIAF for institutions', actors: ['ME','SW'] },
+        '1.4': { how: 'Research questions around material characterisation of war-damaged ceramics formalised; crm:P45_consists_of extension planned.',
+                 tools: 'Domain elicitation with ceramics expert', actors: ['DE','DH'] },
+        '1.5': { how: 'CSV datasets deposited on Zenodo with versioning; documentation article published.',
+                 tools: 'Zenodo, CC BY licence', actors: ['DH','ME'] },
+        '1.6': { how: 'YARRRML mapping files extended to handle English-header templates and material representation; DDC fork of Morph-KGChad configured.',
+                 tools: 'YARRRML, Morph-KGChad DDC fork', actors: ['SW','DH'] },
+        '2.1': { how: 'Morph-KGChad DDC extension executed conversion producing CHAD-AP-compliant Turtle with material extension triples.',
+                 tools: 'Morph-KGChad DDC fork', actors: ['SW','DH'] },
+        '2.2': { how: 'Structural and semantic validation of generated RDF; duplicate checks; controlled-term link verification.',
+                 tools: 'Morph-KGChad quality module, RDFLib', actors: ['SW'] },
+        '3.1': { how: 'RDF and CSV dataset deposited on Zenodo under CC BY licence with DOI and version tracking.',
+                 tools: 'Zenodo', actors: ['DH','ME'] },
+        '3.2': { how: 'Public SPARQL endpoint provisioned; predefined query templates published on the project website.',
+                 tools: 'SPARQL endpoint, website SPARQL page', actors: ['SW','DH'] },
+        '3.3': { how: 'Project website with data browser, 3D viewer, and dataset download page. Reproducibility package released.',
+                 tools: 'Custom HTML website, 3D viewer, data-analysis assets', actors: ['SW','DH'] },
+        '4.1': { how: 'Feedback from ceramics domain expert on material and damage-state field coverage; template revisions planned.',
+                 tools: 'Issue tracking, collaborative review', actors: ['DE','DH'] },
+        '4.3': { how: 'Iteration plan identifying steps to rerun when additional ceramics collections are ingested; deviations from the base CHANGES template documented.',
+                 tools: 'Protocols.io, change log', actors: ['DH','DE'] },
+      }
+    },
+    bnf: {
+      name: 'BnF Early Modern',
+      implements: ['1.1','1.2','1.3','1.4','1.5','1.6','2.1','2.2','3.2','3.3'],
+      details: {
+        '1.1': { how: 'Early Modern bibliographic data retrieved from BnF via staged SPARQL queries; actors and editions identified as primary entities.',
+                 tools: 'BnF SPARQL endpoint, Python retrieval scripts', actors: ['DH','ME'] },
+        '1.2': { how: 'Unification, duplicate analysis, and harmonisation of actor and edition records; harmonisation diagnostics explicitly logged.',
+                 tools: 'Python harmonisation scripts, diagnostic reports', actors: ['ME','DH'] },
+        '1.3': { how: 'BnF identifiers retained; VIAF links added for actors where available; controlled vocabulary terms aligned.',
+                 tools: 'VIAF API, BnF authority records', actors: ['ME','SW'] },
+        '1.4': { how: 'Research questions formalised around the actor–edition relationship in the Early Modern bibliographic network.',
+                 tools: 'Domain scoping sessions', actors: ['DE','DH'] },
+        '1.5': { how: 'Intermediate harmonised tabular datasets documented and preserved as reproducible intermediate outputs.',
+                 tools: 'Repository versioning (protocols.io documentation)', actors: ['DH','ME'] },
+        '1.6': { how: 'Mapping logic embedded in the RDF-generation scripts; alignment of BnF fields to the target bibliographic model specified.',
+                 tools: 'Python RDF generation scripts', actors: ['SW','DH'] },
+        '2.1': { how: 'RDF graph generation executed by the data-collector-and-harmoniser repository scripts; actor and edition layers generated separately and merged.',
+                 tools: 'Early Modern BnF Data Collector and Harmoniser', actors: ['SW','DH'] },
+        '2.2': { how: 'Structural consistency checks applied to generated RDF; duplicate actor IRIs and ambiguous edition merges reviewed.',
+                 tools: 'RDFLib, custom validation scripts', actors: ['SW'] },
+        '3.2': { how: 'SPARQL endpoint provisioned for the generated bibliographic graph; access documented.',
+                 tools: 'SPARQL endpoint', actors: ['SW','DH'] },
+        '3.3': { how: 'Query templates and a lightweight HTML access layer published alongside the dataset for human-readable exploration.',
+                 tools: 'HTML access layer, SPARQL query templates', actors: ['SW','DH'] },
+      }
+    },
+    oci: {
+      name: 'OpenCitations Index',
+      implements: ['1.1','1.2','1.3','1.5','1.6','2.1','3.1','3.2','3.3','3.4','4.2'],
+      details: {
+        '1.1': { how: 'Heterogeneous bibliographic and citation sources (Crossref, DataCite, PubMed, OpenAIRE, JaLC, mEDRA) identified and ingested via the OC-DS-Converter.',
+                 tools: 'oc-ds-converter Python package', actors: ['SW','DH'] },
+        '1.2': { how: 'Crosswalk and normalisation of source-specific schemas into OCDM-aligned tabular outputs; source-specific logic isolated in modular converters.',
+                 tools: 'oc-ds-converter, shared validation and normalisation components', actors: ['SW','ME'] },
+        '1.3': { how: 'DOIs, ORCID identifiers, ISSN, and other PIDs validated and normalised for all cited and citing entities.',
+                 tools: 'oc-ds-converter ID validation modules', actors: ['ME','SW'] },
+        '1.5': { how: 'Citation CSV and provenance datasets published on Figshare with DOI and open CC0 licence; multiple distribution formats provided.',
+                 tools: 'Figshare, CC0 licence, multiple serialisation formats', actors: ['DH','ME'] },
+        '1.6': { how: 'Mapping from OCDM-aligned tabular format to RDF specified; conversion pipeline configuration managed.',
+                 tools: 'OCDM specification, conversion configuration', actors: ['SW'] },
+        '2.1': { how: 'Large-scale conversion from pre-processed CSV to RDF executed through the OpenCitations materialisation pipeline.',
+                 tools: 'OpenCitations materialisation pipeline', actors: ['SW'] },
+        '3.1': { how: 'Citation dataset and provenance dataset released in multiple formats (CSV, N-Triples, Scholix) on Figshare with CC0 and DOI.',
+                 tools: 'Figshare, CC0', actors: ['DH','ME'] },
+        '3.2': { how: 'SPARQL endpoint and REST API v2 provisioned for the OpenCitations Index graph; documented at w3id.org/oc/index.',
+                 tools: 'Virtuoso, w3id.org/oc/index/sparql, REST API v2', actors: ['SW'] },
+        '3.3': { how: 'OpenCitations website with service entry point, LUCINDA data browser, and SPARQL interface for expert and non-expert access.',
+                 tools: 'opencitations.net, LUCINDA', actors: ['SW','DH'] },
+        '3.4': { how: 'Provenance dataset explicitly maintained alongside citation data; change logs documenting source updates preserved.',
+                 tools: 'Provenance CSV, N-Triples, PROV-O alignment', actors: ['SW','ME'] },
+        '4.2': { how: 'Quantitative metrics on citation coverage across sources computed; comparative analysis across release snapshots documented in the Scientometrics article.',
+                 tools: 'Custom analysis scripts, Scientometrics publication', actors: ['DH','ME'] },
+      }
+    },
+  };
+
+  // ═══════════════════════════════════════════════════════════
+  //  STATE
+  // ═══════════════════════════════════════════════════════════
+  let currentCS = 'all';
+  let selectedStep = null;
+  let activeActors = new Set();
+
+  // ═══════════════════════════════════════════════════════════
+  //  RENDER
+  // ═══════════════════════════════════════════════════════════
+  function render() {
+    renderGrid();
+    renderStats();
+    if (selectedStep) renderDetail(selectedStep);
+    else hideDetail();
+  }
+
+  function renderGrid() {
+    const grid = document.getElementById('blueprint-grid');
+    const cs = CASE_STUDIES[currentCS];
+    const implSet = new Set(cs.implements);
+
+    grid.innerHTML = '';
+    PHASES.forEach(phase => {
+      const col = document.createElement('div');
+      col.className = 'phase-col';
+
+      const hdr = document.createElement('div');
+      hdr.className = 'phase-header';
+      hdr.dataset.phase = phase.id;
+      hdr.textContent = phase.label;
+      col.appendChild(hdr);
+
+      const list = document.createElement('div');
+      list.className = 'steps-list';
+
+      STEPS.filter(s => s.phase === phase.id).forEach(step => {
+        const impl = implSet.has(step.id);
+        const chip = document.createElement('div');
+        chip.className = 'step-chip' +
+          (impl ? ' implemented' : ' dimmed') +
+          (selectedStep === step.id ? ' selected' : '');
+        chip.dataset.phase = phase.id;
+        chip.dataset.step = step.id;
+        chip.setAttribute('role', 'button');
+        chip.setAttribute('tabindex', '0');
+        chip.title = step.name;
+
+        const idSpan = document.createElement('span');
+        idSpan.className = 'step-id';
+        idSpan.textContent = step.id;
+
+        const inner = document.createElement('div');
+        inner.style.flex = '1';
+
+        const nameSpan = document.createElement('span');
+        nameSpan.className = 'step-name';
+        nameSpan.textContent = step.name;
+        inner.appendChild(nameSpan);
+
+        // Actor dots (only show if actor is active or no actors toggled)
+        if (impl && step.actors) {
+          const dotsRow = document.createElement('div');
+          dotsRow.className = 'step-actors';
+          step.actors.forEach(a => {
+            if (activeActors.size === 0 || activeActors.has(a)) {
+              const dot = document.createElement('span');
+              dot.className = 'actor-dot';
+              dot.dataset.actor = a;
+              dot.title = ACTORS[a].name;
+              dotsRow.appendChild(dot);
+            }
+          });
+          inner.appendChild(dotsRow);
+        }
+
+        chip.appendChild(idSpan);
+        chip.appendChild(inner);
+
+        chip.addEventListener('click', () => {
+          if (selectedStep === step.id) {
+            selectedStep = null;
+          } else {
+            selectedStep = step.id;
+          }
+          render();
+        });
+        chip.addEventListener('keydown', e => {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); chip.click(); }
+        });
+
+        list.appendChild(chip);
+      });
+
+      col.appendChild(list);
+      grid.appendChild(col);
+    });
+  }
+
+  function renderStats() {
+    const cs = CASE_STUDIES[currentCS];
+    const total = STEPS.length;
+    const n = cs.implements.length;
+    const skip = total - n;
+
+    const implEl = document.getElementById('stat-impl');
+    const skipEl = document.getElementById('stat-skip');
+    implEl.textContent = currentCS === 'all'
+      ? `${total} / ${total} steps`
+      : `${n} / ${total} implemented`;
+    if (skip > 0) {
+      skipEl.style.display = '';
+      skipEl.textContent = `${skip} not applied`;
+    } else {
+      skipEl.style.display = 'none';
+    }
+  }
+
+  function renderDetail(stepId) {
+    const step = STEPS.find(s => s.id === stepId);
+    if (!step) return;
+
+    const cs = CASE_STUDIES[currentCS];
+    const impl = new Set(cs.implements).has(stepId);
+    const detail = cs.details[stepId];
+
+    document.getElementById('detail-step-id').textContent = stepId;
+    document.getElementById('detail-step-name').textContent = step.name;
+
+    const body = document.getElementById('detail-body');
+    body.innerHTML = '';
+
+    // Description block (always shown)
+    const descBlock = makeBlock('About this step', `<p>${step.desc}</p>`);
+    body.appendChild(descBlock);
+
+    if (currentCS === 'all' || !detail) {
+      // Generic mode: show actors
+      const actorBlock = makeBlock('Typical actors',
+        step.actors.map(a => `<span class="actor-badge" data-actor="${a}"><span class="actor-dot" data-actor="${a}"></span>${ACTORS[a].name}</span>`).join(''));
+      body.appendChild(actorBlock);
+    } else if (!impl) {
+      const skipBlock = makeBlock('Status', `<p>This step was <strong>not applied</strong> in the ${cs.name} case study.</p>`);
+      body.appendChild(skipBlock);
+    } else {
+      if (detail.how) {
+        const howBlock = makeBlock('How it was addressed', `<p>${detail.how}</p>`);
+        body.appendChild(howBlock);
+      }
+      if (detail.tools) {
+        const toolBlock = makeBlock('Tools & artefacts', `<p>${detail.tools}</p>`);
+        body.appendChild(toolBlock);
+      }
+      const actors = detail.actors || step.actors;
+      if (actors) {
+        const aBlock = makeBlock('Actors',
+          actors.map(a => `<span class="actor-badge" data-actor="${a}"><span class="actor-dot" data-actor="${a}"></span>${ACTORS[a].name}</span>`).join(''));
+        body.appendChild(aBlock);
+      }
+    }
+
+    const panel = document.getElementById('detail-panel');
+    panel.classList.add('visible');
+    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function makeBlock(label, html) {
+    const div = document.createElement('div');
+    div.className = 'detail-block';
+    div.innerHTML = `<div class="detail-block-label">${label}</div><div class="detail-actors-row" style="display:block">${html}</div>`;
+    return div;
+  }
+
+  function hideDetail() {
+    document.getElementById('detail-panel').classList.remove('visible');
+  }
+
+  // ═══════════════════════════════════════════════════════════
+  //  EVENTS
+  // ═══════════════════════════════════════════════════════════
+  document.querySelectorAll('.cs-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      currentCS = btn.dataset.cs;
+      selectedStep = null;
+      document.querySelectorAll('.cs-tab').forEach(b => {
+        b.classList.toggle('active', b === btn);
+        b.setAttribute('aria-selected', b === btn ? 'true' : 'false');
+      });
+      render();
+    });
+  });
+
+  document.querySelectorAll('.actor-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const actor = btn.dataset.actor;
+      if (activeActors.has(actor)) {
+        activeActors.delete(actor);
+        btn.classList.remove('active');
+      } else {
+        activeActors.add(actor);
+        btn.classList.add('active');
+      }
+      render();
+    });
+  });
+
+  document.getElementById('detail-close').addEventListener('click', () => {
+    selectedStep = null;
+    render();
+  });
+
+  // Initial render
+  render();
+  </script>
+</body>
+</html>
