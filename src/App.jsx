@@ -391,7 +391,10 @@ export default function App() {
 
       {/* ── Header ── */}
       <header className="max-w-7xl mx-auto mb-6 sm:mb-8 text-center">
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#1A1A1A] mb-3 leading-tight">
+        <h1
+          className="text-5xl sm:text-6xl lg:text-7xl font-normal uppercase tracking-[0.04em] leading-none text-[#543e4c] mb-4"
+          style={{ fontFamily: "'Bebas Neue', 'Extenda', sans-serif", fontWeight: 100 }}
+        >
           TABular Semantic Enhancement Blueprint (TAB-SEB)
         </h1>
         <p className="text-base sm:text-lg lg:text-xl text-[#7d6a73] max-w-4xl mx-auto leading-relaxed">
