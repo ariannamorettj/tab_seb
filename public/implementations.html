@@ -4,191 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TAB-SEB — Use Cases &amp; Implementations</title>
+  <link rel="stylesheet" href="styles/shared.css">
   <style>
-    :root {
-      --bg: #f8fafc;
-      --surface: #ffffff;
-      --border: #e2e8f0;
-      --text: #0f172a;
-      --muted: #475569;
-      --blue: #2563eb;
-      --green: #15803d;
-      --purple: #7c3aed;
-      --orange: #ea580c;
-      --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
-    }
-
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-    }
-
-    /* ── Navbar ── */
-    .navbar {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(248, 250, 252, 0.95);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .nav-inner,
-    .container {
-      width: min(1180px, calc(100% - 2rem));
-      margin: 0 auto;
-    }
-
-    .nav-inner {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem 0;
-      gap: 1rem;
-    }
-
-    .brand {
-      font-weight: 800;
-      color: var(--text);
-      text-decoration: none;
-      letter-spacing: -0.02em;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 0.75rem;
-      flex-wrap: wrap;
-    }
-
-    .nav-links a {
-      text-decoration: none;
-      color: var(--muted);
-      font-weight: 600;
-      padding: 0.5rem 0.85rem;
-      border-radius: 999px;
-      border: 1px solid transparent;
-    }
-
-    .nav-links a:hover,
-    .nav-links a:focus-visible {
-      border-color: var(--border);
-      background: var(--surface);
-      color: var(--text);
-      outline: none;
-    }
-
-    /* ── Documentation dropdown ── */
-    .nav-doc { position: relative; }
-
-    .nav-doc-trigger {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.3rem;
-      background: var(--surface);
-      border: 1px solid transparent;
-      border-radius: 999px;
-      padding: 0.5rem 0.85rem;
-      cursor: pointer;
-      font-weight: 600;
-      font-size: inherit;
-      font-family: inherit;
-      color: var(--muted);
-      line-height: 1;
-    }
-
-    .nav-doc-trigger:hover,
-    .nav-doc:focus-within .nav-doc-trigger { border-color: var(--border); color: var(--text); }
-
-    .nav-doc-trigger .arrow {
-      font-size: 0.62rem;
-      opacity: 0.55;
-      transition: transform 0.18s;
-      display: inline-block;
-    }
-
-    .nav-doc:hover .nav-doc-trigger .arrow,
-    .nav-doc:focus-within .nav-doc-trigger .arrow { transform: rotate(180deg); }
-
-    .nav-doc-menu {
-      display: none;
-      position: absolute;
-      top: calc(100% + 6px);
-      right: 0;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
-      padding: 0.35rem;
-      min-width: 230px;
-      z-index: 200;
-      flex-direction: column;
-      gap: 0.1rem;
-    }
-
-    .nav-doc:hover .nav-doc-menu,
-    .nav-doc:focus-within .nav-doc-menu { display: flex; }
-
-    .nav-doc-menu a {
-      display: block;
-      text-decoration: none;
-      padding: 0.5rem 0.85rem;
-      border-radius: 10px;
-      color: var(--muted);
-      font-weight: 600;
-      font-size: 0.9rem;
-      white-space: nowrap;
-    }
-
-    .nav-doc-menu a:hover { background: var(--bg); color: var(--text); }
-    .nav-doc-menu a.current { color: var(--text); font-weight: 700; background: var(--bg); }
-
-    /* ── Layout ── */
-    header { padding: 3rem 0 2rem; }
-
-    h1 {
-      font-size: clamp(2rem, 4vw, 3.2rem);
-      line-height: 1.1;
-      margin: 0 0 0.75rem;
-      letter-spacing: -0.03em;
-    }
-
-    .lead {
-      max-width: 78ch;
-      font-size: 1.06rem;
-      color: var(--muted);
-      margin: 0;
-    }
-
-    .section {
-      margin: 2.5rem 0 3rem;
-    }
-
-    .section h2 {
-      margin: 0 0 1rem;
-      font-size: clamp(1.45rem, 3vw, 2rem);
-      letter-spacing: -0.02em;
-    }
-
-    .section-intro {
-      color: var(--muted);
-      margin: 0 0 1.5rem;
-      font-size: 1rem;
-    }
-
-    footer {
-      padding: 2rem 0 3rem;
-      color: var(--muted);
-      font-size: 0.95rem;
-    }
-
-    @media (max-width: 760px) {
-      .nav-inner { align-items: flex-start; flex-direction: column; }
-    }
 
     /* ══════════════════════════════════════════
        INTERACTIVE BLUEPRINT
@@ -215,8 +32,8 @@
       white-space: nowrap;
     }
 
-    .cs-tab:hover { border-color: #94a3b8; color: var(--text); }
-    .cs-tab.active { border-color: var(--orange); background: #fff7ed; color: #9a3412; }
+    .cs-tab:hover { border-color: #b09aa8; color: var(--text); }
+    .cs-tab.active { border-color: var(--orange); background: #fef8ec; color: #7a4f00; }
 
     /* Actor legend + toggles */
     .actor-bar {
@@ -247,7 +64,7 @@
       padding: 0.3rem 0.7rem;
       border-radius: 999px;
       border: 2px solid transparent;
-      background: #f1f5f9;
+      background: #f0eced;
       font-size: 0.8rem;
       font-weight: 700;
       cursor: pointer;
@@ -257,10 +74,10 @@
 
     .actor-toggle.active { opacity: 1; }
 
-    .actor-toggle[data-actor="DE"] { border-color: #d97706; background: #fffbeb; color: #92400e; }
-    .actor-toggle[data-actor="ME"] { border-color: #0d9488; background: #f0fdfa; color: #134e4a; }
-    .actor-toggle[data-actor="SW"] { border-color: #7c3aed; background: #f5f3ff; color: #4c1d95; }
-    .actor-toggle[data-actor="DH"] { border-color: #2563eb; background: #eff6ff; color: #1e3a8a; }
+    .actor-toggle[data-actor="DE"] { border-color: #f7d38a; background: #fef8ec; color: #7a4f00; }
+    .actor-toggle[data-actor="ME"] { border-color: #8ab8cc; background: #e8f3f7; color: #1a3d4d; }
+    .actor-toggle[data-actor="SW"] { border-color: #c4c9e0; background: #eef0f7; color: #454e7a; }
+    .actor-toggle[data-actor="DH"] { border-color: #b09aa8; background: #f0eced; color: #3a2a33; }
 
     .actor-dot {
       display: inline-block;
@@ -269,10 +86,10 @@
       border-radius: 50%;
     }
 
-    .actor-dot[data-actor="DE"] { background: #d97706; }
-    .actor-dot[data-actor="ME"] { background: #0d9488; }
-    .actor-dot[data-actor="SW"] { background: #7c3aed; }
-    .actor-dot[data-actor="DH"] { background: #2563eb; }
+    .actor-dot[data-actor="DE"] { background: #ef9f27; }
+    .actor-dot[data-actor="ME"] { background: #2a5d71; }
+    .actor-dot[data-actor="SW"] { background: #8791be; }
+    .actor-dot[data-actor="DH"] { background: #543e4c; }
 
     /* Blueprint grid */
     .blueprint-grid {
@@ -328,21 +145,21 @@
       border: 1.5px solid transparent;
       cursor: pointer;
       transition: all 0.15s;
-      background: #f8fafc;
+      background: #f8f5f0;
       border-color: #e2e8f0;
     }
 
-    .step-chip:hover { border-color: #94a3b8; background: #f1f5f9; }
-    .step-chip.selected { border-color: var(--orange) !important; box-shadow: 0 0 0 2px rgba(234,88,12,0.18); }
+    .step-chip:hover { border-color: #b09aa8; background: #f0eced; }
+    .step-chip.selected { border-color: var(--orange) !important; box-shadow: 0 0 0 2px rgba(239,159,39,0.18); }
 
-    .step-chip.implemented[data-phase="1"] { background: #eff6ff; border-color: #bfdbfe; }
-    .step-chip.implemented[data-phase="2"] { background: #f5f3ff; border-color: #ddd6fe; }
-    .step-chip.implemented[data-phase="3"] { background: #f0fdf4; border-color: #bbf7d0; }
-    .step-chip.implemented[data-phase="4"] { background: #fff7ed; border-color: #fed7aa; }
+    .step-chip.implemented[data-phase="1"] { background: #e8f3f7; border-color: #8ab8cc; }
+    .step-chip.implemented[data-phase="2"] { background: #eef0f7; border-color: #c4c9e0; }
+    .step-chip.implemented[data-phase="3"] { background: #fff4ed; border-color: #ffd0b0; }
+    .step-chip.implemented[data-phase="4"] { background: #fef8ec; border-color: #f7d38a; }
 
     .step-chip.dimmed {
       opacity: 0.35;
-      background: #f8fafc;
+      background: #f8f5f0;
       border-color: #e2e8f0;
     }
 
@@ -356,10 +173,10 @@
       flex-shrink: 0;
     }
 
-    .step-chip.implemented[data-phase="1"] .step-id { color: #1d4ed8; }
-    .step-chip.implemented[data-phase="2"] .step-id { color: #6d28d9; }
-    .step-chip.implemented[data-phase="3"] .step-id { color: #166534; }
-    .step-chip.implemented[data-phase="4"] .step-id { color: #9a3412; }
+    .step-chip.implemented[data-phase="1"] .step-id { color: #2a5d71; }
+    .step-chip.implemented[data-phase="2"] .step-id { color: #8791be; }
+    .step-chip.implemented[data-phase="3"] .step-id { color: #c45500; }
+    .step-chip.implemented[data-phase="4"] .step-id { color: #7a4f00; }
 
     .step-name {
       font-size: 0.82rem;
@@ -386,7 +203,7 @@
       border: 2px solid var(--orange);
       border-radius: 18px;
       padding: 1.5rem;
-      box-shadow: 0 8px 24px rgba(234, 88, 12, 0.12);
+      box-shadow: 0 8px 24px rgba(239, 159, 39, 0.12);
       margin-bottom: 1.5rem;
     }
 
@@ -463,10 +280,10 @@
       font-weight: 700;
     }
 
-    .actor-badge[data-actor="DE"] { background: #fffbeb; color: #92400e; border: 1px solid #fcd34d; }
-    .actor-badge[data-actor="ME"] { background: #f0fdfa; color: #134e4a; border: 1px solid #5eead4; }
-    .actor-badge[data-actor="SW"] { background: #f5f3ff; color: #4c1d95; border: 1px solid #c4b5fd; }
-    .actor-badge[data-actor="DH"] { background: #eff6ff; color: #1e3a8a; border: 1px solid #93c5fd; }
+    .actor-badge[data-actor="DE"] { background: #fef8ec; color: #7a4f00; border: 1px solid #f7d38a; }
+    .actor-badge[data-actor="ME"] { background: #e8f3f7; color: #1a3d4d; border: 1px solid #8ab8cc; }
+    .actor-badge[data-actor="SW"] { background: #eef0f7; color: #454e7a; border: 1px solid #c4c9e0; }
+    .actor-badge[data-actor="DH"] { background: #f0eced; color: #3a2a33; border: 1px solid #b09aa8; }
 
     .detail-close {
       float: right;
@@ -504,7 +321,7 @@
       font-weight: 700;
     }
 
-    .stat-pill.impl { background: #dcfce7; color: #166534; border: 1px solid #86efac; }
+    .stat-pill.impl { background: #e8f3f7; color: #1a3d4d; border: 1px solid #8ab8cc; }
     .stat-pill.skip { background: #f1f5f9; color: var(--muted); border: 1px solid var(--border); }
 
     /* ══════════════════════════════════════════
@@ -589,7 +406,7 @@
     }
 
     .links a:hover,
-    .links a:focus-visible { background: #eff6ff; border-color: #bfdbfe; outline: none; }
+    .links a:focus-visible { background: #e8f3f7; border-color: #8ab8cc; outline: none; }
 
     dl.meta {
       display: grid;
@@ -609,9 +426,11 @@
       line-height: 1.7;
     }
 
-    @media (max-width: 560px) {
-      dl.meta { grid-template-columns: 1fr; }
-    }
+    @media (max-width: 560px) { dl.meta { grid-template-columns: 1fr; } }
+
+    /* ── Dark-section overrides (§2 Research Outputs = even) ── */
+    section.section:nth-of-type(even) .cs-section-title  { color: #F2EDE6; }
+    section.section:nth-of-type(even) .cs-section-header { border-bottom-color: rgba(242, 237, 230, 0.15); }
   </style>
 </head>
 <body>
@@ -620,10 +439,10 @@
       <a class="brand" href="./">TAB-SEB</a>
       <div class="nav-links">
         <a href="./">Workflow</a>
+        <a href="external-resources.html">External Resources</a>
         <div class="nav-doc">
           <button class="nav-doc-trigger">Documentation <span class="arrow">▾</span></button>
           <div class="nav-doc-menu">
-            <a href="external-resources.html">External Resources</a>
             <a href="future-development.html">Future Development</a>
             <a href="related-work.html">Related Work</a>
             <a href="implementations.html" class="current">Use Cases &amp; Implementations</a>

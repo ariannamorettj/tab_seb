@@ -4,438 +4,63 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TAB-SEB — Related Work</title>
+  <link rel="stylesheet" href="styles/shared.css">
   <style>
-    :root {
-      --bg: #f8fafc;
-      --surface: #ffffff;
-      --border: #e2e8f0;
-      --text: #0f172a;
-      --muted: #475569;
-      --blue: #2563eb;
-      --green: #15803d;
-      --purple: #7c3aed;
-      --orange: #ea580c;
-      --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
-    }
-
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-    }
-
-    /* ── Navbar ── */
-    .navbar {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(248, 250, 252, 0.95);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .nav-inner, .container {
-      width: min(1180px, calc(100% - 2rem));
-      margin: 0 auto;
-    }
-
-    .nav-inner {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem 0;
-      gap: 1rem;
-    }
-
-    .brand {
-      font-weight: 800;
-      color: var(--text);
-      text-decoration: none;
-      letter-spacing: -0.02em;
-    }
-
-    .nav-links { display: flex; gap: 0.75rem; flex-wrap: wrap; }
-
-    .nav-links a {
-      text-decoration: none;
-      color: var(--muted);
-      font-weight: 600;
-      padding: 0.5rem 0.85rem;
-      border-radius: 999px;
-      border: 1px solid transparent;
-    }
-
-    .nav-links a:hover, .nav-links a:focus-visible {
-      border-color: var(--border);
-      background: var(--surface);
-      color: var(--text);
-      outline: none;
-    }
-
-    /* ── Layout ── */
-    header { padding: 3rem 0 2rem; }
-
-    h1 {
-      font-size: clamp(2rem, 4vw, 3.2rem);
-      line-height: 1.1;
-      margin: 0 0 0.75rem;
-      letter-spacing: -0.03em;
-    }
-
-    .lead {
-      max-width: 78ch;
-      font-size: 1.06rem;
-      color: var(--muted);
-      margin: 0;
-    }
-
-    .toc {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 0.85rem;
-      margin: 0 0 2rem;
-    }
-
-    .toc a {
-      text-decoration: none;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 1rem;
-      color: var(--text);
-      font-weight: 700;
-      box-shadow: var(--shadow);
-    }
-
-    .section { margin: 2.5rem 0 3rem; }
-
-    .section h2 {
-      margin: 0 0 1rem;
-      font-size: clamp(1.45rem, 3vw, 2rem);
-      letter-spacing: -0.02em;
-    }
-
-    .section-intro {
-      color: var(--muted);
-      margin: 0 0 1.25rem;
-      font-size: 1rem;
-    }
-
-    /* ── Work description cards ── */
-    .cards { display: grid; gap: 1rem; }
-
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-left: 6px solid var(--blue);
-      border-radius: 18px;
-      padding: 1.5rem 1.5rem 1.25rem;
-      box-shadow: var(--shadow);
-    }
-
-    .card.green { border-left-color: var(--green); }
-
-    .card h3 {
-      margin: 0 0 0.65rem;
-      font-size: 1.2rem;
-      line-height: 1.3;
-      letter-spacing: -0.02em;
-    }
-
-    .card p {
-      margin: 0 0 0.9rem;
-      font-size: 1rem;
-      line-height: 1.75;
-      color: var(--text);
-    }
-
-    .card p:last-child { margin-bottom: 0; }
-
-    .links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin: 0 0 0.9rem;
-    }
-
-    .links a {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      padding: 0.45rem 0.75rem;
-      border-radius: 999px;
-      text-decoration: none;
-      border: 1px solid var(--border);
-      color: var(--text);
-      font-weight: 600;
-      background: #f8fafc;
-      font-size: 0.9rem;
-    }
-
-    .links a:hover, .links a:focus-visible {
-      background: #eff6ff;
-      border-color: #bfdbfe;
-      outline: none;
-    }
-
-    dl.meta {
-      display: grid;
-      grid-template-columns: minmax(120px, 160px) 1fr;
-      gap: 0.4rem 1rem;
-      margin: 0 0 0.9rem;
-      font-size: 0.95rem;
-    }
-
-    .meta dt { font-weight: 800; color: var(--text); }
-    .meta dd { margin: 0; color: var(--muted); }
-
     /* ── Pre-examiner note ── */
     .examiner-note {
-      margin: 0 0 2rem;
-      background: #fefce8;
-      border: 1px solid #fde68a;
-      border-left: 5px solid #d97706;
-      border-radius: 14px;
-      padding: 1rem 1.25rem;
-      font-size: 0.95rem;
-      color: #78350f;
-      line-height: 1.65;
+      margin: 0 0 2rem; background: #fefce8; border: 1px solid #fde68a;
+      border-left: 5px solid #d97706; border-radius: 14px; padding: 1rem 1.25rem;
+      font-size: 0.95rem; color: #78350f; line-height: 1.65;
     }
 
     /* ── Comparison table ── */
-    .scroll-wrapper {
-      overflow-x: auto;
-      border-radius: 14px;
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow);
-      margin: 0 0 1.5rem;
-    }
-
-    /* Scroll hint shown only when table overflows */
-    .scroll-hint {
-      display: none;
-      font-size: 0.82rem;
-      color: var(--muted);
-      margin: -0.75rem 0 1rem;
-      text-align: right;
-    }
-
+    .scroll-wrapper { overflow-x: auto; border-radius: 14px; border: 1px solid var(--border); box-shadow: var(--shadow); margin: 0 0 1.5rem; }
+    .scroll-hint { display: none; font-size: 0.82rem; color: var(--muted); margin: -0.75rem 0 1rem; text-align: right; }
     @media (max-width: 1100px) { .scroll-hint { display: block; } }
 
-    .comparison-table {
-      border-collapse: collapse;
-      width: 100%;
-      min-width: 860px;
-      background: var(--surface);
-      font-size: 0.88rem;
-      line-height: 1.55;
-    }
-
-    /* ── Column headers ── */
+    .comparison-table { border-collapse: collapse; width: 100%; min-width: 860px; background: var(--surface); font-size: 0.88rem; line-height: 1.55; }
     .comparison-table thead th {
-      padding: 0.9rem 1rem 0.75rem;
-      text-align: left;
-      font-size: 0.78rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      border-bottom: 2px solid var(--border);
-      background: var(--surface);
-      white-space: nowrap;
+      padding: 0.9rem 1rem 0.75rem; text-align: left; font-size: 0.78rem; font-weight: 800;
+      text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 2px solid var(--border);
+      background: var(--surface); white-space: nowrap;
     }
-
     .comparison-table thead th:nth-child(1) { color: var(--muted); }
-    .comparison-table thead th:nth-child(2) {
-      color: #5b21b6;
-      border-top: 4px solid var(--purple);
-    }
-    .comparison-table thead th:nth-child(3) {
-      color: #1d4ed8;
-      border-top: 4px solid var(--blue);
-    }
-    .comparison-table thead th:nth-child(4) {
-      color: #15803d;
-      border-top: 4px solid var(--green);
-    }
+    .comparison-table thead th:nth-child(2) { color: #5b21b6; border-top: 4px solid var(--purple); }
+    .comparison-table thead th:nth-child(3) { color: #1d4ed8; border-top: 4px solid var(--blue); }
+    .comparison-table thead th:nth-child(4) { color: #15803d; border-top: 4px solid var(--green); }
 
-    /* ── Sticky first column ── */
     .comparison-table thead th:first-child,
     .comparison-table tbody tr:not(.group-header) td:first-child {
-      position: sticky;
-      left: 0;
-      z-index: 2;
-      background: #f8fafc;
-      border-right: 1px solid var(--border);
-      min-width: 190px;
-      max-width: 210px;
-      font-weight: 700;
-      color: var(--text);
+      position: sticky; left: 0; z-index: 2; background: #f8f5f0;
+      border-right: 1px solid var(--border); min-width: 190px; max-width: 210px; font-weight: 700; color: var(--text);
     }
+    .comparison-table thead th:first-child { z-index: 3; color: var(--muted); }
 
-    .comparison-table thead th:first-child {
-      z-index: 3;
-      color: var(--muted);
-    }
-
-    /* ── Body cells ── */
-    .comparison-table tbody td {
-      padding: 0.8rem 1rem;
-      vertical-align: top;
-      border-bottom: 1px solid var(--border);
-      color: var(--muted);
-    }
-
+    .comparison-table tbody td { padding: 0.8rem 1rem; vertical-align: top; border-bottom: 1px solid var(--border); color: var(--muted); }
     .comparison-table tbody tr:last-child td { border-bottom: none; }
 
-    /* ── Group header rows ── */
-    .group-header td {
-      background: #f1f5f9;
-      font-size: 0.72rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--muted);
-      padding: 0.45rem 1rem;
-      border-bottom: 1px solid var(--border);
-    }
+    .group-header td { background: #f1f5f9; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); padding: 0.45rem 1rem; border-bottom: 1px solid var(--border); }
 
-    /* ── Convergence rows: tinted background on data cells ── */
     .convergence td:nth-child(2) { background: #faf5ff; }
     .convergence td:nth-child(3) { background: #eff6ff; }
     .convergence td:nth-child(4) { background: #f0fdf4; }
 
-    /* ── Badges ── */
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.25rem;
-      padding: 0.18rem 0.55rem;
-      border-radius: 999px;
-      font-size: 0.75rem;
-      font-weight: 700;
-      margin-bottom: 0.35rem;
-      white-space: nowrap;
-    }
-
+    .badge { display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.18rem 0.55rem; border-radius: 999px; font-size: 0.75rem; font-weight: 700; margin-bottom: 0.35rem; white-space: nowrap; }
     .badge.yes     { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
     .badge.planned { background: #fef9c3; color: #854d0e; border: 1px solid #fde68a; }
     .badge.no      { background: #f1f5f9; color: #64748b; border: 1px solid #e2e8f0; }
     .badge.partial { background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; }
-    .badge.na      { background: #f8fafc; color: #94a3b8; border: 1px solid #e2e8f0; }
-
-    .cell-text {
-      display: block;
-      margin-top: 0.3rem;
-      font-size: 0.85rem;
-      line-height: 1.5;
-      color: var(--text);
-    }
+    .badge.na      { background: #f8f5f0; color: #94a3b8; border: 1px solid #e2e8f0; }
+    .cell-text { display: block; margin-top: 0.3rem; font-size: 0.85rem; line-height: 1.5; color: var(--text); }
 
     /* ── Interpretive note ── */
-    .interpretive-note {
-      margin: 0 0 3rem;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 1.5rem;
-      box-shadow: var(--shadow);
-    }
-
-    .interpretive-note h3 {
-      margin: 0 0 0.75rem;
-      font-size: 1.1rem;
-      letter-spacing: -0.01em;
-      color: var(--text);
-    }
-
-    .interpretive-note p {
-      margin: 0 0 0.9rem;
-      font-size: 1rem;
-      line-height: 1.75;
-      color: var(--text);
-    }
-
+    .interpretive-note { margin: 0 0 3rem; background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 1.5rem; box-shadow: var(--shadow); }
+    .interpretive-note h3 { margin: 0 0 0.75rem; font-size: 1.1rem; letter-spacing: -0.01em; color: var(--text); }
+    .interpretive-note p  { margin: 0 0 0.9rem; font-size: 1rem; line-height: 1.75; color: var(--text); }
     .interpretive-note p:last-child { margin-bottom: 0; }
 
-    footer {
-      padding: 2rem 0 3rem;
-      color: var(--muted);
-      font-size: 0.95rem;
-    }
-
-    @media (max-width: 760px) {
-      .nav-inner { align-items: flex-start; flex-direction: column; }
-      dl.meta { grid-template-columns: 1fr; }
-    }
-
-    /* ── Documentation dropdown ── */
-    .nav-doc { position: relative; }
-
-    .nav-doc-trigger {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.3rem;
-      background: var(--surface);
-      border: 1px solid transparent;
-      border-radius: 999px;
-      padding: 0.5rem 0.85rem;
-      cursor: pointer;
-      font-weight: 600;
-      font-size: inherit;
-      font-family: inherit;
-      color: var(--muted);
-      line-height: 1;
-    }
-
-    .nav-doc-trigger:hover,
-    .nav-doc:focus-within .nav-doc-trigger { border-color: var(--border); color: var(--text); }
-
-    .nav-doc-trigger .arrow {
-      font-size: 0.62rem;
-      opacity: 0.55;
-      transition: transform 0.18s;
-      display: inline-block;
-    }
-
-    .nav-doc:hover .nav-doc-trigger .arrow,
-    .nav-doc:focus-within .nav-doc-trigger .arrow { transform: rotate(180deg); }
-
-    .nav-doc-menu {
-      display: none;
-      position: absolute;
-      top: calc(100% + 6px);
-      right: 0;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
-      padding: 0.35rem;
-      min-width: 210px;
-      z-index: 200;
-      flex-direction: column;
-      gap: 0.1rem;
-    }
-
-    .nav-doc:hover .nav-doc-menu,
-    .nav-doc:focus-within .nav-doc-menu { display: flex; }
-
-    .nav-doc-menu a {
-      display: block;
-      text-decoration: none;
-      padding: 0.5rem 0.85rem;
-      border-radius: 10px;
-      color: var(--muted);
-      font-weight: 600;
-      font-size: 0.9rem;
-      white-space: nowrap;
-    }
-
-    .nav-doc-menu a:hover { background: var(--bg); color: var(--text); }
-    .nav-doc-menu a.current { color: var(--text); font-weight: 700; background: var(--bg); }
+    /* ── Dark-section overrides (§2 Comparative Analysis = even) ── */
+    section.section:nth-of-type(even) .scroll-hint { color: rgba(242, 237, 230, 0.6); }
   </style>
 </head>
 <body>
@@ -444,10 +69,10 @@
       <a class="brand" href="./">TAB-SEB</a>
       <div class="nav-links">
         <a href="./">Workflow</a>
+        <a href="external-resources.html">External Resources</a>
         <div class="nav-doc">
           <button class="nav-doc-trigger">Documentation <span class="arrow">▾</span></button>
           <div class="nav-doc-menu">
-            <a href="external-resources.html">External Resources</a>
             <a href="future-development.html">Future Development</a>
             <a href="related-work.html" class="current">Related Work</a>
             <a href="implementations.html">Use Cases &amp; Implementations</a>

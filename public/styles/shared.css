@@ -1,0 +1,490 @@
+/* =====================================================
+   GOOGLE FONTS FALLBACKS
+   (Custom font files → /public/fonts/ to activate)
+   ===================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&display=swap');
+
+/* =====================================================
+   CUSTOM FONTS  (drop files in /public/fonts/)
+   ===================================================== */
+@font-face {
+  font-family: 'Extenda';
+  src: url('../fonts/Extenda100-Regular.woff2') format('woff2'),
+       url('../fonts/Extenda100-Regular.woff')  format('woff');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Open Sauce One';
+  src: url('../fonts/OpenSauceOne-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Open Sauce One';
+  src: url('../fonts/OpenSauceOne-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Open Sauce One';
+  src: url('../fonts/OpenSauceOne-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* =====================================================
+   DESIGN TOKENS
+   ===================================================== */
+:root {
+  /* Palette */
+  --bg:      #f7ede6;
+  --surface: #ffffff;
+  --border:  rgba(84, 62, 76, 0.15);
+  --text:    #543e4c;
+  --muted:   #7d6a73;
+  --accent:  #f33f50;
+  --dark:    #543e4c;
+  --dark-surface: #3e2e38;
+
+  /* Workflow phase colours */
+  --blue:    #2a5d71;
+  --green:   #ff8541;
+  --purple:  #8791be;
+  --orange:  #ef9f27;
+  --shadow:  0 4px 20px rgba(84, 62, 76, 0.08);
+
+  /* Typography */
+  --f-display: 'Extenda', 'Bebas Neue', sans-serif;
+  --f-body:    'Open Sauce One', 'DM Sans', system-ui, sans-serif;
+}
+
+/* =====================================================
+   RESET
+   ===================================================== */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: var(--f-body);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.65;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+em    { font-style: italic; }
+strong { font-weight: 700; }
+a     { color: inherit; }
+
+/* =====================================================
+   NAVBAR
+   ===================================================== */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(242, 237, 230, 0.96);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-inner,
+.container {
+  width: min(1180px, calc(100% - 2rem));
+  margin: 0 auto;
+}
+
+.nav-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.9rem 0;
+  gap: 1rem;
+}
+
+.brand {
+  font-family: var(--f-display);
+  font-weight: 100;
+  font-size: 1.4rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text);
+  text-decoration: none;
+  line-height: 1;
+}
+
+.brand:hover { color: var(--accent); }
+
+.nav-links {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 0.82rem;
+  padding: 0.45rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.nav-links a:hover,
+.nav-links a:focus-visible {
+  border-color: var(--border);
+  background: var(--surface);
+  color: var(--text);
+  outline: none;
+}
+
+/* ── Documentation dropdown ── */
+.nav-doc { position: relative; }
+
+.nav-doc-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: var(--surface);
+  border: 1px solid transparent;
+  border-radius: 999px;
+  padding: 0.45rem 0.85rem;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.82rem;
+  font-family: inherit;
+  color: var(--muted);
+  line-height: 1;
+  transition: border-color 0.15s;
+}
+
+.nav-doc-trigger:hover,
+.nav-doc:focus-within .nav-doc-trigger { border-color: var(--border); color: var(--text); }
+
+.nav-doc-trigger .arrow {
+  font-size: 0.6rem;
+  opacity: 0.5;
+  transition: transform 0.18s;
+  display: inline-block;
+}
+
+.nav-doc:hover .nav-doc-trigger .arrow,
+.nav-doc:focus-within .nav-doc-trigger .arrow { transform: rotate(180deg); }
+
+.nav-doc-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(26, 26, 26, 0.12);
+  padding: 0.35rem;
+  min-width: 240px;
+  z-index: 200;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.nav-doc:hover .nav-doc-menu,
+.nav-doc:focus-within .nav-doc-menu { display: flex; }
+
+.nav-doc-menu a {
+  display: block;
+  text-decoration: none;
+  padding: 0.5rem 0.85rem;
+  border-radius: 10px;
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  transition: background 0.12s;
+}
+
+.nav-doc-menu a:hover { background: var(--bg); color: var(--text); }
+.nav-doc-menu a.current { color: var(--text); font-weight: 700; background: var(--bg); }
+
+/* =====================================================
+   PAGE HEADER
+   ===================================================== */
+header { padding: 3.5rem 0 2.5rem; }
+
+h1 {
+  font-family: var(--f-display);
+  font-weight: 100;
+  font-size: clamp(2.8rem, 7vw, 5.5rem);
+  line-height: 1;
+  margin: 0 0 0.75rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.lead {
+  max-width: 72ch;
+  font-size: 1.04rem;
+  color: var(--muted);
+  margin: 0;
+  line-height: 1.72;
+}
+
+/* =====================================================
+   TOC
+   ===================================================== */
+.toc {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(185px, 1fr));
+  gap: 0.7rem;
+  padding: 1.5rem 0 2.5rem;
+}
+
+.toc a {
+  text-decoration: none;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 0.85rem 1rem;
+  color: var(--text);
+  font-weight: 700;
+  font-size: 0.83rem;
+  box-shadow: var(--shadow);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.toc a:hover {
+  border-color: var(--accent);
+  box-shadow: 0 4px 18px rgba(212, 75, 63, 0.12);
+}
+
+/* =====================================================
+   SECTIONS — ALTERNATING FULL-BLEED BACKGROUNDS
+   ===================================================== */
+section.section {
+  position: relative;
+  z-index: 0;
+  margin: 0;
+  padding: 3rem 0;
+}
+
+/* Full-bleed backdrop via ::before */
+section.section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -100vw;
+  right: -100vw;
+  z-index: -1;
+}
+
+/* Odd sections → clean white */
+section.section:nth-of-type(odd)::before  { background: var(--surface); }
+section.section:nth-of-type(odd)          { color: var(--text); }
+
+/* Even sections → near-black */
+section.section:nth-of-type(even)::before { background: var(--dark); }
+section.section:nth-of-type(even)         { color: #F2EDE6; }
+
+/* Dark section typography overrides */
+section.section:nth-of-type(even) h2        { color: var(--accent); }
+section.section:nth-of-type(even) h3        { color: #F2EDE6; }
+section.section:nth-of-type(even) .section-intro { color: rgba(242, 237, 230, 0.6); }
+
+/* Cards stay white for contrast in dark sections */
+section.section:nth-of-type(even) .card {
+  background: var(--surface);
+  border-color: rgba(255,255,255,0.08);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+}
+
+section.section:nth-of-type(even) .card h3 { color: var(--text); }
+section.section:nth-of-type(even) .card p  { color: var(--text); }
+
+section.section:nth-of-type(even) .links a {
+  background: #f8f5f0;
+  border-color: rgba(26,26,26,0.15);
+  color: var(--text);
+}
+section.section:nth-of-type(even) .links a:hover {
+  background: #fef2f2;
+  border-color: #fca5a5;
+}
+
+section.section:nth-of-type(even) .meta dt { color: var(--text); }
+section.section:nth-of-type(even) .meta dd { color: var(--muted); }
+section.section:nth-of-type(even) p.desc   { color: var(--text); }
+
+/* =====================================================
+   SECTION HEADINGS
+   ===================================================== */
+.section h2 {
+  margin: 0 0 0.6rem;
+  font-family: var(--f-display);
+  font-weight: 100;
+  font-size: clamp(2rem, 4.5vw, 3.5rem);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 1;
+  color: var(--text);
+}
+
+/* Accent bar below h2 in light sections */
+section.section:nth-of-type(odd) h2::after {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 3px;
+  background: var(--accent);
+  margin-top: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+section.section:nth-of-type(even) h2::after {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 3px;
+  background: var(--accent);
+  margin-top: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.section-intro {
+  color: var(--muted);
+  margin: 0 0 1.5rem;
+  font-size: 1rem;
+  line-height: 1.72;
+}
+
+/* =====================================================
+   CARDS
+   ===================================================== */
+.cards { display: grid; gap: 1rem; }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 5px solid var(--blue);
+  border-radius: 16px;
+  padding: 1.25rem;
+  box-shadow: var(--shadow);
+}
+
+.card.purple { border-left-color: var(--purple); }
+.card.green  { border-left-color: var(--green); }
+.card.orange { border-left-color: var(--orange); }
+.card.teal   { border-left-color: #2a5d71; }
+.card.indigo { border-left-color: #8791be; }
+.card.pub    { border-left-color: #2a5d71; }
+
+.card h3 {
+  margin: 0 0 0.65rem;
+  font-size: 1.08rem;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+
+.card p {
+  margin: 0 0 0.9rem;
+  color: var(--text);
+  font-size: 0.96rem;
+  line-height: 1.72;
+}
+
+.card p:last-child { margin-bottom: 0; }
+
+/* =====================================================
+   LINKS
+   ===================================================== */
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 0 0 0.9rem;
+}
+
+.links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.72rem;
+  border-radius: 999px;
+  text-decoration: none;
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-weight: 600;
+  font-size: 0.81rem;
+  background: #f8f5f0;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.links a:hover,
+.links a:focus-visible {
+  background: #e8f3f7;
+  border-color: #8ab8cc;
+  outline: none;
+}
+
+/* =====================================================
+   META LIST
+   ===================================================== */
+dl.meta {
+  display: grid;
+  grid-template-columns: minmax(110px, 160px) 1fr;
+  gap: 0.38rem 0.85rem;
+  margin: 0 0 0.9rem;
+  font-size: 0.91rem;
+}
+
+.meta dt { font-weight: 700; color: var(--text); }
+.meta dd { margin: 0; color: var(--muted); }
+
+p.desc {
+  margin: 0;
+  color: var(--text);
+  font-size: 0.95rem;
+  line-height: 1.72;
+}
+
+/* =====================================================
+   FOOTER
+   ===================================================== */
+footer {
+  padding: 2.5rem 0 3.5rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+  border-top: 1px solid var(--border);
+  margin-top: 2rem;
+}
+
+/* =====================================================
+   RESPONSIVE
+   ===================================================== */
+@media (max-width: 760px) {
+  .nav-inner { align-items: flex-start; flex-direction: column; }
+  dl.meta    { grid-template-columns: 1fr; }
+  h1         { font-size: clamp(2.2rem, 9vw, 3.5rem); }
+  .section h2 { font-size: clamp(1.7rem, 6vw, 2.5rem); }
+}
+
+/* =====================================================
+   FOCUS
+   ===================================================== */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}

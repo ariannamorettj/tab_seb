@@ -4,348 +4,53 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TAB-SEB — Future Development</title>
+  <link rel="stylesheet" href="styles/shared.css">
   <style>
-    :root {
-      --bg: #f8fafc;
-      --surface: #ffffff;
-      --border: #e2e8f0;
-      --text: #0f172a;
-      --muted: #475569;
-      --blue: #2563eb;
-      --green: #15803d;
-      --purple: #7c3aed;
-      --orange: #ea580c;
-      --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+    /* ── Tag rows ── */
+    .tag-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0 0 1rem; }
+    .tag {
+      display: inline-block; padding: 0.3rem 0.75rem; border-radius: 999px;
+      font-size: 0.82rem; font-weight: 700; border: 1px solid var(--border);
+      background: #f8f5f0; color: var(--muted); letter-spacing: 0.01em;
+    }
+    .tag.purple { background: #f5f3ff; border-color: #ddd6fe; color: #6d28d9; }
+    .tag.blue   { background: #eff6ff; border-color: #bfdbfe; color: #1d4ed8; }
+    .tag.orange { background: #fff7ed; border-color: #fed7aa; color: #c2410c; }
+
+    /* ── Code vocab pills ── */
+    .vocab-list { display: flex; flex-wrap: wrap; gap: 0.45rem; margin: 0.75rem 0 1rem; }
+    .vocab-list code {
+      font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", ui-monospace, monospace;
+      font-size: 0.85rem; background: #f1f5f9; border: 1px solid #e2e8f0;
+      border-radius: 6px; padding: 0.2rem 0.5rem; color: #4f46e5;
     }
 
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-    }
-
-    .navbar {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(248, 250, 252, 0.95);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .nav-inner,
-    .container {
-      width: min(1180px, calc(100% - 2rem));
-      margin: 0 auto;
-    }
-
-    .nav-inner {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem 0;
-      gap: 1rem;
-    }
-
-    .brand {
-      font-weight: 800;
-      color: var(--text);
-      text-decoration: none;
-      letter-spacing: -0.02em;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 0.75rem;
-      flex-wrap: wrap;
-    }
-
-    .nav-links a {
-      text-decoration: none;
-      color: var(--muted);
-      font-weight: 600;
-      padding: 0.5rem 0.85rem;
-      border-radius: 999px;
-      border: 1px solid transparent;
-    }
-
-    .nav-links a:hover,
-    .nav-links a:focus-visible {
-      border-color: var(--border);
-      background: var(--surface);
-      color: var(--text);
-      outline: none;
-    }
-
-    header {
-      padding: 3rem 0 2rem;
-    }
-
-    h1 {
-      font-size: clamp(2rem, 4vw, 3.2rem);
-      line-height: 1.1;
-      margin: 0 0 0.75rem;
-      letter-spacing: -0.03em;
-    }
-
-    .lead {
-      max-width: 78ch;
-      font-size: 1.06rem;
-      color: var(--muted);
-      margin: 0;
-    }
-
-    .toc {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 0.85rem;
-      margin: 0 0 2rem;
-    }
-
-    .toc a {
-      text-decoration: none;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 1rem;
-      color: var(--text);
-      font-weight: 700;
-      box-shadow: var(--shadow);
-    }
-
-    .section {
-      margin: 2.5rem 0 3rem;
-    }
-
-    .section h2 {
-      margin: 0 0 1rem;
-      font-size: clamp(1.45rem, 3vw, 2rem);
-      letter-spacing: -0.02em;
-    }
-
-    .section-intro {
-      color: var(--muted);
-      margin: 0 0 1.25rem;
-      font-size: 1rem;
-    }
-
-    .cards {
-      display: grid;
-      gap: 1rem;
-    }
-
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-left: 6px solid var(--blue);
-      border-radius: 18px;
-      padding: 1.5rem 1.5rem 1.25rem;
-      box-shadow: var(--shadow);
-    }
-
-    .card.purple { border-left-color: var(--purple); }
-    .card.green  { border-left-color: var(--green); }
-    .card.orange { border-left-color: var(--orange); }
-
+    /* ── Proposal card tints ── */
     .card.purple.proposal { background: #f5f3ff; border-color: #ddd6fe; }
     .card.blue.proposal   { background: #eff6ff; border-color: #bfdbfe; }
 
-    .card h3 {
-      margin: 0 0 0.75rem;
-      font-size: 1.25rem;
-      line-height: 1.25;
-      letter-spacing: -0.02em;
-    }
-
-    .card p {
-      margin: 0 0 0.9rem;
-      color: var(--text);
-      font-size: 1rem;
-      line-height: 1.75;
-    }
-
-    .card p:last-child {
-      margin-bottom: 0;
-    }
-
-    .tag-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin: 0 0 1rem;
-    }
-
-    .tag {
-      display: inline-block;
-      padding: 0.3rem 0.75rem;
-      border-radius: 999px;
-      font-size: 0.82rem;
-      font-weight: 700;
-      border: 1px solid var(--border);
-      background: #f8fafc;
-      color: var(--muted);
-      letter-spacing: 0.01em;
-    }
-
-    .tag.purple {
-      background: #f5f3ff;
-      border-color: #ddd6fe;
-      color: #6d28d9;
-    }
-
-    .tag.blue {
-      background: #eff6ff;
-      border-color: #bfdbfe;
-      color: #1d4ed8;
-    }
-
-    .tag.orange {
-      background: #fff7ed;
-      border-color: #fed7aa;
-      color: #c2410c;
-    }
-
-    .vocab-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.45rem;
-      margin: 0.75rem 0 1rem;
-    }
-
-    .vocab-list code {
-      font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", ui-monospace, monospace;
-      font-size: 0.85rem;
-      background: #f1f5f9;
-      border: 1px solid #e2e8f0;
-      border-radius: 6px;
-      padding: 0.2rem 0.5rem;
-      color: #4f46e5;
-    }
-
-    .interdependency {
-      margin: 3rem 0;
-      background: var(--surface);
-      border: 2px dashed #d97706;
-      border-radius: 18px;
-      padding: 1.5rem;
-      box-shadow: var(--shadow);
-    }
-
-    .interdependency h3 {
-      margin: 0 0 0.75rem;
-      font-size: 1.15rem;
-      letter-spacing: -0.01em;
-      color: #92400e;
-    }
-
-    .interdependency p {
-      margin: 0 0 0.9rem;
-      font-size: 1rem;
-      line-height: 1.75;
-      color: var(--text);
-    }
-
-    .interdependency p:last-child {
-      margin-bottom: 0;
-    }
-
-    mark.kw {
-      border-radius: 3px;
-      padding: 0 2px;
-      font-weight: 600;
-    }
-
+    /* ── Keyword highlights ── */
+    mark.kw { border-radius: 3px; padding: 0 2px; font-weight: 600; }
     .card.purple mark.kw     { background: #ede9fe; color: #5b21b6; }
     .card.blue mark.kw       { background: #dbeafe; color: #1e40af; }
     .interdependency mark.kw { background: #ffedd5; color: #9a3412; }
+    .card.purple .vocab-list code { background: #ede9fe; border-color: #ddd6fe; color: #6d28d9; }
 
-    .card.purple .vocab-list code {
-      background: #ede9fe;
-      border-color: #ddd6fe;
-      color: #6d28d9;
+    /* ── Interdependency callout ── */
+    .interdependency {
+      margin: 3rem 0; background: var(--surface); border: 2px dashed #d97706;
+      border-radius: 18px; padding: 1.5rem; box-shadow: var(--shadow);
     }
+    .interdependency h3 { margin: 0 0 0.75rem; font-size: 1.15rem; letter-spacing: -0.01em; color: #92400e; }
+    .interdependency p  { margin: 0 0 0.9rem; font-size: 1rem; line-height: 1.75; color: var(--text); }
+    .interdependency p:last-child { margin-bottom: 0; }
 
-    footer {
-      padding: 2rem 0 3rem;
-      color: var(--muted);
-      font-size: 0.95rem;
-    }
-
-    @media (max-width: 760px) {
-      .nav-inner {
-        align-items: flex-start;
-        flex-direction: column;
-      }
-    }
-
-    /* ── Documentation dropdown ── */
-    .nav-doc { position: relative; }
-
-    .nav-doc-trigger {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.3rem;
+    /* ── Dark-section overrides (§2 PROV-O = even) ── */
+    section.section:nth-of-type(even) .card.blue.proposal {
       background: var(--surface);
-      border: 1px solid transparent;
-      border-radius: 999px;
-      padding: 0.5rem 0.85rem;
-      cursor: pointer;
-      font-weight: 600;
-      font-size: inherit;
-      font-family: inherit;
-      color: var(--muted);
-      line-height: 1;
+      border-color: rgba(255, 255, 255, 0.08);
     }
-
-    .nav-doc-trigger:hover,
-    .nav-doc:focus-within .nav-doc-trigger { border-color: var(--border); color: var(--text); }
-
-    .nav-doc-trigger .arrow {
-      font-size: 0.62rem;
-      opacity: 0.55;
-      transition: transform 0.18s;
-      display: inline-block;
-    }
-
-    .nav-doc:hover .nav-doc-trigger .arrow,
-    .nav-doc:focus-within .nav-doc-trigger .arrow { transform: rotate(180deg); }
-
-    .nav-doc-menu {
-      display: none;
-      position: absolute;
-      top: calc(100% + 6px);
-      right: 0;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
-      padding: 0.35rem;
-      min-width: 210px;
-      z-index: 200;
-      flex-direction: column;
-      gap: 0.1rem;
-    }
-
-    .nav-doc:hover .nav-doc-menu,
-    .nav-doc:focus-within .nav-doc-menu { display: flex; }
-
-    .nav-doc-menu a {
-      display: block;
-      text-decoration: none;
-      padding: 0.5rem 0.85rem;
-      border-radius: 10px;
-      color: var(--muted);
-      font-weight: 600;
-      font-size: 0.9rem;
-      white-space: nowrap;
-    }
-
-    .nav-doc-menu a:hover { background: var(--bg); color: var(--text); }
-    .nav-doc-menu a.current { color: var(--text); font-weight: 700; background: var(--bg); }
+    section.section:nth-of-type(even) .tag.blue { background: #eff6ff; border-color: #bfdbfe; color: #1d4ed8; }
   </style>
 </head>
 <body>
@@ -358,7 +63,6 @@
         <div class="nav-doc">
           <button class="nav-doc-trigger">Documentation <span class="arrow">▾</span></button>
           <div class="nav-doc-menu">
-            <a href="external-resources.html">External Resources</a>
             <a href="future-development.html" class="current">Future Development</a>
             <a href="related-work.html">Related Work</a>
             <a href="implementations.html">Use Cases &amp; Implementations</a>
