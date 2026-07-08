@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Database,
   Share2,
@@ -317,6 +317,75 @@ const workflowData = [
   }
 ];
 
+// ─── Logo animation ───────────────────────────────────────────────────────────
+const SLOT_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+function SlotChar({ target, startDelay = 0, spinDuration = 700 }) {
+  const [char, setChar] = useState(() => SLOT_CHARS[Math.floor(Math.random() * SLOT_CHARS.length)]);
+
+  useEffect(() => {
+    let spinInterval;
+    let stopTimeout;
+    const startTimeout = setTimeout(() => {
+      spinInterval = setInterval(() => {
+        setChar(SLOT_CHARS[Math.floor(Math.random() * SLOT_CHARS.length)]);
+      }, 55);
+      stopTimeout = setTimeout(() => {
+        clearInterval(spinInterval);
+        setChar(target);
+      }, spinDuration);
+    }, startDelay);
+
+    return () => {
+      clearTimeout(startTimeout);
+      clearTimeout(stopTimeout);
+      clearInterval(spinInterval);
+    };
+  }, []);
+
+  return <span>{char}</span>;
+}
+
+function LogoMark() {
+  const cellStyle = (bg) => ({
+    background: bg,
+    borderRadius: 10,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontFamily: "'Bebas Neue', 'Extenda', sans-serif",
+    fontSize: '2.5rem',
+    color: 'white',
+    letterSpacing: '-0.01em',
+    lineHeight: 1,
+    userSelect: 'none',
+  });
+
+  return (
+    <div style={{
+      display: 'inline-grid',
+      gridTemplateColumns: '1fr 1fr',
+      gap: 7,
+      padding: 10,
+      background: '#3e2e38',
+      borderRadius: 20,
+      width: 160,
+      height: 160,
+    }}>
+      <div style={cellStyle('#2a5d71')}>
+        <SlotChar target="T" startDelay={0} />
+        <SlotChar target="A" startDelay={150} />
+      </div>
+      <div style={cellStyle('#f33f50')}>B</div>
+      <div style={cellStyle('#8791be')}>
+        <SlotChar target="S" startDelay={300} />
+        <SlotChar target="E" startDelay={450} />
+      </div>
+      <div style={cellStyle('#f33f50')}>B</div>
+    </div>
+  );
+}
+
 export default function App() {
   const [activePhase, setActivePhase] = useState(0);
   const [showImpl, setShowImpl] = useState(false);
@@ -361,41 +430,52 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F2EDE6] px-4 py-6 sm:px-6 sm:py-8 lg:px-8 lg:py-10 text-slate-900">
+    <div className="min-h-screen bg-[#F2EDE6] text-slate-900">
 
-      {/* ── Navbar ── */}
-      <nav className="sticky top-0 z-50 mb-8 border-b border-[rgba(26,26,26,0.13)] bg-[rgba(242,237,230,0.96)] backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-4 py-3 sm:px-6 lg:px-8 flex flex-wrap items-center justify-between gap-3">
-          <a href={`${baseUrl}`} className="text-xl font-bold tracking-widest text-[#1A1A1A] no-underline uppercase" style={{fontFamily:"'Bebas Neue','Extenda',sans-serif",letterSpacing:'0.08em'}}>TAB-SEB</a>
-          <div className="flex flex-wrap gap-2">
-            <a href={`${baseUrl}`} className="rounded-full border border-[rgba(26,26,26,0.2)] bg-white px-4 py-2 text-sm font-medium text-[#1A1A1A] no-underline hover:bg-[#ede8e1]">
-              Workflow
-            </a>
-            <a href={`${baseUrl}external-resources.html`} className="rounded-full border border-[rgba(26,26,26,0.2)] bg-white px-4 py-2 text-sm font-medium text-[#1A1A1A] no-underline hover:bg-[#ede8e1]">
-              External Resources
-            </a>
-            <div className="relative group">
-              <button className="rounded-full border border-[rgba(26,26,26,0.2)] bg-white px-4 py-2 text-sm font-medium text-[#1A1A1A] hover:bg-[#ede8e1] flex items-center gap-1.5 cursor-pointer">
-                Documentation
-                <span className="text-[10px] opacity-50 group-hover:rotate-180 transition-transform duration-200 inline-block">▾</span>
-              </button>
-              <div className="hidden group-hover:flex absolute top-full right-0 mt-1.5 flex-col bg-white border border-[rgba(26,26,26,0.1)] rounded-xl shadow-lg py-1.5 min-w-[220px] z-50 gap-0.5">
-                <a href={`${baseUrl}future-development.html`} className="px-4 py-2 text-sm text-[#5a5055] hover:bg-[#F2EDE6] hover:text-[#1A1A1A] no-underline rounded-lg mx-1">Future Development</a>
-                <a href={`${baseUrl}related-work.html`} className="px-4 py-2 text-sm text-[#5a5055] hover:bg-[#F2EDE6] hover:text-[#1A1A1A] no-underline rounded-lg mx-1">Related Work</a>
-                <a href={`${baseUrl}implementations.html`} className="px-4 py-2 text-sm text-[#5a5055] hover:bg-[#F2EDE6] hover:text-[#1A1A1A] no-underline rounded-lg mx-1">Use Cases &amp; Implementations</a>
+      {/* ── Navbar — identical structure to HTML pages (shared.css) ── */}
+      <nav className="navbar">
+        <div className="nav-inner">
+          <a className="brand" href={baseUrl}>TAB-SEB</a>
+          <div className="nav-links">
+            <a href={baseUrl} className="current">Workflow</a>
+            <div className="nav-doc">
+              <button className="nav-doc-trigger">External Resources <span className="arrow">▾</span></button>
+              <div className="nav-doc-menu">
+                <a href={`${baseUrl}external-resources.html#data-preparation`}>Data Preparation</a>
+                <a href={`${baseUrl}external-resources.html#rdf-materialisation`}>RDF Materialisation</a>
+                <a href={`${baseUrl}external-resources.html#publication`}>Data Publication</a>
+                <a href={`${baseUrl}external-resources.html#quality`}>Quality &amp; Assessment</a>
+                <a href={`${baseUrl}external-resources.html#blueprint`}>Workflow Blueprint</a>
+                <a href={`${baseUrl}external-resources.html#publications`}>Publications</a>
+                <a href={`${baseUrl}external-resources.html#vademecum`}>Vademecum</a>
+                <a href={`${baseUrl}external-resources.html#thesis`}>Doctoral Thesis</a>
+              </div>
+            </div>
+            <div className="nav-doc">
+              <button className="nav-doc-trigger">Documentation <span className="arrow">▾</span></button>
+              <div className="nav-doc-menu">
+                <a href={`${baseUrl}future-development.html`}>Future Development</a>
+                <a href={`${baseUrl}related-work.html`}>Related Work</a>
+                <a href={`${baseUrl}implementations.html`}>Use Cases &amp; Implementations</a>
               </div>
             </div>
           </div>
         </div>
       </nav>
 
+      {/* ── Page content ── */}
+      <div className="px-4 py-6 sm:px-6 sm:py-8 lg:px-8 lg:py-10">
+
       {/* ── Header ── */}
       <header className="max-w-7xl mx-auto mb-6 sm:mb-8 text-center">
+        <div className="flex justify-center mb-6">
+          <LogoMark />
+        </div>
         <h1
           className="text-5xl sm:text-6xl lg:text-7xl font-normal uppercase tracking-[0.04em] leading-none text-[#543e4c] mb-4"
           style={{ fontFamily: "'Bebas Neue', 'Extenda', sans-serif", fontWeight: 100 }}
         >
-          TABular Semantic Enhancement Blueprint (TAB-SEB)
+          TABular Semantic Enhancement Blueprint
         </h1>
         <p className="text-base sm:text-lg lg:text-xl text-[#7d6a73] max-w-4xl mx-auto leading-relaxed">
           Interactive overview of the technical workflow for tabular data preparation, RDF materialisation, and dissemination.
@@ -798,6 +878,7 @@ export default function App() {
         }
         .animate-spin-slow { animation: spin-slow 8s linear infinite; }
       ` }} />
+      </div>
     </div>
   );
 }

@@ -70,7 +70,10 @@
    RESET
    ===================================================== */
 *, *::before, *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden; /* fixes iOS Safari where body overflow-x alone doesn't contain full-bleed pseudo-elements */
+}
 body {
   margin: 0;
   font-family: var(--f-body);
@@ -138,16 +141,30 @@ a     { color: inherit; }
   font-size: 0.82rem;
   padding: 0.45rem 0.85rem;
   border-radius: 999px;
-  border: 1px solid transparent;
-  transition: border-color 0.15s, background 0.15s;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
 }
 
 .nav-links a:hover,
 .nav-links a:focus-visible {
-  border-color: var(--border);
+  border-color: rgba(84, 62, 76, 0.4);
   background: var(--surface);
   color: var(--text);
   outline: none;
+}
+
+/* Current page — filled dark pill */
+.nav-links a.current {
+  background: var(--text);
+  border-color: var(--text);
+  color: #F2EDE6;
+  font-weight: 700;
+}
+.nav-links a.current:hover {
+  background: var(--dark-surface);
+  border-color: var(--dark-surface);
+  color: #F2EDE6;
 }
 
 /* ── Documentation dropdown ── */
@@ -158,7 +175,7 @@ a     { color: inherit; }
   align-items: center;
   gap: 0.3rem;
   background: var(--surface);
-  border: 1px solid transparent;
+  border: 1px solid var(--border);
   border-radius: 999px;
   padding: 0.45rem 0.85rem;
   cursor: pointer;
@@ -167,11 +184,25 @@ a     { color: inherit; }
   font-family: inherit;
   color: var(--muted);
   line-height: 1;
-  transition: border-color 0.15s;
+  transition: border-color 0.15s, color 0.15s;
 }
 
 .nav-doc-trigger:hover,
-.nav-doc:focus-within .nav-doc-trigger { border-color: var(--border); color: var(--text); }
+.nav-doc:focus-within .nav-doc-trigger { border-color: rgba(84, 62, 76, 0.4); color: var(--text); }
+
+/* Current section trigger — same filled dark style as top-level link */
+.nav-doc-trigger.current {
+  background: var(--text);
+  border-color: var(--text);
+  color: #F2EDE6;
+  font-weight: 700;
+}
+.nav-doc:hover .nav-doc-trigger.current,
+.nav-doc:focus-within .nav-doc-trigger.current {
+  background: var(--dark-surface);
+  border-color: var(--dark-surface);
+  color: #F2EDE6;
+}
 
 .nav-doc-trigger .arrow {
   font-size: 0.6rem;
@@ -475,10 +506,21 @@ footer {
    RESPONSIVE
    ===================================================== */
 @media (max-width: 760px) {
-  .nav-inner { align-items: flex-start; flex-direction: column; }
-  dl.meta    { grid-template-columns: 1fr; }
-  h1         { font-size: clamp(2.2rem, 9vw, 3.5rem); }
+  .nav-inner  { align-items: flex-start; flex-direction: column; }
+  dl.meta     { grid-template-columns: 1fr; }
+  h1          { font-size: clamp(2.2rem, 9vw, 3.5rem); }
   .section h2 { font-size: clamp(1.7rem, 6vw, 2.5rem); }
+
+  /* Dropdown: on mobile the trigger is on the left side of the screen.
+     Switch from right-anchored to left-anchored so the menu opens
+     rightward instead of going off-screen to the left. */
+  .nav-doc-menu {
+    right: auto;
+    left: 0;
+    max-width: calc(100vw - 1.5rem);
+    min-width: 0;
+  }
+  .nav-doc-menu a { white-space: normal; }
 }
 
 /* =====================================================
