@@ -477,9 +477,17 @@ export default function App() {
         >
           TABular Semantic Enhancement Blueprint
         </h1>
-        <p className="text-base sm:text-lg lg:text-xl text-[#7d6a73] max-w-4xl mx-auto leading-relaxed">
-          Interactive overview of the technical workflow for tabular data preparation, RDF materialisation, and dissemination.
+        <p className="text-base sm:text-lg text-[#7d6a73] max-w-3xl mx-auto leading-relaxed mb-2">
+          A workflow blueprint for the semantic enhancement of cultural heritage metadata — a structured, documented path for transforming domain-specific tabular data into machine-readable, interoperable Linked Data fit for FAIR publication.
         </p>
+        <p className="text-xs text-[#7d6a73] max-w-3xl mx-auto mb-5" style={{opacity: 0.75}}>
+          Ongoing research · 2023–2026 · <em>Doctoral Programme in History and Cultural Heritage</em> (Helsinki) · <em>Cultural Heritage in the Digital Ecosystem</em> (Bologna) · <em>Una-Her-Doc</em>, Una Europa
+        </p>
+        <div className="max-w-3xl mx-auto rounded-2xl px-5 py-4 text-left" style={{background:'#543e4c'}}>
+          <p className="text-sm leading-relaxed" style={{color:'rgba(242,237,230,0.85)'}}>
+            The diagram below maps the four phases of the TAB-SEB workflow and their constituent steps. Activate <strong style={{color:'#F2EDE6'}}>Case Study View</strong> to overlay real implementation data from one of five documented use cases — select a case study and filter by actor role to explore how the blueprint was applied in practice.
+          </p>
+        </div>
       </header>
 
       {/* ── Case Study toggle bar ── */}
@@ -878,6 +886,12 @@ export default function App() {
         }
         .animate-spin-slow { animation: spin-slow 8s linear infinite; }
       ` }} />
+
+      <footer className="container">
+        <p><strong>© 2026 Arianna Moretti</strong> · TABular Semantic Enhancement Blueprint (TAB-SEB)</p>
+        <p>Research conducted within the <strong>Doctoral Programme in History and Cultural Heritage</strong> (University of Helsinki), the <strong>Cultural Heritage in the Digital Ecosystem</strong> PhD programme (University of Bologna), and <strong>Una-Her-Doc</strong> — Una Europa Doctoral Programme in Cultural Heritage.</p>
+      </footer>
+
       </div>
     </div>
   );
